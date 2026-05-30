@@ -44,6 +44,13 @@ button{font-family:var(--sans);cursor:pointer}
 input,select,textarea{font-family:var(--serif-b);font-size:15px}
 code,.mono{font-family:var(--mono)}
 ::selection{background:var(--accentSoft)}
+/* ---- icon sizing system: every icon() svg carries .ic; context rules below still win ---- */
+svg.ic{width:1.05em;height:1.05em;flex:0 0 auto;vertical-align:-.16em;stroke-width:2}
+svg.ic-sm{width:14px;height:14px}
+svg.ic-md{width:18px;height:18px}
+svg.ic-lg{width:24px;height:24px}
+svg.ic-xl{width:30px;height:30px;stroke-width:1.7}
+svg.ic-2xl{width:40px;height:40px;stroke-width:1.6}
 ::-webkit-scrollbar{width:11px;height:11px}
 ::-webkit-scrollbar-thumb{background:#d9d3c6;border-radius:8px;border:3px solid var(--paper)}
 ::-webkit-scrollbar-track{background:transparent}
@@ -149,6 +156,19 @@ code,.mono{font-family:var(--mono)}
 .kpi .k-sub{font-size:12.5px;color:var(--faint);font-family:var(--sans);margin-top:6px}
 .kpi.accent{border-left:3px solid var(--accent)} .kpi.danger{border-left:3px solid var(--danger)}
 .kpi.gold{border-left:3px solid var(--gold)} .kpi.navy{border-left:3px solid var(--navy)}
+.statline{display:flex;flex-direction:column}
+.stat-row{display:flex;align-items:center;gap:11px;padding:8px 0;border-bottom:1px solid var(--line)}
+.stat-row:last-child{border-bottom:0}
+.stat-ic{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;flex:0 0 auto}
+.stat-ic svg{width:15px;height:15px}
+.stat-ic.green{background:var(--accentSoft);color:var(--accent)} .stat-ic.gold{background:var(--goldSoft);color:var(--gold)}
+.stat-ic.amber{background:var(--warnSoft);color:var(--warn)} .stat-ic.navy{background:#e7edf3;color:var(--navy)}
+.stat-lab{flex:1;font-size:13px;color:var(--soft);font-family:var(--sans)}
+.stat-val{font-size:15px;color:var(--ink);font-weight:700;font-family:var(--sans)}
+.kpi-ic{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:var(--paper2);color:var(--soft);flex:0 0 auto}
+.kpi-ic svg{width:17px;height:17px;stroke-width:1.9}
+.kpi.accent .kpi-ic{background:var(--accentSoft);color:var(--accent)} .kpi.danger .kpi-ic{background:var(--dangerSoft);color:var(--danger)}
+.kpi.gold .kpi-ic{background:var(--goldSoft);color:var(--gold)} .kpi.navy .kpi-ic{background:#e7edf3;color:var(--navy)}
 
 /* chips */
 .chip{display:inline-flex;align-items:center;gap:5px;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.02em;padding:3px 9px;border-radius:20px;border:1px solid transparent;white-space:nowrap;line-height:1.5}
@@ -226,7 +246,8 @@ table.tbl tbody tr.click:hover{background:var(--paper2)}
 
 /* empty state */
 .empty{text-align:center;padding:48px 20px;color:var(--faint)}
-.empty .e-ico{width:46px;height:46px;margin:0 auto 14px;color:var(--accentLine);opacity:.9}
+.e-ico{width:64px;height:64px;margin:0 auto 16px;color:var(--accent);background:var(--accentSoft);border:1px solid var(--accentLine);border-radius:18px;display:grid;place-items:center}
+.e-ico svg{width:30px;height:30px;stroke-width:1.7}
 .empty h3{color:var(--soft);margin-bottom:6px}
 .empty p{font-size:14px;max-width:380px;margin:0 auto}
 
@@ -511,7 +532,7 @@ const ICONS = {
 };
 function icon(name, cls){
   const p = ICONS[name] || ICONS.box;
-  return '<svg class="'+(cls||'')+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+p+'</svg>';
+  return '<svg class="ic '+(cls||'')+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+p+'</svg>';
 }
 
 /* ===========================================================================
@@ -1964,11 +1985,11 @@ function screenDashboard(view){
         '<div class="row between mt12"><span class="muted ui" style="font-size:12px">'+prog.done+' of '+prog.total+' assets</span>'+
           '<span class="chip '+(daysLeft<7?'amber':'green')+'">'+daysLeft+' days to cutoff</span></div>'+
         '<div class="divider"></div>'+
-        '<div class="ui" style="font-size:12.5px;color:var(--soft);line-height:1.7">'+
-          '<div class="row between"><span>'+icon('checkCircle','')+' Matched</span><b class="tnum">'+(klassCount['matched']||0)+'</b></div>'+
-          '<div class="row between"><span>'+icon('inbox','')+' In conflict</span><b class="tnum">'+conflicts+'</b></div>'+
-          '<div class="row between"><span>'+icon('scale','')+' Awaiting review</span><b class="tnum">'+reviews+'</b></div>'+
-          '<div class="row between"><span>'+icon('sync','')+' Pending ERP return</span><b class="tnum">'+pendingSync+'</b></div>'+
+        '<div class="ui statline">'+
+          statRow('checkCircle','green','Matched',(klassCount['matched']||0))+
+          statRow('inbox','gold','In conflict',conflicts)+
+          statRow('scale','amber','Awaiting review',reviews)+
+          statRow('sync','navy','Pending ERP return',pendingSync)+
         '</div>'+
       '</div>'+
       // KPI grid
@@ -2006,9 +2027,13 @@ function screenDashboard(view){
   if(fg){ const dash=fg.getAttribute('stroke-dasharray'); fg.style.strokeDashoffset=dash; requestAnimationFrame(()=>{ fg.style.strokeDashoffset = dash*(1-prog.pct/100); }); }
 }
 function kpi(lab,val,sub,tone,ic){
-  return '<div class="kpi '+(tone||'')+'"><div class="row between"><div class="k-lab">'+esc(lab)+'</div>'+
-    (ic?'<span class="muted">'+icon(ic,'')+'</span>':'')+'</div>'+
+  return '<div class="kpi '+(tone||'')+'"><div class="row between" style="align-items:flex-start"><div class="k-lab">'+esc(lab)+'</div>'+
+    (ic?'<span class="kpi-ic">'+icon(ic)+'</span>':'')+'</div>'+
     '<div class="k-val">'+val+'</div><div class="k-sub">'+esc(sub)+'</div></div>';
+}
+function statRow(ic,tone,label,val){
+  return '<div class="stat-row"><span class="stat-ic '+tone+'">'+icon(ic)+'</span>'+
+    '<span class="stat-lab">'+esc(label)+'</span><span class="stat-val tnum">'+val+'</span></div>';
 }
 function klassColor(k){
   return {matched:'var(--accent)','metadata-diff':'var(--faint)','duplicate-conflict':'var(--gold)',
@@ -2779,7 +2804,7 @@ function screenAi(view){
   api.aiAnomalies().then(flags=>{ aiState.anomalies=flags; const c=$('#ai-anom'); if(c)c.innerHTML=anomaliesHtml(flags); $$('#ai-anom [data-src]').forEach(b=>b.addEventListener('click',()=>openSourceModal(JSON.parse(b.getAttribute('data-src'))))); });
 }
 function aiPipelinePlaceholder(){
-  return '<div class="card pad center" style="color:var(--faint)">'+icon('cpu','e-ico')+
+  return '<div class="card pad center" style="color:var(--faint)"><div class="e-ico" style="margin:0 auto 14px">'+icon('cpu')+'</div>'+
     '<h3 style="color:var(--soft);margin-top:8px">Ask a question to see the pipeline</h3>'+
     '<p class="muted" style="max-width:420px;margin:6px auto 0">Pick a sample or type your own. You’ll see the schema-only context, the proposed SQL, the validator gate, and a real result table.</p></div>';
 }
@@ -3170,7 +3195,7 @@ function mSyncTab(){
         '<span class="chip '+(off?'amber':'gold')+'" style="font-size:10px">'+(off?'held offline':'pending ACK')+'</span></div>'+
         '<div class="ui" style="font-size:12px;margin-top:4px">'+esc(e.inventory_no||e.surplus_name||'unregistered')+' · '+esc(e.status)+'</div>'+
         '<div class="mono" style="font-size:9.5px;color:var(--faint);margin-top:2px">hash '+esc(e.contentHash)+'</div></div>').join('')
-      : '<div class="m-card center" style="color:var(--faint)"><div style="margin:6px 0">'+icon('checkCircle','e-ico')+'</div><div class="ui" style="font-size:13px">Outbox empty — all events ACKed</div></div>')+
+      : '<div class="m-card center" style="color:var(--faint)"><div class="e-ico" style="width:48px;height:48px;margin:6px auto 10px">'+icon('checkCircle')+'</div><div class="ui" style="font-size:13px">Outbox empty — all events ACKed</div></div>')+
     '<label class="row gap8 mt8" style="font-size:12px;font-family:var(--sans);color:var(--soft);cursor:pointer;padding:2px 4px">'+
       '<button class="toggle '+(mob.drop?'on':'')+'" id="m-drop" style="width:38px;height:22px"><span class="knob" style="width:16px;height:16px"></span></button>'+
       'Simulate a network drop mid-sync</label>'+
