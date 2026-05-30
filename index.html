@@ -169,6 +169,9 @@ svg.ic-2xl{width:40px;height:40px;stroke-width:1.6}
 .kpi-ic svg{width:17px;height:17px;stroke-width:1.9}
 .kpi.accent .kpi-ic{background:var(--accentSoft);color:var(--accent)} .kpi.danger .kpi-ic{background:var(--dangerSoft);color:var(--danger)}
 .kpi.gold .kpi-ic{background:var(--goldSoft);color:var(--gold)} .kpi.navy .kpi-ic{background:#e7edf3;color:var(--navy)}
+.sap-dir{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;flex:0 0 auto}
+.sap-dir svg{width:13px;height:13px}
+.sap-dir.in{background:var(--accentSoft);color:var(--accent)} .sap-dir.out{background:#e7edf3;color:var(--navy)}
 
 /* chips */
 .chip{display:inline-flex;align-items:center;gap:5px;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.02em;padding:3px 9px;border-radius:20px;border:1px solid transparent;white-space:nowrap;line-height:1.5}
@@ -226,7 +229,8 @@ table.tbl tbody tr.click:hover{background:var(--paper2)}
 .field .errmsg{font-size:12px;color:var(--danger);margin-top:5px;font-family:var(--sans);font-weight:600;display:none}
 .field.err .errmsg{display:block}
 .radio-row{display:flex;gap:8px;flex-wrap:wrap}
-.radio-card{flex:1;min-width:120px;border:1px solid var(--line);border-radius:10px;padding:11px 13px;cursor:pointer;transition:.13s;background:#fff}
+.radio-card{display:block;flex:1;min-width:120px;border:1px solid var(--line);border-radius:10px;padding:11px 13px;cursor:pointer;transition:.13s;background:#fff}
+#rc-choices{display:flex;flex-direction:column;gap:8px}
 .radio-card:hover{border-color:#d8d2c6}
 .radio-card.on{border-color:var(--accent);background:var(--accentSoft);box-shadow:0 0 0 2px var(--accentSoft)}
 .radio-card .rc-t{font-family:var(--sans);font-weight:700;font-size:13px}
@@ -721,10 +725,13 @@ function seedData(){
   ];
 
   const state = {
-    version:3,
+    version:4,
     tenant, fiscalYear:2026, sourceOfTruth:tenant.sourceOfTruth,
     locations, categories, assets, commissions, campaign,
     mappings, validationRules,
+    // ---- the SIMULATED SAP ERP backend (source of truth, lives in-browser) ----
+    sap:{ system:'SAP ERP (ECC 6.0)', client:'100', companyCode:'BHT1', connected:true,
+          documents:[], callLog:[], seq:{belnr:4900000001, anln:5200} },
     masterImported:true,            // pre-imported so register has data
     events:[],                      // server-received immutable events
     serverEvents:{},                // uuid -> {ackTs, dispositionId} (idempotency ledger)
@@ -771,6 +778,12 @@ function seedData(){
   logAudit({ts:now-9*DAY+6e5, actor:'Amela Hodžić', role:'Commission President', action:'COMMISSION_CREATED',
     entity:'commission', entity_id:'com-sa', old:'—', new:'Komisija Sarajevo I (3 members)'});
   addActivity({type:'import', icon:'database', text:'<b>Master data imported</b> — 250 assets pulled from SAP ERP', ts:now-9*DAY});
+  // seed SAP-side call log for the initial master pull (platform → SAP)
+  state.sap.callLog.push(
+    {ts:now-9*DAY, dir:'out', kind:'OAuth2', name:'POST /sap/bc/sec/oauth2/token', summary:'client 100 · service user RFC_HORALIX', status:'200 OK'},
+    {ts:now-9*DAY+2e3, dir:'out', kind:'BAPI', name:'BAPI_FIXEDASSET_GETLIST', summary:'company code BHT1 · FY2026', status:'OK · 250 rows'},
+    {ts:now-9*DAY+4e3, dir:'out', kind:'OData', name:"GET /AssetMasterSet?$top=250", summary:'$select ANLN1,TXT50,KOSTL,STORT,ANLKL,KANSW', status:'200 OK'}
+  );
 
   // (A) ~62 already-counted matched assets in Sarajevo & Mostar → campaign progress
   let counted = 0;
@@ -926,7 +939,7 @@ function locName(locations,id){ const l=locations.find(x=>x.id===id); return l?l
    The UI subscribes to the store. Only the api module mutates domain data;
    UI-only flags (route, surface, role) go through store.setUI.
    =========================================================================== */
-const STORE_KEY = 'horalix.inventory.v3';
+const STORE_KEY = 'horalix.inventory.v4';
 const Store = (function(){
   let state = null;
   const subs = [];
@@ -935,7 +948,7 @@ const Store = (function(){
   function load(){
     try{
       const raw = localStorage.getItem(STORE_KEY);
-      if(raw){ const parsed = JSON.parse(raw); if(parsed && parsed.version===3) return parsed; }
+      if(raw){ const parsed = JSON.parse(raw); if(parsed && parsed.version===4) return parsed; }
     }catch(e){ /* corrupt → reseed */ }
     return null;
   }
@@ -1022,6 +1035,7 @@ const PERMS = {
   '#/conflicts':   ['Tenant Admin','Commission President','Auditor'],
   '#/review':      ['Tenant Admin','Accounting','Auditor'],
   '#/sync':        ['Tenant Admin','Accounting'],
+  '#/sap':         ['Tenant Admin','Accounting','Auditor'],
   '#/reports':     ['Tenant Admin','Accounting','Auditor','Commission President'],
   '#/audit':       ['Tenant Admin','Auditor','Accounting'],
   '#/ai':          ['Tenant Admin','Accounting','Auditor','Commission President']
@@ -1453,6 +1467,88 @@ const api = {
 };
 
 /* ===========================================================================
+   MODULE: SAP server (SIMULATED ERP backend, in-browser)
+   The platform NEVER posts automatically. A human RELEASES a prepared
+   candidate here, which generates real SAP documents (BELNR) in this
+   simulated SAP and updates the SAP-side asset master.
+   =========================================================================== */
+function _sapCall(s, entry){ s.sap.callLog.unshift(Object.assign({ts:Date.now()}, entry)); if(s.sap.callLog.length>140) s.sap.callLog.length=140; }
+function sapTxFor(d){
+  if(d.klass==='shortage') return {doctype:'Asset Retirement', txCode:'ABAVN', bapi:'BAPI_FIXEDASSET_RETIREMENT_POST', effect:'retire'};
+  if(d.klass==='surplus')  return {doctype:'Asset Acquisition', txCode:'ABZON', bapi:'BAPI_FIXEDASSET_CREATE', effect:'create'};
+  if(d.klass==='value-change'){
+    const wo = d.detail && d.detail.disposition==='written-off';
+    return wo ? {doctype:'Asset Retirement (write-off)', txCode:'ABAVN', bapi:'BAPI_FIXEDASSET_RETIREMENT_POST', effect:'retire'}
+              : {doctype:'Unplanned Depreciation', txCode:'ABAA', bapi:'BAPI_FIXEDASSET_CHANGE', effect:'impair'};
+  }
+  if(d.klass==='metadata-diff') return {doctype:'Master Data Change', txCode:'AS02', bapi:'BAPI_FIXEDASSET_CHANGE', effect:'master'};
+  return {doctype:'Value Adjustment', txCode:'ABAA', bapi:'BAPI_FIXEDASSET_CHANGE', effect:'impair'};
+}
+api.sapStatus = function(){
+  const s=Store.get();
+  const capital=s.assets.reduce((a,x)=> a + (x.sapStatus==='retired'||x.status==='written-off'?0:x.book_value), 0);
+  const retired=s.assets.filter(x=>x.sapStatus==='retired').length;
+  return {system:s.sap.system, client:s.sap.client, companyCode:s.sap.companyCode, connected:s.sap.connected,
+    master:s.assets.length, capital, retired, documents:s.sap.documents.length, calls:s.sap.callLog.length};
+};
+api.sapPost = async function(postingId, onStep){
+  const posting = Store.get().postings.find(p=>p.id===postingId);
+  if(!posting) throw {status:404, message:'Posting candidate not found.'};
+  if(posting.posted) return {ok:true, alreadyPosted:true, documents:posting.documents};
+  const items = Store.get().dispositions.filter(d=> d.postingId===postingId && d.status==='posting-candidate');
+  if(!items.length) throw {status:409, message:'This candidate has no releasable items.'};
+  const steps=[
+    {t:'Opening RFC connection to SAP', m:'client 100 · company BHT1 · user RFC_HORALIX'},
+    {t:'Validating against SAP posting rules', m:'period open · cost centers valid · authorisation check'},
+    {t:'Posting documents via BAPI', m:items.length+' item(s) · BAPI_FIXEDASSET_*'},
+    {t:'BAPI_TRANSACTION_COMMIT', m:'commit work · generating document numbers'},
+    {t:'Reading back BELNR', m:'FI/CO documents created in SAP'}
+  ];
+  for(let i=0;i<steps.length;i++){ if(onStep)onStep(i,steps[i],false); await net(380,640); if(onStep)onStep(i,steps[i],true); }
+  const docs=[];
+  Store.commit(s=>{
+    _sapCall(s,{dir:'in', kind:'RFC', name:'RFC_LOGIN', summary:'client 100 · user RFC_HORALIX', status:'authenticated'});
+    items.forEach(it=>{
+      const d=s.dispositions.find(x=>x.id===it.id); if(!d)return;
+      const tx=sapTxFor(d);
+      const belnr=String(s.sap.seq.belnr++);
+      let amount=Math.abs(d.amount||0), assetRef=d.inventory_no||'(new)';
+      if(tx.effect==='create'){
+        const newInv='INV-'+String(s.sap.seq.anln++).padStart(6,'0');
+        const loc=(s.commissions.find(c=>c.id===d.commission_id)||{}).locationIds; const locId=(loc&&loc[0])||'dir-sa-wh';
+        s.assets.push({id:'a'+uuid().slice(0,6), inventory_no:newInv, anln2:'0000', name:d.asset_name,
+          serial:'SAP-'+belnr, category:(d.detail&&d.detail.category)||'switches', asset_class:'3100 · IT Endpoint',
+          location_id:locId, cost_center:'100200 · IT & Mreža SA', custodian:'BH Telecom', acquired:Date.now(),
+          book_value:amount, status:'counted', sapStatus:'active',
+          history:[{ts:Date.now(), actor:'SAP · ABZON', action:'Asset created in SAP via posting — '+newInv}], photo:null, lastEventId:null});
+        assetRef=newInv;
+      } else if(tx.effect==='retire'){
+        const a=s.assets.find(x=>x.id===d.asset_id); if(a){ a.sapStatus='retired'; a.history.push({ts:Date.now(), actor:'SAP · ABAVN', action:'Asset retired in SAP — doc '+belnr}); }
+      } else if(tx.effect==='impair'){
+        const a=s.assets.find(x=>x.id===d.asset_id); if(a){ a.sapStatus='impaired'; a.history.push({ts:Date.now(), actor:'SAP · ABAA', action:'Unplanned depreciation posted — doc '+belnr}); }
+      } else if(tx.effect==='master'){
+        const a=s.assets.find(x=>x.id===d.asset_id); if(a){ a.history.push({ts:Date.now(), actor:'SAP · AS02', action:'Master data changed in SAP — change doc '+belnr}); }
+      }
+      const doc={ id:'doc'+belnr, belnr, doctype:tx.doctype, txCode:tx.txCode, bapi:tx.bapi, klass:d.klass,
+        asset:assetRef, amount, date:Date.now(), fiscalYear:s.fiscalYear, period:new Date().getMonth()+1,
+        correlation_id:d.correlation_id, byUser:Sel.currentUser().name };
+      s.sap.documents.unshift(doc); docs.push(doc);
+      _sapCall(s,{dir:'in', kind:'BAPI', name:tx.bapi, summary:assetRef+' · '+tx.doctype+' · '+fmtMoney(amount), status:'OK · BELNR '+belnr});
+      d.status='posted'; d.postedBelnr=belnr; d.postedTs=Date.now();
+      _audit(s,{correlation_id:d.correlation_id, action:'POSTED_TO_SAP', entity:'sap', entity_id:assetRef,
+        old:'posting candidate', new:tx.doctype+' · BELNR '+belnr+' ('+tx.txCode+')', approval:Sel.currentUser().name,
+        reason:'Released to SAP by '+Sel.currentUser().name+'.', device:'web/portal → SAP'});
+    });
+    _sapCall(s,{dir:'in', kind:'BAPI', name:'BAPI_TRANSACTION_COMMIT', summary:posting.id+' · '+docs.length+' document(s)', status:'COMMIT OK'});
+    const p=s.postings.find(x=>x.id===postingId);
+    p.posted=true; p.postedTs=Date.now();
+    p.documents=docs.map(x=>({belnr:x.belnr, doctype:x.doctype, asset:x.asset, amount:x.amount, txCode:x.txCode}));
+    _activity(s,{type:'erp', icon:'database', text:'<b>Posted to SAP</b> '+posting.id+' — '+docs.length+' document(s): '+docs.map(x=>x.belnr).join(', ')});
+  });
+  return {ok:true, documents:docs, posting:Store.get().postings.find(p=>p.id===postingId)};
+};
+
+/* ===========================================================================
    MODULE: ai (SIMULATED) — schema-only NL→SQL, validated read-only execution
    =========================================================================== */
 const AI_SCHEMA = [
@@ -1807,6 +1903,7 @@ const NAV = [
   {route:'#/review', label:'Review & approvals', icon:'scale', badge:()=>Sel.reviews().length},
   {section:'Controlled return'},
   {route:'#/sync', label:'ERP sync', icon:'sync', badge:()=>Store.get().dispositions.filter(d=>d.status==='approved'||d.status==='metadata-ready').length},
+  {route:'#/sap', label:'SAP ERP', icon:'database', tag:'SIM'},
   {route:'#/reports', label:'Reports', icon:'fileText'},
   {section:'Governance'},
   {route:'#/audit', label:'Audit log', icon:'shield'},
@@ -2357,10 +2454,12 @@ function screenSync(view){
   const metaReady=s.dispositions.filter(d=>d.status==='metadata-ready');
   const finApproved=s.dispositions.filter(d=>d.status==='approved');
   const pending=metaReady.length+finApproved.length;
+  const sap=api.sapStatus();
   view.innerHTML=
-    pageHead('ERP sync — controlled return', 'Approved results return to '+esc(s.sourceOfTruth)+' under control. Metadata changes flow automatically after review; financial changes are staged as candidates only.',
+    pageHead('ERP sync — controlled return', 'Approved results return to '+esc(s.sourceOfTruth)+' under control. Stage a candidate, then a human releases it — that is the only way anything reaches SAP.',
       '<button class="btn primary" id="prep-btn" '+(pending?'':'disabled')+'>'+icon('database')+'Prepare posting candidates ('+pending+')</button>')+
-    '<div class="callout danger mb20">'+icon('shield')+'<div><b>The platform never posts to SAP automatically.</b> "Prepare" generates a candidate payload that a human releases inside SAP. SAP remains the system of record at all times.</div></div>'+
+    '<div class="callout danger mb16">'+icon('shield')+'<div><b>The platform never posts to SAP automatically.</b> Step 1 <b>prepares</b> a candidate payload; step 2 a human clicks <b>Release to SAP</b>, which posts BAPI documents to the (simulated) SAP. SAP remains the system of record at all times.</div></div>'+
+    '<div class="callout navy mb20">'+icon('database')+'<div>Target: <b>'+esc(sap.system)+'</b> · client '+sap.client+' · company code '+sap.companyCode+' · <span style="color:var(--accent)">●</span> connected · '+sap.documents+' document(s) posted so far. <a data-go="#/sap">Open SAP console →</a></div></div>'+
     '<div class="grid g2" style="align-items:start">'+
       '<div class="card"><div class="card-h"><h3>'+icon('edit')+' Metadata changes</h3><span class="chip grey">auto after review</span></div>'+
         '<div class="card-b">'+
@@ -2377,6 +2476,7 @@ function screenSync(view){
     disclaimerNote();
   const pb=$('#prep-btn'); if(pb) pb.addEventListener('click',doPrepare);
   $$('[data-view-posting]').forEach(b=>b.addEventListener('click',()=>viewPosting(b.getAttribute('data-view-posting'))));
+  $$('[data-release]').forEach(b=>b.addEventListener('click',()=>doReleaseToSap(b.getAttribute('data-release'))));
 }
 function syncRow(d,kind){
   return '<div class="row between" style="padding:10px 0;border-bottom:1px solid var(--line)">'+
@@ -2387,10 +2487,16 @@ function syncRow(d,kind){
 function postingsHtml(){
   const ps=Store.get().postings;
   if(!ps.length) return '';
-  return '<div class="card"><div class="card-h"><h3>Prepared posting candidates</h3><span class="muted ui" style="font-size:11px">staged · not posted</span></div>'+
-    '<div class="card-b"><table class="tbl" style="border:0"><thead><tr><th>Candidate ID</th><th>Items</th><th>Prepared by</th><th>When</th><th></th></tr></thead><tbody>'+
-    ps.map(p=>'<tr><td class="mono">'+esc(p.id)+'</td><td>'+p.count+'</td><td style="font-size:13px">'+esc(p.by)+'</td><td style="font-size:13px">'+fmtDate(p.ts)+'</td>'+
-      '<td><button class="btn xs" data-view-posting="'+p.id+'">'+icon('eye')+'View JSON</button></td></tr>').join('')+
+  return '<div class="card"><div class="card-h"><h3>Posting candidates</h3><span class="muted ui" style="font-size:11px">prepare → human release → SAP</span></div>'+
+    '<div class="tbl-wrap" style="border:0;box-shadow:none"><table class="tbl"><thead><tr><th>Candidate ID</th><th>Items</th><th>Prepared by</th><th>Status</th><th style="text-align:right">Actions</th></tr></thead><tbody>'+
+    ps.map(p=>'<tr><td class="mono">'+esc(p.id)+'</td><td class="tnum">'+p.count+'</td><td style="font-size:13px">'+esc(p.by)+'</td>'+
+      '<td>'+(p.posted
+        ? '<span class="chip green">'+icon('checkCircle')+' Posted</span><div class="mono" style="font-size:10.5px;color:var(--faint);margin-top:3px">BELNR '+p.documents.map(d=>d.belnr).join(', ')+'</div>'
+        : '<span class="chip gold">staged · not posted</span>')+'</td>'+
+      '<td style="text-align:right"><div class="row gap6" style="justify-content:flex-end">'+
+        '<button class="btn xs" data-view-posting="'+p.id+'">'+icon('eye')+'JSON</button>'+
+        (p.posted ? '' : '<button class="btn xs primary" data-release="'+p.id+'">'+icon('database')+'Release to SAP</button>')+
+      '</div></td></tr>').join('')+
     '</tbody></table></div></div>';
 }
 async function doPrepare(){
@@ -2398,21 +2504,104 @@ async function doPrepare(){
   try{
     const res=await api.prepareCandidates();
     if(!res.count){ toast({type:'info',msg:'Nothing approved to prepare yet.'}); return; }
-    toast({type:'ok',title:'Posting candidate prepared',msg:res.count+' item(s) staged — manual release required in SAP.'});
+    toast({type:'ok',title:'Posting candidate prepared',msg:res.count+' item(s) staged — click “Release to SAP” to post.'});
     viewPosting(res.posting.id);
   }catch(e){ toast({type:'err',msg:e.message||'Failed to prepare.'}); }
 }
 function viewPosting(id){
   const p=Store.get().postings.find(x=>x.id===id); if(!p)return;
+  const banner = p.posted
+    ? '<div class="callout accent" style="font-size:12.5px;margin-bottom:14px">'+icon('checkCircle')+'<div><b>Posted to SAP.</b> '+p.documents.length+' document(s) created: <span class="mono">BELNR '+p.documents.map(d=>d.belnr).join(', ')+'</span>.</div></div>'
+    : '<div class="callout danger" style="font-size:12.5px;margin-bottom:14px">'+icon('shield')+'<div><b>This payload is NOT posted yet.</b> It is the exact candidate a human releases into SAP. Status: <span class="mono">CANDIDATE</span>.</div></div>';
   openModal({
     title:'Posting candidate '+p.id,
-    body:'<div class="callout danger" style="font-size:12.5px;margin-bottom:14px">'+icon('shield')+'<div><b>This payload is NOT posted.</b> It is the exact candidate a human would review and release inside SAP. Posting status: <span class="mono">CANDIDATE</span>.</div></div>'+
-      '<div class="code" style="max-height:380px">'+esc(JSON.stringify(p.payload,null,2))+'</div>',
-    footer:'<button class="btn" data-modal-close>Close</button><button class="btn navy" id="dl-json">'+icon('download')+'Download .json</button>',
-    onMount(m){ m.querySelector('#dl-json').addEventListener('click',()=>downloadBlob(p.id+'.json',JSON.stringify(p.payload,null,2),'application/json')); }
+    body: banner + '<div class="code" style="max-height:360px">'+esc(JSON.stringify(p.payload,null,2))+'</div>',
+    footer:'<button class="btn" data-modal-close>Close</button>'+
+      '<button class="btn navy" id="dl-json">'+icon('download')+'Download .json</button>'+
+      (p.posted?'':'<button class="btn primary" id="rel-go">'+icon('database')+'Release to SAP</button>'),
+    onMount(m){
+      m.querySelector('#dl-json').addEventListener('click',()=>downloadBlob(p.id+'.json',JSON.stringify(p.payload,null,2),'application/json'));
+      const rg=m.querySelector('#rel-go'); if(rg) rg.addEventListener('click',()=>{ closeModal(); doReleaseToSap(p.id); });
+    }
+  });
+}
+function doReleaseToSap(id){
+  const p=Store.get().postings.find(x=>x.id===id); if(!p)return;
+  openModal({
+    title:'Release to SAP — '+p.id,
+    noScrimClose:true,
+    body:'<div class="row gap8 mb16">'+icon('database')+'<span class="muted ui" style="font-size:12.5px">'+esc(api.sapStatus().system)+' · client 100 · company BHT1 · '+p.count+' item(s)</span></div>'+
+      '<div id="rel-steps"></div>'+
+      '<div id="rel-result" class="hidden"></div>',
+    footer:'<button class="btn" data-modal-close id="rel-cancel">Cancel</button>',
+    onMount(m){
+      const host=m.querySelector('#rel-steps');
+      const labels=['Opening RFC connection to SAP','Validating against SAP posting rules','Posting documents via BAPI','BAPI_TRANSACTION_COMMIT','Reading back BELNR'];
+      host.innerHTML=labels.map((t,i)=>'<div class="step" id="rl-'+i+'"><div class="st-dot">'+(i+1)+'</div><div class="flex1"><div class="st-t">'+esc(t)+'</div><div class="st-m" id="rlm-'+i+'"></div></div></div>').join('');
+      api.sapPost(id,(i,step,done)=>{
+        const node=m.querySelector('#rl-'+i), meta=m.querySelector('#rlm-'+i); if(!node)return;
+        if(!done){ node.classList.add('active'); meta.textContent=step.m; node.querySelector('.flex1').insertAdjacentHTML('beforeend','<span class="spin"></span>'); }
+        else{ node.classList.remove('active'); node.classList.add('done'); const sp=node.querySelector('.spin'); if(sp)sp.remove(); node.querySelector('.st-dot').innerHTML=icon('check'); }
+      }).then(res=>{
+        const rr=m.querySelector('#rel-result'); rr.classList.remove('hidden');
+        rr.innerHTML='<div class="callout accent mt12" style="font-size:12.5px">'+icon('checkCircle')+'<div><b>Committed in SAP.</b> '+res.documents.length+' document(s) created.</div></div>'+
+          '<div class="tbl-wrap mt12"><table class="tbl"><thead><tr><th>BELNR</th><th>Document type</th><th>Tx</th><th>Asset</th><th style="text-align:right">Amount</th></tr></thead><tbody>'+
+          res.documents.map(d=>'<tr><td class="mono">'+esc(d.belnr)+'</td><td style="font-size:13px">'+esc(d.doctype)+'</td><td class="mono">'+esc(d.txCode)+'</td><td class="mono">'+esc(d.asset)+'</td><td class="tnum" style="text-align:right">'+fmtMoney(d.amount)+'</td></tr>').join('')+
+          '</tbody></table></div>';
+        const c=m.querySelector('#rel-cancel'); c.textContent='Close'; c.classList.add('primary');
+        m.querySelector('.modal-f').insertAdjacentHTML('afterbegin','<button class="btn navy" id="rel-console">'+icon('database')+'Open SAP console</button>');
+        m.querySelector('#rel-console').addEventListener('click',()=>{ closeModal(); navigate('#/sap'); });
+        toast({type:'ok',title:'Posted to SAP',msg:res.documents.length+' document(s) created — BELNR '+res.documents.map(d=>d.belnr).join(', ')+'.'});
+      }).catch(e=>{ toast({type:'err',title:'Post failed',msg:e.message||'SAP rejected the posting.'}); closeModal(); });
+    }
   });
 }
 SCREENS['#/sync']=screenSync;
+
+/* ---------- SAP CONSOLE (read-only view of the simulated SAP ERP) ---------- */
+function screenSap(view){
+  const s=Store.get(); const st=api.sapStatus(); const docs=s.sap.documents; const calls=s.sap.callLog;
+  const pendingRelease=s.postings.filter(p=>!p.posted).length;
+  view.innerHTML=
+    pageHead('SAP ERP <span class="chip gold" style="vertical-align:middle;margin-left:8px;font-size:10px">SIMULATED</span>',
+      'The system of record. This is a simulated SAP ERP running in-browser — the platform reads master data from here and returns approved postings under human control.',
+      '<span class="tag-immutable">'+icon('database')+'system of record</span>')+
+    '<div class="callout navy mb20">'+icon('database')+'<div><b>'+esc(st.system)+'</b> · client <b>'+st.client+'</b> · company code <b>'+st.companyCode+'</b> · service user <span class="mono">RFC_HORALIX</span> · <span style="color:var(--accent)">●</span> connected</div></div>'+
+    '<div class="grid g4 mb20">'+
+      kpi('Fixed assets','<span class="tnum">'+fmtNum(st.master)+'</span>','asset master (AS03)','navy','database')+
+      kpi('Capitalized value',fmtMoney(st.capital),'net book value','accent','barChart')+
+      kpi('Documents posted','<span class="tnum">'+fmtNum(st.documents)+'</span>','FI/CO BELNR',st.documents?'gold':'navy','fileText')+
+      kpi('Retired in SAP','<span class="tnum">'+fmtNum(st.retired)+'</span>','via ABAVN',st.retired?'danger':'navy','trendingDown')+
+    '</div>'+
+    '<div class="grid" style="grid-template-columns:1.35fr 1fr;align-items:start">'+
+      // document log
+      '<div class="card"><div class="card-h"><h3>'+icon('fileText')+' Document log</h3><span class="muted ui" style="font-size:11px">BKPF / ANEP · newest first</span></div>'+
+        (docs.length?
+          '<div class="tbl-wrap" style="border:0;box-shadow:none"><table class="tbl"><thead><tr><th>BELNR</th><th>Document type</th><th>Tx</th><th>Asset</th><th style="text-align:right">Amount</th><th>Posted</th></tr></thead><tbody>'+
+          docs.map(d=>'<tr><td class="mono">'+esc(d.belnr)+'</td>'+
+            '<td><span class="chip '+sapDocTone(d.klass)+'" style="font-size:10px">'+esc(d.doctype)+'</span></td>'+
+            '<td class="mono">'+esc(d.txCode)+'</td><td class="mono" style="font-size:12px">'+esc(d.asset)+'</td>'+
+            '<td class="tnum" style="text-align:right">'+fmtMoney(d.amount)+'</td>'+
+            '<td style="font-size:11.5px;white-space:nowrap">'+fmtDate(d.date)+'<div class="muted ui" style="font-size:10px">'+esc(d.byUser)+'</div></td></tr>').join('')+
+          '</tbody></table></div>'
+          : emptyState('fileText','No documents posted yet','Approve a financial exception, prepare a candidate in ERP Sync, then click “Release to SAP”. Documents (BELNR) will appear here.','<button class="btn primary sm" data-go="#/sync">'+icon('database')+'Go to ERP Sync</button>'))+
+      '</div>'+
+      // call log
+      '<div class="card"><div class="card-h"><h3>'+icon('sync')+' Interface log</h3><span class="muted ui" style="font-size:11px">RFC · BAPI · OData</span></div>'+
+        '<div class="card-b" style="max-height:520px;overflow:auto">'+
+          calls.map(c=>'<div class="row gap8" style="padding:9px 0;border-bottom:1px solid var(--line);align-items:flex-start">'+
+            '<span class="sap-dir '+(c.dir==='in'?'in':'out')+'" title="'+(c.dir==='in'?'platform → SAP':'SAP ← platform')+'">'+icon(c.dir==='in'?'download':'upload')+'</span>'+
+            '<div class="flex1"><div class="mono" style="font-size:12px;color:var(--ink)">'+esc(c.name)+'</div>'+
+              '<div class="muted ui" style="font-size:11px">'+esc(c.summary||'')+'</div></div>'+
+            '<div style="text-align:right"><span class="chip '+(/OK|200|authenticated|COMMIT/.test(c.status)?'green':'grey')+'" style="font-size:10px">'+esc(c.status)+'</span>'+
+              '<div class="muted ui" style="font-size:10px;margin-top:3px">'+timeAgo(c.ts)+'</div></div></div>').join('')+
+        '</div></div>'+
+    '</div>'+ disclaimerNote();
+}
+function sapDocTone(klass){
+  return {shortage:'red','value-change':'red',surplus:'gold','metadata-diff':'grey'}[klass]||'navy';
+}
+SCREENS['#/sap']=screenSap;
 
 /* ---- download helper (Blob → file) ---- */
 function downloadBlob(filename,content,mime){
@@ -3320,28 +3509,37 @@ const Tour=(function(){
       target:()=>'.page-head',
       body:'Accounting approves with a reason. The exception becomes a posting candidate — still not posted.',
       why:'Approval is a deliberate human act, captured in the audit trail with the reason.' },
-    { title:'13 · Controlled return to SAP', surface:'web', role:'Accounting', route:'#/sync',
+    { title:'13 · Prepare the posting candidate', surface:'web', role:'Accounting', route:'#/sync',
       action: async()=>{ await api.prepareCandidates(); },
       target:()=>'#postings',
-      body:'We prepared a posting candidate — the exact payload a human would release inside SAP. Open “View JSON” to inspect it.',
-      why:'The platform’s furthest autonomous step is “candidate”. It NEVER posts to SAP automatically.' },
-    { title:'14 · Generate the report', surface:'web', role:'Accounting', route:'#/reports',
+      body:'We staged a posting candidate — the exact payload that would go to SAP. Nothing is in SAP yet; this is the furthest the platform goes on its own.',
+      why:'The platform’s most autonomous step is “candidate”. It NEVER posts to SAP automatically.' },
+    { title:'14 · Release to SAP', surface:'web', role:'Accounting', route:'#/sync',
+      action: async()=>{ const p=Store.get().postings.filter(x=>!x.posted).sort((a,b)=>b.ts-a.ts)[0]; if(p) await api.sapPost(p.id); },
+      target:()=>'#postings',
+      body:'A human clicks “Release to SAP”. BAPI documents are posted to the (simulated) SAP and real document numbers (BELNR) come back. This is the ONLY way anything reaches SAP.',
+      why:'A deliberate, audited human action — shortage → asset retirement (ABAVN), surplus → acquisition (ABZON), etc.' },
+    { title:'15 · Inside the SAP system', surface:'web', role:'Accounting', route:'#/sap',
+      target:()=>'.tbl-wrap',
+      body:'This is the SAP side: the posted documents (BELNR), the asset master, and the full RFC/BAPI/OData interface log — both directions.',
+      why:'The round-trip is closed and SAP stayed the system of record the entire time.' },
+    { title:'16 · Generate the report', surface:'web', role:'Accounting', route:'#/reports',
       target:()=>'.page-actions',
       body:'The prescribed inventory report — book vs physical, recapitulated by location and category. Export to CSV/HTML or print to PDF.',
-      why:'A real, downloadable artdefact the commission can file.' },
-    { title:'15 · The immutable audit log', surface:'web', role:'Auditor', route:'#/audit',
+      why:'A real, downloadable artefact the commission can file.' },
+    { title:'17 · The immutable audit log', surface:'web', role:'Auditor', route:'#/audit',
       target:()=>'.tbl-wrap',
-      body:'Every action we just took — capture, reconcile, resolve, approve, prepare — is here, append-only, linked by correlation IDs.',
-      why:'Admin actions are logged too. The auditor sees an unbroken chain from field event to ERP candidate.' },
-    { title:'16 · Ask the data a question (AI)', surface:'web', role:'Accounting', route:'#/ai',
+      body:'Every action — capture, reconcile, resolve, approve, prepare, post-to-SAP — is here, append-only, linked by correlation IDs.',
+      why:'Admin actions are logged too. The auditor sees an unbroken chain from field event to SAP document.' },
+    { title:'18 · Ask the data a question (AI)', surface:'web', role:'Accounting', route:'#/ai',
       action: async()=>{ await sleep(120); try{ await runAi(AI_PRESETS[0]); }catch(e){} },
       target:()=>'#ai-pipeline',
       body:'The optional AI package translates a question into READ-ONLY SQL, validates it (SELECT-only, tenant-scoped, row-limited), runs it, and logs it.',
       why:'It can surface insight and anomalies — but it can never write or post. All output is clearly simulated.' },
     { title:'That’s the full loop', surface:'web', role:'Tenant Admin', route:'#/dashboard',
       target:()=>'.page-head',
-      body:'Import → assign → offline capture → idempotent sync → reconcile → resolve → review → candidate → report → audit → AI.',
-      why:'SAP stayed the source of truth, financials were gated, and everything is auditable. Explore freely — or hit Reset to start over.' }
+      body:'Import → assign → offline capture → idempotent sync → reconcile → resolve → review → candidate → <b>release to SAP</b> → report → audit → AI.',
+      why:'SAP stayed the source of truth, financials were gated behind a human release, and every step is auditable end-to-end. Explore freely — or hit Reset to start over.' }
   ]; }
 
   function host(){ return $('#tour-host'); }
