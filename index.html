@@ -114,6 +114,65 @@ svg.ic-2xl{width:40px;height:40px;stroke-width:1.6}
 .btn.block{width:100%;justify-content:center}
 .btn svg{width:15px;height:15px}
 
+/* topbar controls: command hint, icon buttons, avatar, user chip */
+.kbd-hint{display:inline-flex;align-items:center;gap:8px;background:var(--paper2);border:1px solid var(--line);border-radius:9px;padding:6px 10px;color:var(--faint);font-family:var(--sans);font-size:12px;font-weight:500;cursor:pointer;transition:.13s}
+.kbd-hint:hover{border-color:#d8d2c6;color:var(--soft)} .kbd-hint svg{width:14px;height:14px}
+.kbd-hint kbd{font-family:var(--sans);font-size:10px;background:#fff;border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--soft)}
+@media(max-width:1180px){.kbd-hint span{display:none}}
+.icon-btn{position:relative;width:36px;height:36px;border-radius:9px;border:1px solid var(--line);background:#fff;color:var(--soft);display:grid;place-items:center;cursor:pointer;transition:.13s}
+.icon-btn:hover{border-color:#d8d2c6;color:var(--ink)} .icon-btn svg{width:17px;height:17px}
+.bell-dot{position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;padding:0 4px;border-radius:9px;background:var(--danger);color:#fff;font-family:var(--sans);font-size:10px;font-weight:700;display:grid;place-items:center;border:2px solid var(--paper)}
+.avatar{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-family:var(--sans);font-weight:700;font-size:12px;display:grid;place-items:center;flex:0 0 auto;letter-spacing:.02em}
+.avatar.sm{width:26px;height:26px;font-size:10.5px} .avatar.lg{width:42px;height:42px;font-size:15px}
+.user-chip{display:inline-flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:4px 9px 4px 5px;cursor:pointer;transition:.13s}
+.user-chip:hover{border-color:#d8d2c6;box-shadow:var(--shadow-sm)} .user-chip svg{color:var(--faint)}
+.uc-meta{display:flex;flex-direction:column;line-height:1.15;text-align:left}
+.uc-name{font-family:var(--sans);font-weight:700;font-size:12.5px;color:var(--ink)}
+.uc-role{font-family:var(--sans);font-size:10.5px;color:var(--faint)}
+@media(max-width:1080px){.uc-meta{display:none}}
+/* popover */
+.popover{position:fixed;z-index:78;min-width:300px;max-width:340px;background:var(--paper);border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow-lg);padding:7px;animation:pop .16s cubic-bezier(.2,.8,.2,1)}
+.pop-h{display:flex;align-items:center;justify-content:space-between;padding:7px 9px 9px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);text-transform:uppercase;letter-spacing:.05em}
+.pop-item{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:transparent;border:0;border-radius:9px;padding:9px 9px;cursor:pointer;font-family:var(--sans);color:var(--soft);transition:.1s}
+.pop-item:hover{background:var(--paper2);color:var(--ink)} .pop-item.sm{padding:7px 9px}
+.pop-ic{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;flex:0 0 auto;background:var(--paper2);color:var(--soft)}
+.pop-ic svg{width:15px;height:15px}
+.pop-ic.gold{background:var(--goldSoft);color:var(--gold)} .pop-ic.navy{background:#e7edf3;color:var(--navy)} .pop-ic.green{background:var(--accentSoft);color:var(--accent)} .pop-ic.grey{background:var(--paper2);color:var(--soft)}
+.pi-t{display:block;font-size:13px;font-weight:600;color:var(--ink)} .pi-s{display:block;font-size:11.5px;color:var(--faint)}
+.pop-empty{display:flex;flex-direction:column;align-items:center;gap:8px;padding:26px 16px;color:var(--faint);font-family:var(--sans);font-size:13px}
+.pop-empty svg{width:26px;height:26px;color:var(--accentLine)}
+.pop-user{display:flex;align-items:center;gap:11px;padding:9px 9px 11px}
+.pu-name{font-family:var(--sans);font-weight:700;font-size:14px;color:var(--ink)} .pu-title{font-family:var(--sans);font-size:11.5px;color:var(--faint)}
+.pop-sep{height:1px;background:var(--line);margin:5px 2px}
+.pop-lbl{font-family:var(--sans);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);padding:5px 10px 6px}
+.pop-hint{display:flex;align-items:flex-start;gap:6px;font-family:var(--sans);font-size:11px;color:var(--faint);padding:6px 10px 4px;line-height:1.4} .pop-hint svg{margin-top:1px;flex:0 0 auto}
+.tenant-chip{display:inline-flex;align-items:center;gap:5px;background:transparent;border:1px solid transparent;border-radius:9px;padding:5px 9px;font-family:var(--sans);font-size:12.5px;font-weight:600;color:var(--soft);cursor:pointer;transition:.13s}
+.tenant-chip:hover{background:var(--paper2);border-color:var(--line);color:var(--ink)} .tenant-chip svg{color:var(--faint)}
+.lang-pick{flex:1;border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 10px;font-family:var(--sans);font-size:12.5px;font-weight:600;color:var(--soft);cursor:pointer;transition:.12s}
+.lang-pick:hover{border-color:#d8d2c6;color:var(--ink)} .lang-pick.on{background:var(--accentSoft);border-color:var(--accentLine);color:#0a5e4c}
+/* command palette */
+.cmdk{margin:-4px}
+.cmdk-in{display:flex;align-items:center;gap:10px;padding:6px 6px 14px;border-bottom:1px solid var(--line)}
+.cmdk-in svg{width:18px;height:18px;color:var(--faint)}
+.cmdk-in input{flex:1;border:0;background:transparent;font-size:17px;font-family:var(--serif-b);color:var(--ink);outline:none}
+.cmdk-list{max-height:340px;overflow:auto;padding:8px 0 4px}
+.cmdk-item{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:transparent;border:0;border-radius:9px;padding:9px 10px;cursor:pointer;font-family:var(--sans);font-size:13.5px;color:var(--soft)}
+.cmdk-item.on,.cmdk-item:hover{background:var(--accentSoft);color:var(--ink)}
+.cmdk-item kbd{font-family:var(--sans);font-size:10px;background:#fff;border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--soft)}
+.cmdk-foot{border-top:1px solid var(--line);padding:9px 4px 0;font-family:var(--sans);font-size:11px;color:var(--faint)}
+.cmdk-foot kbd{font-size:10px;background:var(--paper2);border:1px solid var(--line);border-radius:4px;padding:0 4px;margin:0 1px}
+/* login */
+.login-stage{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;background:radial-gradient(800px 460px at 50% -8%, #eef4f1 0%, transparent 60%), radial-gradient(700px 460px at 90% 110%, #f3eee4 0%, transparent 55%), var(--paper)}
+.login-card{width:min(440px,100%);background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow-lg);padding:34px 32px}
+.login-brand{display:flex;align-items:center;gap:11px}
+.login-users{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.login-user{display:flex;align-items:center;gap:12px;width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 13px;cursor:pointer;transition:.14s}
+.login-user:hover{border-color:var(--accent);background:var(--accentSoft);transform:translateX(2px)}
+.lu-name{display:block;font-family:var(--sans);font-weight:700;font-size:14px;color:var(--ink)}
+.lu-role{display:block;font-family:var(--sans);font-size:12px;color:var(--faint)}
+.lu-go{color:var(--faint);display:grid;place-items:center} .login-user:hover .lu-go{color:var(--accent)}
+.login-foot{margin-top:20px;color:var(--faint);font-family:var(--sans);font-size:11.5px}
+
 /* shell */
 .shell{flex:1;display:grid;grid-template-columns:236px 1fr;min-height:0}
 .sidebar{border-right:1px solid var(--line);background:linear-gradient(180deg,#fbf9f4,#f7f3ec);padding:16px 12px;display:flex;flex-direction:column;gap:3px;position:sticky;top:58px;height:calc(100vh - 58px);overflow-y:auto}
@@ -172,6 +231,20 @@ svg.ic-2xl{width:40px;height:40px;stroke-width:1.6}
 .sap-dir{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;flex:0 0 auto}
 .sap-dir svg{width:13px;height:13px}
 .sap-dir.in{background:var(--accentSoft);color:var(--accent)} .sap-dir.out{background:#e7edf3;color:var(--navy)}
+.task-card{display:flex;flex-direction:column;align-items:flex-start;text-align:left;border:1px solid var(--line);background:var(--paper2);border-radius:12px;padding:14px;cursor:pointer;transition:.14s}
+.task-card:hover{border-color:var(--accentLine);background:#fff;box-shadow:var(--shadow-sm)}
+.task-ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;margin-bottom:10px}
+.task-ic svg{width:17px;height:17px}
+.task-ic.navy{background:#e7edf3;color:var(--navy)} .task-ic.gold{background:var(--goldSoft);color:var(--gold)} .task-ic.green{background:var(--accentSoft);color:var(--accent)} .task-ic.accent{background:var(--accentSoft);color:var(--accent)}
+.task-t{font-family:var(--sans);font-weight:700;font-size:13.5px;color:var(--ink)}
+.task-d{font-family:var(--sans);font-size:12px;color:var(--faint);margin-top:2px}
+.task-cta{display:flex;align-items:center;gap:5px;font-family:var(--sans);font-size:12px;font-weight:600;color:var(--accent);margin-top:11px}
+table.tbl.rbac td,table.tbl.rbac th{border-right:1px solid var(--line)}
+table.tbl.rbac td:last-child,table.tbl.rbac th:last-child{border-right:0}
+.rbac-yes{color:var(--accent);display:inline-grid;place-items:center} .rbac-yes svg{width:16px;height:16px}
+.rbac-no{color:var(--faint);opacity:.45;display:inline-grid;place-items:center} .rbac-no svg{width:13px;height:13px}
+table.tbl.rbac .me{background:var(--accentSoft)}
+table.tbl.rbac thead th.me{background:#dcefe8;color:#0a5e4c}
 
 /* chips */
 .chip{display:inline-flex;align-items:center;gap:5px;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.02em;padding:3px 9px;border-radius:20px;border:1px solid transparent;white-space:nowrap;line-height:1.5}
@@ -426,6 +499,14 @@ table.tbl tbody tr.click:hover{background:var(--paper2)}
 .tour-pop .tp-why{margin-top:9px;padding:9px 11px;background:var(--accentSoft);border-radius:9px;font-size:12.5px;color:#0a5e4c;font-family:var(--sans);line-height:1.45}
 .tour-pop .tp-why b{font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:10px}
 .tour-pop .tp-f{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-top:1px solid var(--line);background:#fff}
+.tour-picks{display:flex;flex-direction:column;gap:8px}
+.tour-pick{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 13px;cursor:pointer;transition:.14s;font-family:var(--sans);color:var(--soft)}
+.tour-pick:hover{border-color:var(--accentLine);box-shadow:var(--shadow-sm);transform:translateX(2px);color:var(--ink)}
+.tour-pick .tp-ic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;flex:0 0 auto;background:var(--paper2);color:var(--soft)}
+.tour-pick .tp-ic.navy{background:#e7edf3;color:var(--navy)} .tour-pick .tp-ic.gold{background:var(--goldSoft);color:var(--gold)} .tour-pick .tp-ic.accent{background:var(--accentSoft);color:var(--accent)}
+.tour-pick .tp-ic svg{width:18px;height:18px}
+.tour-pick .tp-name{display:block;font-weight:700;font-size:14px;color:var(--ink)}
+.tour-pick .tp-desc{display:block;font-size:12px;color:var(--faint);margin-top:1px}
 .tour-pop .tp-prog{font-family:var(--sans);font-size:11.5px;color:var(--faint);font-weight:600}
 .tour-fab{position:fixed;right:22px;bottom:22px;z-index:60;display:flex;align-items:center;gap:9px;background:var(--navy);color:#fff;border:0;padding:12px 18px;border-radius:30px;font-family:var(--sans);font-weight:700;font-size:13px;box-shadow:var(--shadow-lg);cursor:pointer}
 .tour-fab:hover{background:#1a3450}
@@ -437,7 +518,7 @@ table.tbl tbody tr.click:hover{background:var(--paper2)}
 .between{justify-content:space-between}
 .mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt20{margin-top:20px}.mt24{margin-top:24px}
 .mb8{margin-bottom:8px}.mb12{margin-bottom:12px}.mb16{margin-bottom:16px}.mb20{margin-bottom:20px}
-.gap6{gap:6px}.gap8{gap:8px}.gap12{gap:12px}
+.gap6{gap:6px}.gap8{gap:8px}.gap12{gap:12px}.gap16{gap:16px}
 .flex1{flex:1}
 .right{margin-left:auto}
 .center{text-align:center}
@@ -532,7 +613,10 @@ const ICONS = {
   package:'<line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
   clipboard:'<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>',
   chevronDown:'<polyline points="6 9 12 15 18 9"/>',
-  gauge:'<path d="M12 14l4-4M3.34 19a10 10 0 1 1 17.32 0"/><circle cx="12" cy="14" r="1.5"/>'
+  gauge:'<path d="M12 14l4-4M3.34 19a10 10 0 1 1 17.32 0"/><circle cx="12" cy="14" r="1.5"/>',
+  bell:'<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>',
+  command:'<path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"/>',
+  chevronUpDown:'<polyline points="8 9 12 5 16 9"/><polyline points="16 15 12 19 8 15"/>'
 };
 function icon(name, cls){
   const p = ICONS[name] || ICONS.box;
@@ -584,6 +668,37 @@ function timeAgo(ts){
   return Math.floor(s/86400)+'d ago';
 }
 function debounce(fn,ms){ let t; return function(){ const a=arguments,c=this; clearTimeout(t); t=setTimeout(()=>fn.apply(c,a),ms); }; }
+
+/* ===========================================================================
+   MODULE: i18n — Bosnian/English. tr(en) returns the BS string when lang=bs.
+   =========================================================================== */
+const LANG_BS = {
+  // nav sections + labels
+  'Overview':'Pregled','Inventory campaign':'Popisna kampanja','Controlled return':'Kontrolisani povrat',
+  'Governance':'Upravljanje','Configure':'Konfiguracija',
+  'Dashboard':'Kontrolna tabla','Analytics':'Analitika','Asset register':'Registar imovine','Liabilities':'Obaveze',
+  'Commissions':'Komisije','Conflict inbox':'Sandučić konflikata','Review & approvals':'Pregled i odobrenja',
+  'ERP sync':'ERP sinhronizacija','SAP ERP':'SAP ERP','Integration':'Integracija','Reports':'Izvještaji',
+  'Audit log':'Revizioni trag','Access control':'Kontrola pristupa','AI insights':'AI uvidi','Setup & admin':'Postavke i admin',
+  // page titles
+  'Liabilities inventory':'Popis obaveza','Conflict inbox ':'Sandučić konflikata','Integration health':'Stanje integracije',
+  'Access control ':'Kontrola pristupa',
+  // topbar / chrome
+  'Surface':'Okruženje','Web portal':'Web portal','Mobile app':'Mobilna aplikacija','Role':'Uloga',
+  'Guided demo':'Vođeni demo','Reset':'Reset','Jump to…':'Idi na…',
+  // dashboard
+  'Your tasks':'Vaši zadaci','prioritised for your role':'prioritetno za vašu ulogu',
+  'Campaign progress':'Napredak popisa','counted':'popisano','days to cutoff':'dana do roka',
+  'Recent activity':'Nedavne aktivnosti','Reconciliation breakdown':'Pregled usaglašavanja',
+  'Total assets':'Ukupno sredstava','Counted':'Popisano','Open conflicts':'Otvoreni konflikti',
+  'Pending review':'Čeka pregled','Shortage value':'Vrijednost manjkova','Surplus value':'Vrijednost viškova',
+  // login
+  'Inventory Platform':'Platforma za popis','Sign out':'Odjava','Switch identity':'Promijeni identitet',
+  'Switch tenant':'Promijeni klijenta','Notifications':'Obavještenja',
+  // footer
+  'Interactive prototype — simulated backend & data, no live SAP/server.':'Interaktivni prototip — simulirani backend i podaci, bez stvarnog SAP/servera.'
+};
+function tr(en){ return (Store.get && Store.get() && Store.get().ui.lang==='bs' && LANG_BS[en]) ? LANG_BS[en] : en; }
 
 /* ===========================================================================
    MODULE: seedData — generates the initial BH Telecom dataset on first load
@@ -664,8 +779,14 @@ function seedData(){
       const c = categories.find(x=>x.id===cat);
       const model = pick(models[cat]);
       const vr = valRange[cat];
-      const book = rnd(vr[0],vr[1]);
+      const book = rnd(vr[0],vr[1]);                 // net book value (NBV) at risk
       const serialPrefix = cat.slice(0,2).toUpperCase();
+      const acquired = now - rnd(200,2400)*DAY;
+      const lifeY = {laptops:4, routers:6, switches:7, bts:10, furniture:12, vehicles:8}[cat] || 6;
+      const ageY = (now - acquired)/(365*DAY);
+      const dep = clamp(ageY/lifeY, 0.05, 0.85);      // fraction depreciated so far
+      const acquisition_value = Math.round(book/(1-dep));   // gross APC (KANSW)
+      const accumulated_depreciation = acquisition_value - book;
       assets.push({
         id:'a'+(1000+i),
         inventory_no:'INV-'+String(4800+i).padStart(6,'0'),
@@ -677,8 +798,12 @@ function seedData(){
         location_id:loc.id,
         cost_center: cat==='vehicles' ? ccVehicle[dir] : ccByDir[dir],
         custodian:pick(custodians),
-        acquired: now - rnd(200,2400)*DAY,
-        book_value:book,
+        acquired,
+        capitalized: acquired,
+        useful_life: lifeY,
+        acquisition_value,                 // gross / APC
+        accumulated_depreciation,          // accum. ordinary depreciation
+        book_value:book,                   // net book value
         status:'registered',          // registered, not yet counted
         history:[],
         photo:null,
@@ -705,6 +830,11 @@ function seedData(){
 
   /* ---- Setup config ---- */
   const tenant = {id:'bht', name:'BH Telecom d.d.', plan:'Enterprise', sourceOfTruth:'SAP ERP (ECC 6.0)'};
+  const tenants = [
+    {id:'bht',   name:'BH Telecom d.d.',        plan:'Enterprise', sot:'SAP ERP (ECC 6.0)', provisioned:true},
+    {id:'epbih', name:'JP Elektroprivreda BiH', plan:'Enterprise', sot:'SAP S/4HANA',        provisioned:false},
+    {id:'ceste', name:'JP Ceste FBiH',          plan:'Standard',   sot:'SAP ERP (ECC 6.0)', provisioned:false}
+  ];
   const mappings = [
     {sap:'ANLN1', sapDesc:'Main asset number', internal:'inventory_no', on:true},
     {sap:'ANLN2', sapDesc:'Asset sub-number', internal:'anln2', on:true},
@@ -724,14 +854,41 @@ function seedData(){
     {id:'r5', label:'Sync outbox cleared only after server ACK (no data loss)', on:true, enforced:'client'}
   ];
 
+  /* ---- Liabilities inventory (obaveze): the other half of the legal mandate ---- */
+  const liabTypes=[
+    {t:'payable',  name:'Trade payable',      gl:'4310'},
+    {t:'accrual',  name:'Accrued expense',    gl:'4900'},
+    {t:'provision',name:'Provision',          gl:'4990'},
+    {t:'deferred', name:'Deferred income',    gl:'4950'}
+  ];
+  const vendors=['Ericsson Nikola Tesla d.d.','Huawei Technologies BH','Cisco Systems Croatia','Comtrade System Integration','Lanaco d.o.o.','Energoinvest d.d.','Telemach BH','BBI Banka d.d.','GP ŽGP Sarajevo','Elektroprivreda BiH','M:tel a.d.','Telekom Srbija','Nokia Solutions','HP Enterprise','Microsoft Ireland'];
+  const liabilities=[];
+  for(let k=0;k<36;k++){
+    const lt=pick(liabTypes);
+    const dir=pick(dirs); // dirs defined earlier in seed
+    const amt = lt.t==='provision'? rnd(10000,150000) : lt.t==='deferred'? rnd(5000,80000) : rnd(2000,210000);
+    liabilities.push({
+      id:'l'+(2000+k), doc_no:'OBV-'+String(2000+k).padStart(6,'0'),
+      type:lt.t, type_name:lt.name, gl_account:lt.gl,
+      counterparty: lt.t==='deferred'?'(customer prepayments)':pick(vendors),
+      cost_center: ccByDir[dir.id]||'100200 · IT & Mreža SA',
+      book_value:amt, statement_amount:null, variance:0,
+      due: now + rnd(-30,180)*DAY, currency:'BAM',
+      status:'registered', history:[]
+    });
+  }
+
   const state = {
     version:4,
-    tenant, fiscalYear:2026, sourceOfTruth:tenant.sourceOfTruth,
-    locations, categories, assets, commissions, campaign,
+    tenant, tenants, fiscalYear:2026, sourceOfTruth:tenant.sourceOfTruth,
+    locations, categories, assets, liabilities, commissions, campaign,
     mappings, validationRules,
     // ---- the SIMULATED SAP ERP backend (source of truth, lives in-browser) ----
     sap:{ system:'SAP ERP (ECC 6.0)', client:'100', companyCode:'BHT1', connected:true,
-          documents:[], callLog:[], seq:{belnr:4900000001, anln:5200} },
+          gateway:'https://sap-gw.bhtelecom.ba/sap/opu/odata', rfcUser:'RFC_HORALIX',
+          documents:[], callLog:[], deltas:[], deadLetter:[],
+          schedule:{ window:'02:00–03:00 CET', enabled:true },
+          seq:{belnr:4900000001, anln:5200} },
     masterImported:true,            // pre-imported so register has data
     events:[],                      // server-received immutable events
     serverEvents:{},                // uuid -> {ackTs, dispositionId} (idempotency ledger)
@@ -744,7 +901,7 @@ function seedData(){
     aiHistory:[],                   // AI query log
     demo:{},                        // pointers used by guided tour
     ui:{
-      surface:'web', role:'Tenant Admin', route:'#/dashboard',
+      surface:'web', role:'Tenant Admin', route:'#/dashboard', authed:true, tenantId:'bht', lang:'en',
       offline:false, mobileTab:'lists', mobileLoggedIn:true,
       activeCommissionId:'com-sa', tourActive:false, tourStep:0
     },
@@ -768,6 +925,7 @@ function seedData(){
       old:o.old==null?'—':o.old, new:o.new==null?'—':o.new,
       approval:o.approval||'—', reason:o.reason||'', device:o.device||'web/portal'
     });
+    chainAudit(state.audit, row);
     state.audit.push(row); return row;
   }
   function addActivity(o){ state.activity.unshift(Object.assign({id:uuid(), ts:now},o)); }
@@ -784,6 +942,31 @@ function seedData(){
     {ts:now-9*DAY+2e3, dir:'out', kind:'BAPI', name:'BAPI_FIXEDASSET_GETLIST', summary:'company code BHT1 · FY2026', status:'OK · 250 rows'},
     {ts:now-9*DAY+4e3, dir:'out', kind:'OData', name:"GET /AssetMasterSet?$top=250", summary:'$select ANLN1,TXT50,KOSTL,STORT,ANLKL,KANSW', status:'200 OK'}
   );
+  // seed one inbound delta (SAP → platform) and one dead-letter (failed push to retry)
+  {
+    const da=assets[40];
+    state.sap.deltas.push({id:uuid(), ts:now-2*DAY, asset:da.inventory_no, field:'cost_center',
+      old:da.cost_center, new:'100300 · Mreža & Pristup SA', applied:true});
+    da.cost_center='100300 · Mreža & Pristup SA';
+    state.sap.callLog.push({ts:now-2*DAY, dir:'out', kind:'OData', name:'GET /AssetMasterSet?$filter=changed gt …', summary:'change pointer · '+da.inventory_no+' KOSTL', status:'200 OK · 1 delta'});
+    logAudit({ts:now-2*DAY, actor:'system', role:'integration', action:'MASTER_DELTA_APPLIED', entity:'asset', entity_id:da.inventory_no, old:'KOSTL changed in SAP', new:'mirror updated', device:'server/integration'});
+  }
+  state.sap.deadLetter.push({id:uuid(), ts:now-6*3600e3, op:'BAPI_FIXEDASSET_CHANGE', ref:'(retired posting retry)',
+    error:'RFC_COMMUNICATION_FAILURE — gateway timeout', attempts:3, payloadHint:'INV-004907 · value adjustment'});
+  // pre-confirm some liabilities + one discrepancy so the screen has content
+  state.liabilities.forEach((l,idx)=>{
+    if(idx<9){ l.status='confirmed'; l.statement_amount=l.book_value; l.confirmedBy='Vedran Krešić'; l.confirmedTs=now-rnd(1,5)*DAY;
+      l.history.push({ts:l.confirmedTs, actor:'Vedran Krešić', action:'Balance confirmed against counterparty statement'}); }
+  });
+  {
+    const l=state.liabilities[10];
+    const stmt=l.book_value + Math.round(l.book_value*0.12);
+    l.status='discrepancy'; l.statement_amount=stmt; l.variance=stmt-l.book_value; l.flaggedBy='Vedran Krešić'; l.flaggedTs=now-1*DAY;
+    l.history.push({ts:l.flaggedTs, actor:'Vedran Krešić', action:'Discrepancy: counterparty statement '+fmtMoney(stmt)+' vs book '+fmtMoney(l.book_value)});
+    logAudit({ts:l.flaggedTs, actor:'Vedran Krešić', role:'Accounting', action:'LIABILITY_DISCREPANCY',
+      entity:'liability', entity_id:l.doc_no, old:'book '+fmtMoney(l.book_value), new:'statement '+fmtMoney(stmt)+' (Δ '+fmtMoney(l.variance)+')', device:'web/portal'});
+    addActivity({type:'liability', icon:'scale', text:'<b>Liability discrepancy</b> on '+l.doc_no+' — Δ '+fmtMoney(l.variance), ts:l.flaggedTs});
+  }
 
   // (A) ~62 already-counted matched assets in Sarajevo & Mostar → campaign progress
   let counted = 0;
@@ -1029,15 +1212,19 @@ const Sel = {
 /* ---------- role-based permissions ---------- */
 const PERMS = {
   '#/dashboard':   ROLES,                                  // everyone
+  '#/analytics':   ['Tenant Admin','Accounting','Auditor','Commission President'],
   '#/setup':       ['Tenant Admin'],
   '#/commissions': ['Tenant Admin','Commission President'],
   '#/register':    ROLES,
+  '#/liabilities': ['Tenant Admin','Accounting','Auditor','Commission President'],
   '#/conflicts':   ['Tenant Admin','Commission President','Auditor'],
   '#/review':      ['Tenant Admin','Accounting','Auditor'],
   '#/sync':        ['Tenant Admin','Accounting'],
   '#/sap':         ['Tenant Admin','Accounting','Auditor'],
+  '#/integration': ['Tenant Admin','Accounting','Auditor'],
   '#/reports':     ['Tenant Admin','Accounting','Auditor','Commission President'],
   '#/audit':       ['Tenant Admin','Auditor','Accounting'],
+  '#/access':      ['Tenant Admin','Auditor'],
   '#/ai':          ['Tenant Admin','Accounting','Auditor','Commission President']
 };
 function canAccess(route){
@@ -1065,6 +1252,27 @@ function canResolveConflict(){
 function net(min,max){ return sleep(rnd(min||150, max||480)); }
 
 /* --- internal: append-only audit writer (operates on state inside a commit) --- */
+/* --- tamper-evident audit: each row is hash-chained to the previous one --- */
+function auditRowHash(seq, r, prev){
+  return hashContent({s:seq, a:r.actor, ac:r.action, e:r.entity_id, o:r.old, n:r.new, ap:r.approval, t:r.ts, p:prev});
+}
+function chainAudit(audit, row){
+  const prev = audit.length ? audit[audit.length-1].hash : 'genesis0';
+  row.seq = audit.length + 1;
+  row.prevHash = prev;
+  row.hash = auditRowHash(row.seq, row, prev);
+  return row;
+}
+function verifyAuditChain(audit){
+  let prev='genesis0', broken=null;
+  for(let i=0;i<audit.length;i++){
+    const r=audit[i];
+    const h=auditRowHash(i+1, r, prev);
+    if(r.prevHash!==prev || r.hash!==h){ broken={index:i, id:r.id, action:r.action}; break; }
+    prev=r.hash;
+  }
+  return {ok:!broken, count:audit.length, broken, head:prev};
+}
 function _audit(s, o){
   const row = {
     id:'au'+(s.seq.audit++), correlation_id:o.correlation_id||uuid(),
@@ -1073,6 +1281,7 @@ function _audit(s, o){
     old:(o.old==null?'—':o.old), new:(o.new==null?'—':o.new),
     approval:o.approval||'—', reason:o.reason||'', device:o.device||'web/portal'
   };
+  chainAudit(s.audit, row);
   s.audit.push(row); return row;
 }
 function _activity(s, o){ s.activity.unshift(Object.assign({id:uuid(), ts:Date.now()}, o)); if(s.activity.length>60)s.activity.length=60; }
@@ -1486,10 +1695,12 @@ function sapTxFor(d){
 }
 api.sapStatus = function(){
   const s=Store.get();
-  const capital=s.assets.reduce((a,x)=> a + (x.sapStatus==='retired'||x.status==='written-off'?0:x.book_value), 0);
+  let capital=0, nbv=0;
+  s.assets.forEach(x=>{ const live = !(x.sapStatus==='retired'||x.status==='written-off');
+    if(live){ capital += (x.acquisition_value||x.book_value); nbv += x.book_value; } });
   const retired=s.assets.filter(x=>x.sapStatus==='retired').length;
   return {system:s.sap.system, client:s.sap.client, companyCode:s.sap.companyCode, connected:s.sap.connected,
-    master:s.assets.length, capital, retired, documents:s.sap.documents.length, calls:s.sap.callLog.length};
+    master:s.assets.length, capital, nbv, retired, documents:s.sap.documents.length, calls:s.sap.callLog.length};
 };
 api.sapPost = async function(postingId, onStep){
   const posting = Store.get().postings.find(p=>p.id===postingId);
@@ -1546,6 +1757,76 @@ api.sapPost = async function(postingId, onStep){
     _activity(s,{type:'erp', icon:'database', text:'<b>Posted to SAP</b> '+posting.id+' — '+docs.length+' document(s): '+docs.map(x=>x.belnr).join(', ')});
   });
   return {ok:true, documents:docs, posting:Store.get().postings.find(p=>p.id===postingId)};
+};
+
+/* ---- Liabilities inventory API ---- */
+api.listLiabilities = async function(query){
+  await net(150,380); const q=query||{};
+  let rows=Store.get().liabilities.slice();
+  if(q.search){ const t=q.search.toLowerCase(); rows=rows.filter(l=>(l.doc_no+l.counterparty+l.type_name).toLowerCase().includes(t)); }
+  if(q.type) rows=rows.filter(l=>l.type===q.type);
+  if(q.status) rows=rows.filter(l=>l.status===q.status);
+  rows.sort((a,b)=>a.doc_no.localeCompare(b.doc_no));
+  return {items:rows, total:rows.length};
+};
+api.confirmLiability = async function(id){
+  await net(160,360); let r=null;
+  Store.commit(s=>{ const l=s.liabilities.find(x=>x.id===id); if(!l)return;
+    l.status='confirmed'; l.statement_amount=l.book_value; l.variance=0; l.confirmedBy=Sel.currentUser().name; l.confirmedTs=Date.now();
+    l.history.push({ts:Date.now(), actor:Sel.currentUser().name, action:'Balance confirmed against counterparty statement'});
+    _audit(s,{action:'LIABILITY_CONFIRMED', entity:'liability', entity_id:l.doc_no, old:'registered', new:'confirmed · '+fmtMoney(l.book_value), approval:Sel.currentUser().name});
+    _activity(s,{type:'liability', icon:'checkCircle', text:'<b>Liability confirmed</b> '+l.doc_no+' — '+fmtMoney(l.book_value)});
+    r=JSON.parse(JSON.stringify(l)); });
+  return {ok:true, liability:r};
+};
+api.flagLiability = async function(id, statementAmount, reason){
+  await net(160,360);
+  const amt=Number(statementAmount);
+  if(!amt && amt!==0) throw {status:422, message:'Enter the counterparty statement amount.'};
+  let r=null;
+  Store.commit(s=>{ const l=s.liabilities.find(x=>x.id===id); if(!l)return;
+    l.status='discrepancy'; l.statement_amount=amt; l.variance=amt-l.book_value; l.flaggedBy=Sel.currentUser().name; l.flaggedTs=Date.now(); l.flagReason=reason;
+    l.history.push({ts:Date.now(), actor:Sel.currentUser().name, action:'Discrepancy flagged: statement '+fmtMoney(amt)+' vs book '+fmtMoney(l.book_value)});
+    _audit(s,{action:'LIABILITY_DISCREPANCY', entity:'liability', entity_id:l.doc_no, old:'book '+fmtMoney(l.book_value), new:'statement '+fmtMoney(amt)+' (Δ '+fmtMoney(l.variance)+')', approval:Sel.currentUser().name, reason});
+    _activity(s,{type:'liability', icon:'scale', text:'<b>Liability discrepancy</b> '+l.doc_no+' — Δ '+fmtMoney(l.variance)});
+    r=JSON.parse(JSON.stringify(l)); });
+  return {ok:true, liability:r};
+};
+
+/* ---- SAP integration: inbound delta (two-way), connection test, dead-letter retry ---- */
+api.sapInboundDelta = async function(onStep){
+  const steps=[{t:'Polling SAP change pointers',m:'OData $filter changedAt gt lastSync'},{t:'Fetching change document',m:'CDHDR / CDPOS · asset master'},{t:'Applying to local mirror',m:'SAP is the source of truth'}];
+  for(let i=0;i<steps.length;i++){ if(onStep)onStep(i,steps[i],false); await net(340,560); if(onStep)onStep(i,steps[i],true); }
+  let delta=null;
+  Store.commit(s=>{
+    const reg=s.assets.filter(a=>a.status==='registered'); const a=reg.length?reg[Math.floor(Math.random()*reg.length)]:s.assets[0];
+    let field,oldV,newV;
+    if(Math.random()<0.5){ field='custodian'; oldV=a.custodian; newV=pick(['Amela Hodžić','Emir Begić','Selma Karić','Haris Delić','Tarik Bešić','Ivana Lučić']); a.custodian=newV; }
+    else { field='cost_center'; oldV=a.cost_center; newV='100300 · Mreža & Pristup SA'; a.cost_center=newV; }
+    delta={id:uuid(), ts:Date.now(), asset:a.inventory_no, field, old:String(oldV), new:String(newV), applied:true};
+    s.sap.deltas.unshift(delta);
+    a.history.push({ts:Date.now(), actor:'SAP · delta', action:'Master '+field+' changed in SAP → mirror updated'});
+    _sapCall(s,{dir:'out', kind:'OData', name:'GET /AssetMasterSet?$filter=changedAt gt …', summary:'change pointer · '+a.inventory_no+' · '+field, status:'200 OK · 1 delta'});
+    _audit(s,{action:'MASTER_DELTA_APPLIED', entity:'asset', entity_id:a.inventory_no, old:field+': '+oldV, new:field+': '+newV, device:'server/integration', reason:'Inbound master change from SAP (source of truth).'});
+    _activity(s,{type:'delta', icon:'sync', text:'<b>Inbound SAP change</b> '+a.inventory_no+' · '+field+' updated'});
+  });
+  return {ok:true, delta};
+};
+api.testSapConnection = async function(onStep){
+  const steps=[{t:'Resolving sap-gw.bhtelecom.ba',m:'DNS · TLS 1.3 handshake'},{t:'OAuth2 token',m:'client 100 · user RFC_HORALIX'},{t:'Ping /sap/bc/ping',m:'round-trip latency'}];
+  for(let i=0;i<steps.length;i++){ if(onStep)onStep(i,steps[i],false); await net(280,500); if(onStep)onStep(i,steps[i],true); }
+  Store.commit(s=>{ _sapCall(s,{dir:'out', kind:'RFC', name:'RFC_PING', summary:'connection test', status:'200 OK · 42 ms'}); });
+  return {ok:true, latency:42};
+};
+api.retryDeadLetter = async function(id){
+  await net(420,720); let ok=false;
+  Store.commit(s=>{ const idx=s.sap.deadLetter.findIndex(d=>d.id===id); if(idx<0)return; const d=s.sap.deadLetter[idx];
+    s.sap.deadLetter.splice(idx,1);
+    _sapCall(s,{dir:'in', kind:'BAPI', name:d.op, summary:'retry · '+d.payloadHint, status:'OK · committed'});
+    _audit(s,{action:'DEADLETTER_RETRIED', entity:'integration', entity_id:d.ref, old:'failed ('+d.attempts+' attempts)', new:'succeeded on retry', device:'server/integration'});
+    _activity(s,{type:'erp', icon:'sync', text:'<b>Dead-letter retried</b> — '+d.op+' committed'});
+    ok=true; });
+  return {ok};
 };
 
 /* ===========================================================================
@@ -1896,17 +2177,21 @@ function withFocusPreserved(fn){
 const NAV = [
   {section:'Overview'},
   {route:'#/dashboard', label:'Dashboard', icon:'dashboard'},
+  {route:'#/analytics', label:'Analytics', icon:'barChart'},
   {section:'Inventory campaign'},
   {route:'#/register', label:'Asset register', icon:'box'},
+  {route:'#/liabilities', label:'Liabilities', icon:'scale', badge:()=>Store.get().liabilities.filter(l=>l.status==='discrepancy').length},
   {route:'#/commissions', label:'Commissions', icon:'users'},
   {route:'#/conflicts', label:'Conflict inbox', icon:'inbox', badge:()=>Sel.conflicts().length},
   {route:'#/review', label:'Review & approvals', icon:'scale', badge:()=>Sel.reviews().length},
   {section:'Controlled return'},
   {route:'#/sync', label:'ERP sync', icon:'sync', badge:()=>Store.get().dispositions.filter(d=>d.status==='approved'||d.status==='metadata-ready').length},
   {route:'#/sap', label:'SAP ERP', icon:'database', tag:'SIM'},
+  {route:'#/integration', label:'Integration', icon:'link', badge:()=>Store.get().sap.deadLetter.length},
   {route:'#/reports', label:'Reports', icon:'fileText'},
   {section:'Governance'},
   {route:'#/audit', label:'Audit log', icon:'shield'},
+  {route:'#/access', label:'Access control', icon:'lock'},
   {route:'#/ai', label:'AI insights', icon:'cpu', tag:'AI'},
   {section:'Configure'},
   {route:'#/setup', label:'Setup & admin', icon:'settings'}
@@ -1915,27 +2200,55 @@ const NAV = [
 function markSvg(){
   return '<span class="mark" aria-hidden="true"><i></i></span>';
 }
+function initials(name){ return (name||'?').split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase(); }
+function avatarSpan(name,cls){ return '<span class="avatar '+(cls||'')+'">'+esc(initials(name))+'</span>'; }
 function topbarHtml(){
   const s=Store.get(), ui=s.ui, u=Sel.currentUser();
   const pending=s.outbox.length;
+  const notifs=notifications();
   return '<div class="topbar">'+
     '<div class="brand">'+markSvg()+'<span class="wordmark">HORALIX</span></div>'+
     '<div class="sep"></div>'+
-    '<div class="ui" style="font-size:12.5px;color:var(--soft);font-weight:600">'+esc(s.tenant.name)+
-      ' <span class="muted" style="font-weight:500">· FY'+s.fiscalYear+'</span></div>'+
+    '<button class="tenant-chip" id="tenant-btn" aria-label="Switch tenant">'+esc(curTenant().name)+
+      ' <span class="muted" style="font-weight:500">· FY'+s.fiscalYear+'</span>'+icon('chevronUpDown','ic-sm')+'</button>'+
     '<div class="spacer"></div>'+
-    '<div class="switch-wrap"><span class="label">Surface</span>'+
+    '<button class="kbd-hint" id="cmdk-btn" title="Command palette (Ctrl/⌘ K)">'+icon('search')+'<span>'+esc(tr('Jump to…'))+'</span><kbd>⌘K</kbd></button>'+
+    '<div class="switch-wrap"><span class="label">'+esc(tr('Surface'))+'</span>'+
       '<div class="seg" role="tablist" aria-label="Surface">'+
-        '<button role="tab" data-surface="web" class="'+(ui.surface==='web'?'on':'')+'">Web portal</button>'+
-        '<button role="tab" data-surface="mobile" class="'+(ui.surface==='mobile'?'on':'')+'">Mobile app'+(pending?' · '+pending:'')+'</button>'+
+        '<button role="tab" data-surface="web" class="'+(ui.surface==='web'?'on':'')+'">'+esc(tr('Web portal'))+'</button>'+
+        '<button role="tab" data-surface="mobile" class="'+(ui.surface==='mobile'?'on':'')+'">'+esc(tr('Mobile app'))+(pending?' · '+pending:'')+'</button>'+
       '</div></div>'+
-    '<div class="switch-wrap"><span class="label">Role</span>'+
-      '<div class="role-select"><select id="role-sel" aria-label="Active role">'+
-        ROLES.map(r=>'<option '+(ui.role===r?'selected':'')+'>'+r+'</option>').join('')+
-      '</select></div></div>'+
-    '<button class="btn navy sm" id="tour-btn">'+icon('play')+'Guided demo</button>'+
-    '<button class="btn ghost sm" id="reset-btn" title="Restore seed data">'+icon('refresh')+'Reset</button>'+
+    '<button class="icon-btn" id="bell-btn" aria-label="Notifications" title="Notifications">'+icon('bell')+
+      (notifs.length?'<span class="bell-dot">'+(notifs.length>9?'9+':notifs.length)+'</span>':'')+'</button>'+
+    '<button class="btn navy sm" id="tour-btn">'+icon('play')+esc(tr('Guided demo'))+'</button>'+
+    '<button class="btn ghost sm" id="reset-btn" title="Restore seed data">'+icon('refresh')+esc(tr('Reset'))+'</button>'+
+    '<div class="sep"></div>'+
+    '<button class="user-chip" id="user-btn" aria-label="Account">'+avatarSpan(u.name)+
+      '<span class="uc-meta"><span class="uc-name">'+esc(u.name.split(' ')[0])+'</span><span class="uc-role">'+esc(ui.role)+'</span></span>'+
+      icon('chevronUpDown','ic-sm')+'</button>'+
   '</div>';
+}
+/* role-scoped notifications (things the current role can act on) */
+function notifications(){
+  const role=Store.get().ui.role; const out=[];
+  const conflicts=Sel.conflicts().length, reviews=Sel.reviews().length;
+  const releasable=Store.get().postings.filter(p=>!p.posted).length;
+  const pendingSync=Store.get().dispositions.filter(d=>d.status==='approved'||d.status==='metadata-ready').length;
+  const outbox=Store.get().outbox.length;
+  if((role==='Commission President'||role==='Tenant Admin') && conflicts)
+    out.push({icon:'inbox',tone:'gold',title:conflicts+' conflict'+(conflicts>1?'s':'')+' to resolve',sub:'Duplicate scans / stale master',route:'#/conflicts'});
+  if((role==='Accounting'||role==='Tenant Admin') && reviews)
+    out.push({icon:'scale',tone:'gold',title:reviews+' exception'+(reviews>1?'s':'')+' awaiting approval',sub:'Financial review gate',route:'#/review'});
+  if((role==='Accounting'||role==='Tenant Admin') && (pendingSync||releasable))
+    out.push({icon:'database',tone:'navy',title:(releasable?releasable+' candidate(s) to release':pendingSync+' item(s) ready for ERP'),sub:'Controlled return to SAP',route:'#/sync'});
+  if(role==='Commission Member' && outbox)
+    out.push({icon:'sync',tone:'gold',title:outbox+' capture(s) pending sync',sub:'Open the mobile app to sync',route:'#/dashboard'});
+  if(role==='Auditor')
+    out.push({icon:'shield',tone:'navy',title:Sel.audit().length+' audit entries',sub:'Append-only · newest first',route:'#/audit'});
+  // everyone: cutoff reminder
+  const days=Math.max(0,Math.round((Store.get().campaign.cutoff-Date.now())/86400000));
+  out.push({icon:'clock',tone:days<7?'gold':'navy',title:'Campaign cutoff in '+days+' days',sub:fmtDateShort(Store.get().campaign.cutoff),route:'#/dashboard'});
+  return out;
 }
 
 function webShellHtml(){
@@ -1948,14 +2261,14 @@ function sidebarHtml(){
   const route=Store.get().ui.route;
   let h='';
   NAV.forEach(n=>{
-    if(n.section){ h+='<div class="side-section">'+esc(n.section)+'</div>'; return; }
+    if(n.section){ h+='<div class="side-section">'+esc(tr(n.section))+'</div>'; return; }
     const allowed=canAccess(n.route);
     const on=route===n.route;
     let badge='';
-    if(n.badge){ const c=n.badge(); if(c>0) badge='<span class="badge '+(n.route==='#/review'?'gold':(n.route==='#/sync'?'navy':''))+'">'+c+'</span>'; }
+    if(n.badge && Store.get().ui.tenantId==='bht'){ const c=n.badge(); if(c>0) badge='<span class="badge '+(n.route==='#/review'?'gold':(n.route==='#/sync'?'navy':''))+'">'+c+'</span>'; }
     if(n.tag) badge='<span class="badge accent" style="background:var(--accent)">'+n.tag+'</span>';
     h+='<div class="nav-item'+(on?' on':'')+(allowed?'':' locked')+'" data-nav="'+n.route+'" role="link" tabindex="0">'+
-        '<span class="ico">'+icon(n.icon)+'</span><span>'+esc(n.label)+'</span>'+
+        '<span class="ico">'+icon(n.icon)+'</span><span>'+esc(tr(n.label))+'</span>'+
         (allowed?(badge?'<span class="badge-wrap right">'+badge+'</span>':''):'<span class="right">'+icon('lock','')+'</span>')+
       '</div>';
   });
@@ -1963,8 +2276,137 @@ function sidebarHtml(){
 }
 function footerHtml(){
   return '<div class="footer"><span class="dot"></span>'+
-    'Interactive prototype — simulated backend &amp; data, no live SAP/server.'+
+    esc(tr('Interactive prototype — simulated backend & data, no live SAP/server.'))+
     '<span class="right ui" style="font-size:11px">Horalix Inventory Platform · multi-tenant · offline-first</span></div>';
+}
+
+/* ---- popovers (notifications, user menu) ---- */
+let _popAnchor=null;
+function closePopover(){ const p=$('.popover'); if(p)p.remove(); document.removeEventListener('mousedown',_popOutside,true); _popAnchor=null; }
+function _popOutside(e){ const p=$('.popover'); if(p && !p.contains(e.target) && (!_popAnchor||!_popAnchor.contains(e.target))) closePopover(); }
+function openPopover(anchor, html, onMount){
+  closePopover(); _popAnchor=anchor;
+  const p=el('div',{class:'popover', role:'menu'}, html);
+  document.body.appendChild(p);
+  const r=anchor.getBoundingClientRect();
+  p.style.top=(r.bottom+8)+'px';
+  p.style.right=Math.max(12,(window.innerWidth-r.right))+'px';
+  setTimeout(()=>document.addEventListener('mousedown',_popOutside,true),0);
+  if(onMount) onMount(p);
+  return p;
+}
+function openBellMenu(anchor){
+  const notifs=notifications();
+  const body='<div class="pop-h"><span>'+esc(tr('Notifications'))+'</span><span class="chip grey" style="font-size:10px">'+notifs.length+'</span></div>'+
+    (notifs.length? notifs.map((n,idx)=>'<button class="pop-item" data-route="'+n.route+'">'+
+      '<span class="pop-ic '+n.tone+'">'+icon(n.icon)+'</span>'+
+      '<span class="flex1"><span class="pi-t">'+esc(n.title)+'</span><span class="pi-s">'+esc(n.sub)+'</span></span>'+
+      icon('chevronRight','ic-sm')+'</button>').join('')
+      : '<div class="pop-empty">'+icon('checkCircle')+'<div>You’re all caught up.</div></div>');
+  openPopover(anchor, body, p=>{ $$('[data-route]',p).forEach(b=>b.addEventListener('click',()=>{ closePopover(); navigate(b.getAttribute('data-route')); })); });
+}
+function curTenant(){ const s=Store.get(); return (s.tenants||[]).find(t=>t.id===s.ui.tenantId) || s.tenant; }
+function openTenantMenu(anchor){
+  const s=Store.get();
+  const body='<div class="pop-lbl">'+esc(tr('Switch tenant'))+'</div>'+
+    s.tenants.map(t=>'<button class="pop-item sm" data-tenant="'+t.id+'">'+
+      '<span class="pop-ic '+(t.id===s.ui.tenantId?'green':'grey')+'">'+icon('database')+'</span>'+
+      '<span class="flex1"><span class="pi-t">'+esc(t.name)+'</span><span class="pi-s">'+esc(t.plan)+' · '+esc(t.sot)+(t.provisioned?'':' · not provisioned')+'</span></span>'+
+      (t.id===s.ui.tenantId?icon('check','ic-sm'):'')+'</button>').join('')+
+    '<div class="pop-sep"></div><div class="pop-hint">'+icon('lock','ic-sm')+' Each tenant is fully isolated — data is partitioned by tenant_id.</div>';
+  openPopover(anchor, body, p=>{ $$('[data-tenant]',p).forEach(b=>b.addEventListener('click',()=>{ closePopover(); const id=b.getAttribute('data-tenant'); const t=s.tenants.find(x=>x.id===id); Store.setUI({tenantId:id}); toast({type:'info',title:'Tenant switched',msg:'Now in '+t.name+'.'}); })); });
+}
+function isolatedTenantView(){
+  const t=curTenant();
+  return pageHead(esc(t.name), 'Isolated tenant workspace · '+esc(t.plan)+' · source of truth '+esc(t.sot),
+      '<span class="tag-immutable">'+icon('lock','')+'tenant: '+esc(t.id)+'</span>')+
+    '<div class="card pad center" style="max-width:640px;margin:26px auto">'+
+      '<div class="e-ico" style="margin:0 auto 16px">'+icon('database')+'</div>'+
+      '<h2>Fully isolated from BH Telecom</h2>'+
+      '<p class="muted mt8" style="font-family:var(--sans);font-size:13.5px;max-width:480px;margin-left:auto;margin-right:auto">You switched to <b>'+esc(t.name)+'</b>. Its records live in a separate, tenant-scoped partition — you cannot see BH Telecom’s assets, commissions or audit log from here, and they cannot see this one.</p>'+
+      '<div class="grid g3 mt20">'+
+        kpi('Assets','0','not provisioned (demo)','navy','box')+
+        kpi('Users','0','SSO-mapped per tenant','navy','users')+
+        kpi('Audit chain','—','separate per tenant','navy','shield')+
+      '</div>'+
+      '<div class="callout navy mt20" style="font-size:12.5px;text-align:left">'+icon('info')+'<div>Only BH Telecom is provisioned with data in this demo. This screen demonstrates the isolation boundary — every API call and DB query carries the tenant_id, enforced by row-level security.</div></div>'+
+      '<button class="btn primary mt20" data-tenant-back>'+icon('arrowRight')+'Back to BH Telecom</button>'+
+    '</div>';
+}
+function openUserMenu(anchor){
+  const s=Store.get(), u=Sel.currentUser();
+  const body='<div class="pop-user"><span class="avatar lg">'+esc(initials(u.name))+'</span>'+
+    '<div><div class="pu-name">'+esc(u.name)+'</div><div class="pu-title">'+esc(u.title)+'</div></div></div>'+
+    '<div class="pop-sep"></div>'+
+    '<div class="pop-lbl">'+esc(tr('Switch identity'))+'</div>'+
+    ROLES.map(r=>'<button class="pop-item sm" data-role="'+esc(r)+'">'+avatarSpan(ROLE_USER[r].name,'sm')+
+      '<span class="flex1"><span class="pi-t">'+esc(ROLE_USER[r].name)+'</span><span class="pi-s">'+esc(r)+'</span></span>'+
+      (s.ui.role===r?icon('check','ic-sm'):'')+'</button>').join('')+
+    '<div class="pop-sep"></div>'+
+    '<div class="pop-lbl">Language · Jezik</div>'+
+    '<div class="row gap6" style="padding:0 9px 6px">'+
+      '<button class="lang-pick'+(s.ui.lang==='en'?' on':'')+'" data-lang="en">English</button>'+
+      '<button class="lang-pick'+(s.ui.lang==='bs'?' on':'')+'" data-lang="bs">Bosanski</button></div>'+
+    '<div class="pop-sep"></div>'+
+    '<button class="pop-item sm" data-signout><span class="pop-ic grey">'+icon('logout')+'</span><span class="pi-t">'+esc(tr('Sign out'))+'</span></button>';
+  openPopover(anchor, body, p=>{
+    $$('[data-role]',p).forEach(b=>b.addEventListener('click',()=>{ closePopover(); Store.setUI({role:b.getAttribute('data-role')}); toast({type:'info',title:'Identity switched',msg:'Now acting as '+ROLE_USER[b.getAttribute('data-role')].name+' ('+b.getAttribute('data-role')+').'}); }));
+    $$('[data-lang]',p).forEach(b=>b.addEventListener('click',()=>{ const l=b.getAttribute('data-lang'); closePopover(); Store.setUI({lang:l}); toast({type:'info',title:l==='bs'?'Jezik promijenjen':'Language switched',msg:l==='bs'?'Sučelje je sada na bosanskom.':'Interface set to English.'}); }));
+    p.querySelector('[data-signout]').addEventListener('click',()=>{ closePopover(); Tour.stop(); Store.setUI({authed:false}); });
+  });
+}
+/* ---- command palette (⌘K) ---- */
+function openCommandPalette(){
+  const cmds=[];
+  NAV.forEach(n=>{ if(n.route && canAccess(n.route)) cmds.push({label:'Go to '+n.label, icon:n.icon, run:()=>navigate(n.route)}); });
+  cmds.push({label:'Switch to Mobile app', icon:'smartphone', run:()=>Store.setUI({surface:'mobile'})});
+  cmds.push({label:'Switch to Web portal', icon:'home', run:()=>Store.setUI({surface:'web'})});
+  cmds.push({label:'Run a guided demo…', icon:'play', run:()=>setTimeout(()=>Tour.choose(),80)});
+  cmds.push({label:'Reset demo data', icon:'refresh', run:async()=>{ const ok=await confirmModal({title:'Reset demo?',message:'Restore the original seed data.',confirm:'Reset',danger:true}); if(ok){Tour.stop();Store.reset();navigate('#/dashboard');toast({type:'ok',title:'Demo reset'});} }});
+  ROLES.forEach(r=>cmds.push({label:'Act as '+r, icon:'user', run:()=>Store.setUI({role:r})}));
+  let filtered=cmds.slice(), sel=0;
+  openModal({
+    title:'', noClose:true,
+    body:'<div class="cmdk"><div class="cmdk-in">'+icon('search')+'<input id="cmdk-q" type="text" placeholder="Type a screen, role or action…" autocomplete="off"></div>'+
+      '<div class="cmdk-list" id="cmdk-list"></div>'+
+      '<div class="cmdk-foot"><kbd>↑↓</kbd> navigate · <kbd>↵</kbd> select · <kbd>esc</kbd> close</div></div>',
+    onMount(m){
+      const q=m.querySelector('#cmdk-q'), list=m.querySelector('#cmdk-list');
+      function draw(){
+        list.innerHTML=filtered.length? filtered.map((c,idx)=>'<button class="cmdk-item'+(idx===sel?' on':'')+'" data-idx="'+idx+'">'+
+          '<span class="pop-ic grey">'+icon(c.icon)+'</span><span class="flex1">'+esc(c.label)+'</span>'+(idx===sel?'<kbd>↵</kbd>':'')+'</button>').join('')
+          : '<div class="pop-empty" style="padding:20px">No matches</div>';
+        $$('[data-idx]',list).forEach(b=>b.addEventListener('click',()=>{ run(parseInt(b.getAttribute('data-idx'),10)); }));
+      }
+      function run(idx){ const c=filtered[idx]; if(!c)return; closeModal(); c.run(); }
+      q.addEventListener('input',()=>{ const t=q.value.toLowerCase(); filtered=cmds.filter(c=>c.label.toLowerCase().includes(t)); sel=0; draw(); });
+      q.addEventListener('keydown',e=>{
+        if(e.key==='ArrowDown'){ e.preventDefault(); sel=Math.min(filtered.length-1,sel+1); draw(); }
+        else if(e.key==='ArrowUp'){ e.preventDefault(); sel=Math.max(0,sel-1); draw(); }
+        else if(e.key==='Enter'){ e.preventDefault(); run(sel); }
+      });
+      draw();
+    }
+  });
+}
+
+/* ---- web sign-in screen (SSO-style identity picker) ---- */
+function loginHtml(){
+  const s=Store.get();
+  return '<div class="login-stage">'+
+    '<div class="login-card fade-in">'+
+      '<div class="login-brand">'+markSvg().replace('width:26px;height:26px','width:40px;height:40px')+'<span class="wordmark" style="font-size:18px">HORALIX</span></div>'+
+      '<h1 style="font-size:26px;margin-top:18px">'+esc(tr('Inventory Platform'))+'</h1>'+
+      '<p class="muted" style="margin:6px 0 22px;font-family:var(--sans);font-size:13.5px">Sign in to <b>'+esc(s.tenant.name)+'</b> · annual asset &amp; liability inventory '+s.fiscalYear+'</p>'+
+      '<div class="login-users">'+
+        ROLES.map(r=>{ const u=ROLE_USER[r]; return '<button class="login-user" data-login="'+esc(r)+'">'+
+          avatarSpan(u.name)+'<span class="flex1" style="text-align:left"><span class="lu-name">'+esc(u.name)+'</span><span class="lu-role">'+esc(u.title)+'</span></span>'+
+          '<span class="lu-go">'+icon('arrowRight','ic-sm')+'</span></button>'; }).join('')+
+      '</div>'+
+      '<div class="callout navy mt16" style="font-size:12px">'+icon('lock')+'<div>Demo identity picker. In production this is your corporate SSO (SAML / OIDC) with per-tenant, role-scoped access.</div></div>'+
+    '</div>'+
+    '<div class="login-foot">Interactive prototype — simulated backend &amp; data, no live SAP/server.</div>'+
+  '</div>';
 }
 
 /* ---- App: single render path ---- */
@@ -1973,6 +2415,7 @@ const App = {
     const s=Store.get(), ui=s.ui;
     withFocusPreserved(()=>{
       const root=$('#root');
+      if(!ui.authed){ root.innerHTML=loginHtml(); wireLogin(); return; }
       if(ui.surface==='mobile'){
         root.innerHTML=topbarHtml()+'<div class="phone-stage" id="phone-stage"></div>'+footerHtml();
       }else{
@@ -1985,8 +2428,28 @@ const App = {
     if(window.Tour) Tour.reposition();
   }
 };
+function wireLogin(){
+  $$('[data-login]').forEach(b=>b.addEventListener('click',()=>{
+    const r=b.getAttribute('data-login');
+    Store.setUI({authed:true, role:r, surface:'web', route:'#/dashboard'});
+    if(location.hash!=='#/dashboard') location.hash='#/dashboard';
+    toast({type:'ok',title:'Signed in',msg:'Welcome, '+ROLE_USER[r].name+' — '+r+'.'});
+  }));
+}
+/* global keyboard: ⌘K / Ctrl+K command palette */
+document.addEventListener('keydown',e=>{
+  if((e.metaKey||e.ctrlKey) && (e.key==='k'||e.key==='K')){
+    e.preventDefault();
+    if(Store.get() && Store.get().ui.authed && !$('#modal-host').classList.contains('show')) openCommandPalette();
+  }
+});
 function renderView(){
   const view=$('#view'); if(!view)return;
+  if(Store.get().ui.tenantId!=='bht'){
+    view.innerHTML=isolatedTenantView();
+    const b=view.querySelector('[data-tenant-back]'); if(b) b.addEventListener('click',()=>Store.setUI({tenantId:'bht'}));
+    return;
+  }
   const route=Store.get().ui.route;
   if(!canAccess(route)){ view.innerHTML=noAccess(); return; }
   const screen=SCREENS[route]||SCREENS['#/dashboard'];
@@ -2001,7 +2464,11 @@ function wireChrome(){
     Store.setUI({role:rs.value});
     toast({type:'info',title:'Role switched',msg:'You are now acting as '+rs.value+'.'});
   });
-  const tb=$('#tour-btn'); if(tb) tb.addEventListener('click',()=>Tour.start());
+  const tb=$('#tour-btn'); if(tb) tb.addEventListener('click',()=>Tour.choose());
+  const bell=$('#bell-btn'); if(bell) bell.addEventListener('click',e=>{ e.stopPropagation(); const wasMine=$('.popover')&&_popAnchor===bell; closePopover(); if(!wasMine) openBellMenu(bell); });
+  const usr=$('#user-btn'); if(usr) usr.addEventListener('click',e=>{ e.stopPropagation(); const wasMine=$('.popover')&&_popAnchor===usr; closePopover(); if(!wasMine) openUserMenu(usr); });
+  const ten=$('#tenant-btn'); if(ten) ten.addEventListener('click',e=>{ e.stopPropagation(); const wasMine=$('.popover')&&_popAnchor===ten; closePopover(); if(!wasMine) openTenantMenu(ten); });
+  const ck=$('#cmdk-btn'); if(ck) ck.addEventListener('click',()=>openCommandPalette());
   const rb=$('#reset-btn'); if(rb) rb.addEventListener('click',async()=>{
     const ok=await confirmModal({title:'Reset demo?',message:'This restores the original seed data and clears all captures, conflicts, approvals and audit entries created during this session.',confirm:'Reset demo',danger:true});
     if(ok){ Tour.stop(); Store.reset(); navigate('#/dashboard'); toast({type:'ok',title:'Demo reset',msg:'Seed data restored.'}); }
@@ -2037,7 +2504,7 @@ document.addEventListener('click',e=>{
 const SCREENS={};
 function pageHead(title, sub, actions){
   /* title/sub are developer-provided (may contain markup); not user input */
-  return '<div class="page-head"><div class="ttl"><h1>'+title+'</h1>'+(sub?'<p>'+sub+'</p>':'')+'</div>'+
+  return '<div class="page-head"><div class="ttl"><h1>'+tr(title)+'</h1>'+(sub?'<p>'+sub+'</p>':'')+'</div>'+
     (actions?'<div class="page-actions">'+actions+'</div>':'')+'</div>';
 }
 function disclaimerNote(){
@@ -2070,6 +2537,7 @@ function screenDashboard(view){
   view.innerHTML=
     pageHead('Dashboard', 'Welcome, '+esc(u.name)+' — '+esc(s.campaign.name)+' · cutoff '+fmtDateShort(s.campaign.cutoff),
       quick+'<button class="btn sm" data-go="#/reports">'+icon('fileText')+'Reports</button>')+
+    dashTasksHtml()+
     '<div class="grid" style="grid-template-columns:320px 1fr;align-items:stretch">'+
       // progress card
       '<div class="card pad" style="display:flex;flex-direction:column">'+
@@ -2122,6 +2590,52 @@ function screenDashboard(view){
   // animate ring from 0
   const fg=view.querySelector('.ring .fg');
   if(fg){ const dash=fg.getAttribute('stroke-dasharray'); fg.style.strokeDashoffset=dash; requestAnimationFrame(()=>{ fg.style.strokeDashoffset = dash*(1-prog.pct/100); }); }
+  // wire role task cards
+  $$('[data-task]',view).forEach(b=>b.addEventListener('click',()=>{
+    let t; try{ t=JSON.parse(b.getAttribute('data-task')); }catch(e){ return; }
+    if(t.surface){ Store.setUI({surface:t.surface}); } else { navigate(t.route); }
+  }));
+}
+function dashTasks(){
+  const s=Store.get(), role=s.ui.role;
+  const conflicts=Sel.conflicts().length, reviews=Sel.reviews().length;
+  const releasable=s.postings.filter(p=>!p.posted).length;
+  const pendingSync=s.dispositions.filter(d=>d.status==='approved'||d.status==='metadata-ready').length;
+  const outbox=s.outbox.length; const t=[];
+  if(role==='Tenant Admin'){
+    t.push({icon:'upload',tone:'navy',title:'Import master data',desc:'Pull the asset master from SAP',cta:'Open setup',route:'#/setup'});
+    t.push({icon:'users',tone:'navy',title:'Assign worklists',desc:'Scope assets to commissions',cta:'Commissions',route:'#/commissions'});
+    if(conflicts) t.push({icon:'inbox',tone:'gold',title:conflicts+' open conflict(s)',desc:'Duplicate / stale master',cta:'Resolve',route:'#/conflicts'});
+    else t.push({icon:'shield',tone:'green',title:'Governance healthy',desc:'No open conflicts',cta:'Audit log',route:'#/audit'});
+  } else if(role==='Commission President'){
+    t.push({icon:'inbox',tone:conflicts?'gold':'green',title:conflicts?conflicts+' conflict(s) to resolve':'Inbox clear',desc:'Field-produced conflicts',cta:conflicts?'Resolve now':'View inbox',route:'#/conflicts'});
+    t.push({icon:'users',tone:'navy',title:'Your commission',desc:'Members & worklist progress',cta:'Open',route:'#/commissions'});
+    t.push({icon:'gauge',tone:'navy',title:'Campaign progress',desc:Sel.progress().pct+'% counted',cta:'Reports',route:'#/reports'});
+  } else if(role==='Accounting'){
+    t.push({icon:'scale',tone:reviews?'gold':'green',title:reviews?reviews+' exception(s) to review':'Review queue clear',desc:'Financial review gate',cta:reviews?'Review now':'Open',route:'#/review'});
+    t.push({icon:'database',tone:(pendingSync||releasable)?'navy':'green',title:(releasable?releasable+' candidate(s) to release':pendingSync?pendingSync+' approved for ERP':'Nothing to return'),desc:'Controlled return to SAP',cta:'ERP sync',route:'#/sync'});
+    t.push({icon:'fileText',tone:'navy',title:'Inventory report',desc:'Book vs physical recap',cta:'Generate',route:'#/reports'});
+  } else if(role==='Auditor'){
+    t.push({icon:'shield',tone:'navy',title:Sel.audit().length+' audit entries',desc:'Append-only · traceable',cta:'Open log',route:'#/audit'});
+    t.push({icon:'cpu',tone:'navy',title:'Ask the data',desc:'Read-only NL→SQL',cta:'AI insights',route:'#/ai'});
+    t.push({icon:'database',tone:'navy',title:'SAP documents',desc:'Read-only postings view',cta:'SAP console',route:'#/sap'});
+  } else {
+    t.push({icon:'smartphone',tone:'accent',title:'Capture in the field',desc:outbox?outbox+' pending sync':'Open the mobile app',cta:'Mobile app',route:'#/dashboard',surface:'mobile'});
+    t.push({icon:'box',tone:'navy',title:'Asset register',desc:'Browse the master',cta:'Open',route:'#/register'});
+  }
+  return t;
+}
+function dashTasksHtml(){
+  const tasks=dashTasks();
+  return '<div class="card pad mb20" style="border-left:3px solid var(--accent)">'+
+    '<div class="row between mb12"><div class="kicker">'+esc(tr('Your tasks'))+' — '+esc(Store.get().ui.role)+'</div>'+
+      '<span class="muted ui" style="font-size:11px">'+esc(tr('prioritised for your role'))+'</span></div>'+
+    '<div class="grid '+(tasks.length>=3?'g3':'g2')+'">'+
+      tasks.map(t=>'<button class="task-card" data-task=\''+esc(JSON.stringify({route:t.route,surface:t.surface||''}))+'\'>'+
+        '<span class="task-ic '+t.tone+'">'+icon(t.icon)+'</span>'+
+        '<span class="task-t">'+esc(t.title)+'</span><span class="task-d">'+esc(t.desc)+'</span>'+
+        '<span class="task-cta">'+esc(t.cta)+' '+icon('arrowRight','ic-sm')+'</span></button>').join('')+
+    '</div></div>';
 }
 function kpi(lab,val,sub,tone,ic){
   return '<div class="kpi '+(tone||'')+'"><div class="row between" style="align-items:flex-start"><div class="k-lab">'+esc(lab)+'</div>'+
@@ -2233,6 +2747,93 @@ function wireRegTable(){
 }
 SCREENS['#/register']=screenRegister;
 
+/* ---------- LIABILITIES INVENTORY (obaveze) ---------- */
+const liabState={q:{search:'',type:'',status:''}, result:null, loading:false, token:0};
+function liabStats(){
+  const ls=Store.get().liabilities;
+  let total=0, confirmed=0, open=0, varSum=0, disc=0;
+  ls.forEach(l=>{ total+=l.book_value; if(l.status==='confirmed')confirmed++; else if(l.status==='discrepancy'){disc++; varSum+=Math.abs(l.variance);} else open++; });
+  return {count:ls.length, total, confirmed, open, disc, varSum, pct: ls.length?Math.round(confirmed/ls.length*100):0};
+}
+function screenLiabilities(view){
+  const st=liabStats();
+  const typeOpts=['<option value="">All types</option>','payable','accrual','provision','deferred'].map(t=>typeof t==='string'&&t.startsWith('<')?t:'<option value="'+t+'"'+(liabState.q.type===t?' selected':'')+'>'+t.charAt(0).toUpperCase()+t.slice(1)+'</option>').join('');
+  const statusOpts=['<option value="">Any status</option>','registered','confirmed','discrepancy'].map(t=>typeof t==='string'&&t.startsWith('<')?t:'<option value="'+t+'"'+(liabState.q.status===t?' selected':'')+'>'+t.charAt(0).toUpperCase()+t.slice(1)+'</option>').join('');
+  view.innerHTML=
+    pageHead('Liabilities inventory', 'The other half of the legal mandate — obaveze. Each liability is confirmed against the counterparty statement; differences become discrepancies.',
+      '<span class="tag-immutable">'+icon('database','')+'GL · mirrored from SAP</span>')+
+    '<div class="grid g4 mb20">'+
+      kpi('Total liabilities',fmtMoney(st.total),fmtNum(st.count)+' items','navy','scale')+
+      kpi('Confirmed',st.confirmed+' / '+st.count,st.pct+'% reconciled','accent','checkCircle')+
+      kpi('Open',st.open,'awaiting confirmation',st.open?'gold':'navy','clock')+
+      kpi('Discrepancy value',fmtMoney(st.varSum),st.disc+' flagged',st.disc?'danger':'navy','trendingDown')+
+    '</div>'+
+    '<div class="toolbar">'+
+      '<div class="search"><span>'+icon('search')+'</span><input id="lia-search" type="text" placeholder="Search doc no., counterparty, type…" value="'+esc(liabState.q.search)+'"></div>'+
+      '<div class="selct"><select id="lia-type">'+typeOpts+'</select></div>'+
+      '<div class="selct"><select id="lia-status">'+statusOpts+'</select></div>'+
+    '</div>'+
+    '<div id="lia-table">'+(liabState.result?liabTableHtml(liabState.result):skelTable(8,7))+'</div>'+
+    disclaimerNote();
+  const reload=()=>loadLiab();
+  const si=$('#lia-search'); si.addEventListener('input',debounce(()=>{ liabState.q.search=si.value; reload(); },260));
+  $('#lia-type').addEventListener('change',e=>{ liabState.q.type=e.target.value; reload(); });
+  $('#lia-status').addEventListener('change',e=>{ liabState.q.status=e.target.value; reload(); });
+  wireLiab();
+  loadLiab();
+}
+function loadLiab(){
+  liabState.loading=true; const tok=++liabState.token;
+  api.listLiabilities(liabState.q).then(res=>{ if(tok!==liabState.token)return; liabState.result=res; liabState.loading=false;
+    const c=$('#lia-table'); if(c){ c.innerHTML=liabTableHtml(res); wireLiab(); } });
+}
+function liabTypeChip(t){ return '<span class="chip '+({payable:'navy',accrual:'grey',provision:'gold',deferred:'green'}[t]||'grey')+'" style="font-size:10px">'+esc(t)+'</span>'; }
+function liabStatusChip(st){ const m={registered:{c:'grey',t:'Not confirmed'},confirmed:{c:'green',t:'Confirmed'},discrepancy:{c:'red',t:'Discrepancy'}}[st]||{c:'grey',t:st}; return '<span class="chip '+m.c+'">'+m.t+'</span>'; }
+function liabTableHtml(res){
+  if(res.total===0) return '<div class="tbl-wrap">'+emptyState('search','No matching liabilities','Adjust the filters.')+'</div>';
+  const canAct=['Tenant Admin','Accounting'].indexOf(Store.get().ui.role)>=0;
+  let h='<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Document</th><th>Type</th><th>Counterparty</th><th>GL</th><th style="text-align:right">Book value</th><th>Status</th><th style="text-align:right">'+(canAct?'Actions':'')+'</th></tr></thead><tbody>';
+  res.items.forEach(l=>{
+    h+='<tr><td class="mono">'+esc(l.doc_no)+'<div class="muted ui" style="font-size:10px">due '+fmtDateShort(l.due)+'</div></td>'+
+      '<td>'+liabTypeChip(l.type)+'</td>'+
+      '<td style="font-size:13px">'+esc(l.counterparty)+'</td>'+
+      '<td class="mono" style="font-size:12px">'+esc(l.gl_account)+'</td>'+
+      '<td class="tnum" style="text-align:right;font-weight:600">'+fmtMoney(l.book_value)+
+        (l.status==='discrepancy'?'<div class="mono" style="font-size:10.5px;color:var(--danger)">stmt '+fmtMoney(l.statement_amount)+' · Δ '+fmtMoney(l.variance)+'</div>':'')+'</td>'+
+      '<td>'+liabStatusChip(l.status)+'</td>'+
+      '<td style="text-align:right">'+(canAct && l.status==='registered'
+        ? '<div class="row gap6" style="justify-content:flex-end"><button class="btn xs" data-lia-flag="'+l.id+'">'+icon('flag')+'Flag</button><button class="btn xs primary" data-lia-confirm="'+l.id+'">'+icon('check')+'Confirm</button></div>'
+        : (l.status==='confirmed'?'<span class="muted ui" style="font-size:11px">'+esc(l.confirmedBy||'')+'</span>':l.status==='discrepancy'?'<span class="chip red" style="font-size:10px">to review</span>':''))+'</td></tr>';
+  });
+  h+='</tbody></table><div class="tbl-foot"><span>'+res.total+' liabilities · book vs counterparty statement</span></div></div>';
+  return h;
+}
+function wireLiab(){
+  $$('#lia-table [data-lia-confirm]').forEach(b=>b.addEventListener('click',async()=>{
+    b.disabled=true; try{ await api.confirmLiability(b.getAttribute('data-lia-confirm')); toast({type:'ok',title:'Liability confirmed',msg:'Matched counterparty statement.'}); loadLiab(); }
+    catch(e){ b.disabled=false; toast({type:'err',msg:e.message}); } }));
+  $$('#lia-table [data-lia-flag]').forEach(b=>b.addEventListener('click',()=>openFlagLiability(b.getAttribute('data-lia-flag'))));
+}
+function openFlagLiability(id){
+  const l=Store.get().liabilities.find(x=>x.id===id); if(!l)return;
+  openModal({
+    title:'Flag discrepancy — '+l.doc_no,
+    body:'<div class="row gap8 mb12">'+liabTypeChip(l.type)+'<span class="muted ui" style="font-size:13px">'+esc(l.counterparty)+'</span></div>'+
+      '<dl class="dl" style="grid-template-columns:160px 1fr"><dt>Book value</dt><dd><b>'+fmtMoney(l.book_value)+'</b></dd></dl>'+
+      '<div class="field mt12"><label>Counterparty statement amount (KM)</label><input id="lf-amt" type="number" placeholder="e.g. '+(l.book_value+Math.round(l.book_value*0.1))+'"><div class="errmsg">Enter the amount from the statement.</div></div>'+
+      '<div class="field"><label>Note (recorded in audit)</label><textarea id="lf-note" placeholder="e.g. Vendor statement includes an un-booked invoice from December."></textarea></div>',
+    footer:'<button class="btn" data-modal-close>Cancel</button><button class="btn danger" id="lf-go">'+icon('flag')+'Flag discrepancy</button>',
+    onMount(m){ m.querySelector('#lf-go').addEventListener('click',async()=>{
+      const amt=m.querySelector('#lf-amt').value; const f=m.querySelector('#lf-amt').closest('.field');
+      if(amt===''){ f.classList.add('err'); return; } f.classList.remove('err');
+      const btn=m.querySelector('#lf-go'); btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Saving…';
+      try{ await api.flagLiability(id, amt, m.querySelector('#lf-note').value.trim()||'(no note)'); closeModal(); toast({type:'warn',title:'Discrepancy flagged',msg:'Variance recorded in the audit log.'}); loadLiab(); }
+      catch(e){ btn.disabled=false; btn.innerHTML=icon('flag')+'Flag discrepancy'; toast({type:'err',msg:e.message}); }
+    }); }
+  });
+}
+SCREENS['#/liabilities']=screenLiabilities;
+
 /* ---------- ASSET DETAIL DRAWER ---------- */
 function openAssetDrawer(id){
   openDrawer('<div class="drawer-h"><div><div class="skel" style="height:12px;width:90px"></div><div class="skel" style="height:20px;width:200px;margin-top:8px"></div></div>'+
@@ -2258,8 +2859,15 @@ function openAssetDrawer(id){
           dlRow('Location (STORT)',esc(Sel.locName(a.location_id)))+
           dlRow('Cost center (KOSTL)','<span class="mono">'+esc(a.cost_center)+'</span>')+
           dlRow('Custodian',esc(a.custodian))+
-          dlRow('Book value (KANSW)','<b>'+fmtMoney(a.book_value)+'</b>')+
-          dlRow('Acquired',fmtDateShort(a.acquired))+
+          (a.sapStatus?dlRow('SAP status', sapStatusChip(a.sapStatus)):'')+
+        '</dl>'+
+        '<div class="label mt20 mb8">Valuation (SAP asset accounting)</div>'+
+        '<dl class="dl">'+
+          dlRow('Acquisition value (KANSW)','<b>'+fmtMoney(a.acquisition_value||a.book_value)+'</b>')+
+          dlRow('Accum. depreciation','<span style="color:var(--danger)">−'+fmtMoney(a.accumulated_depreciation||0)+'</span>')+
+          dlRow('Net book value','<b>'+fmtMoney(a.book_value)+'</b>')+
+          dlRow('Useful life',(a.useful_life||'—')+' years')+
+          dlRow('Capitalized',fmtDateShort(a.acquired))+
         '</dl>'+
         photo+
         '<div class="label mt20 mb12">Field & reconciliation history</div>'+
@@ -2277,6 +2885,10 @@ function openAssetDrawer(id){
   }).catch(()=>toast({type:'err',msg:'Could not load asset.'}));
 }
 function dlRow(k,v){ return '<dt>'+esc(k)+'</dt><dd>'+v+'</dd>'; }
+function sapStatusChip(st){
+  const m={active:{c:'green',t:'Active in SAP'},retired:{c:'red',t:'Retired (ABAVN)'},impaired:{c:'amber',t:'Impaired (ABAA)'}}[st]||{c:'grey',t:st};
+  return '<span class="chip '+m.c+'">'+esc(m.t)+'</span>';
+}
 function auditTone(action){
   if(/CONFLICT|DUPLICATE|METADATA/.test(action)) return 'gold';
   if(/SHORT|REJECT|WRITE/.test(action)) return 'red';
@@ -2569,7 +3181,7 @@ function screenSap(view){
     '<div class="callout navy mb20">'+icon('database')+'<div><b>'+esc(st.system)+'</b> · client <b>'+st.client+'</b> · company code <b>'+st.companyCode+'</b> · service user <span class="mono">RFC_HORALIX</span> · <span style="color:var(--accent)">●</span> connected</div></div>'+
     '<div class="grid g4 mb20">'+
       kpi('Fixed assets','<span class="tnum">'+fmtNum(st.master)+'</span>','asset master (AS03)','navy','database')+
-      kpi('Capitalized value',fmtMoney(st.capital),'net book value','accent','barChart')+
+      kpi('Capitalized (APC)',fmtMoney(st.capital),'NBV '+fmtMoney(st.nbv),'accent','barChart')+
       kpi('Documents posted','<span class="tnum">'+fmtNum(st.documents)+'</span>','FI/CO BELNR',st.documents?'gold':'navy','fileText')+
       kpi('Retired in SAP','<span class="tnum">'+fmtNum(st.retired)+'</span>','via ABAVN',st.retired?'danger':'navy','trendingDown')+
     '</div>'+
@@ -2602,6 +3214,88 @@ function sapDocTone(klass){
   return {shortage:'red','value-change':'red',surplus:'gold','metadata-diff':'grey'}[klass]||'navy';
 }
 SCREENS['#/sap']=screenSap;
+
+/* ---------- INTEGRATION HEALTH (two-way SAP) ---------- */
+function screenIntegration(view){
+  const s=Store.get(), sap=s.sap;
+  const outCount=sap.callLog.filter(c=>c.dir==='out').length, inCount=sap.callLog.filter(c=>c.dir==='in').length;
+  const lastPull=sap.callLog.find(c=>c.dir==='out'), lastPush=sap.callLog.find(c=>c.dir==='in');
+  view.innerHTML=
+    pageHead('Integration health', 'Two-way SAP connectivity — outbound postings and inbound master deltas, with retry and dead-letter handling.',
+      '<button class="btn" id="int-test">'+icon('zap')+'Test connection</button>'+
+      '<button class="btn navy" id="int-delta">'+icon('download')+'Pull inbound delta</button>')+
+    '<div class="grid g4 mb20">'+
+      kpi('Connection', sap.connected?'Online':'Offline', 'RFC + OData', sap.connected?'accent':'danger','wifi')+
+      kpi('Inbound deltas', fmtNum(sap.deltas.length), 'SAP → platform','navy','download')+
+      kpi('Posted documents', fmtNum(sap.documents.length), 'platform → SAP','navy','upload')+
+      kpi('Dead-letter', fmtNum(sap.deadLetter.length), sap.deadLetter.length?'needs retry':'queue empty', sap.deadLetter.length?'danger':'accent','alert')+
+    '</div>'+
+    '<div class="grid g2 mb20" style="align-items:start">'+
+      '<div class="card pad"><div class="kicker mb12">Endpoint</div>'+
+        '<dl class="dl" style="grid-template-columns:130px 1fr">'+
+          dlRow('Gateway','<span class="mono" style="font-size:12px">'+esc(sap.gateway)+'</span>')+
+          dlRow('Client',sap.client)+ dlRow('Company code',sap.companyCode)+
+          dlRow('Service user','<span class="mono">'+esc(sap.rfcUser)+'</span>')+
+          dlRow('Auth','OAuth2 · TLS 1.3')+
+        '</dl></div>'+
+      '<div class="card pad"><div class="kicker mb12">Scheduled return window</div>'+
+        '<div class="row gap12" style="align-items:center"><div class="feed-ico" style="background:var(--accentSoft);color:var(--accent);width:40px;height:40px">'+icon('clock')+'</div>'+
+          '<div><div style="font-family:var(--serif-d);font-size:20px;font-weight:600">'+esc(sap.schedule.window)+'</div>'+
+          '<div class="muted ui" style="font-size:12px">nightly · idempotent · resumable</div></div>'+
+          '<span class="chip green right">'+(sap.schedule.enabled?'enabled':'paused')+'</span></div>'+
+        '<div class="callout navy mt16" style="font-size:12px">'+icon('info')+'<div>Approved candidates post within the window; failures fall to the dead-letter queue and are retried automatically.</div></div>'+
+      '</div>'+
+    '</div>'+
+    // dead-letter queue
+    '<div class="card mb20"><div class="card-h"><h3>'+icon('alert')+' Dead-letter queue</h3><span class="chip '+(sap.deadLetter.length?'red':'green')+'">'+sap.deadLetter.length+'</span></div>'+
+      (sap.deadLetter.length?
+        '<div class="tbl-wrap" style="border:0;box-shadow:none"><table class="tbl"><thead><tr><th>Operation</th><th>Reference</th><th>Error</th><th>Attempts</th><th style="text-align:right">Action</th></tr></thead><tbody>'+
+        sap.deadLetter.map(d=>'<tr><td class="mono" style="font-size:12px">'+esc(d.op)+'</td><td style="font-size:12.5px">'+esc(d.payloadHint)+'</td>'+
+          '<td><span class="chip red" style="font-size:10px">'+esc(d.error)+'</span></td><td class="tnum">'+d.attempts+'</td>'+
+          '<td style="text-align:right"><button class="btn xs primary" data-retry="'+d.id+'">'+icon('refresh')+'Retry</button></td></tr>').join('')+
+        '</tbody></table></div>'
+        : '<div class="card-b"><p class="muted ui" style="font-size:13px">Queue empty — all postings committed.</p></div>')+
+    '</div>'+
+    // inbound deltas
+    '<div class="card"><div class="card-h"><h3>'+icon('download')+' Inbound master deltas (SAP → platform)</h3><span class="muted ui" style="font-size:11px">change pointers · auto-applied</span></div>'+
+      '<div class="card-b">'+
+        (sap.deltas.length? sap.deltas.slice(0,12).map(d=>'<div class="row between" style="padding:9px 0;border-bottom:1px solid var(--line)">'+
+          '<div class="row gap8"><span class="sap-dir out">'+icon('download')+'</span><div><div class="mono" style="font-size:12.5px">'+esc(d.asset)+'</div>'+
+            '<div class="muted ui" style="font-size:11px">'+esc(d.field)+': '+esc(d.old)+' <span style="color:var(--accent)">→</span> '+esc(d.new)+'</div></div></div>'+
+          '<span class="muted ui" style="font-size:11px">'+timeAgo(d.ts)+' · applied</span></div>').join('')
+          : '<p class="muted ui" style="font-size:13px">No inbound deltas yet. Click “Pull inbound delta” to simulate a master change made directly in SAP.</p>')+
+      '</div></div>'+
+    disclaimerNote();
+  const tb=$('#int-test'); if(tb) tb.addEventListener('click',doTestConnection);
+  const db=$('#int-delta'); if(db) db.addEventListener('click',doPullDelta);
+  $$('[data-retry]').forEach(b=>b.addEventListener('click',async()=>{ b.disabled=true; b.innerHTML='<span class="spinner"></span>'; try{ await api.retryDeadLetter(b.getAttribute('data-retry')); toast({type:'ok',title:'Retry succeeded',msg:'Posting committed in SAP.'}); }catch(e){ toast({type:'err',msg:e.message}); } }));
+}
+function stepModal(title, labels, runner, onDone){
+  openModal({ title, noScrimClose:true,
+    body:'<div id="sm-steps"></div><div id="sm-done" class="hidden"></div>',
+    footer:'<button class="btn" data-modal-close id="sm-cancel">Cancel</button>',
+    onMount(m){
+      const host=m.querySelector('#sm-steps');
+      host.innerHTML=labels.map((t,i)=>'<div class="step" id="sm-'+i+'"><div class="st-dot">'+(i+1)+'</div><div class="flex1"><div class="st-t">'+esc(t)+'</div><div class="st-m" id="smm-'+i+'"></div></div></div>').join('');
+      runner((i,step,done)=>{ const node=m.querySelector('#sm-'+i),meta=m.querySelector('#smm-'+i); if(!node)return;
+        if(!done){ node.classList.add('active'); meta.textContent=step.m; node.querySelector('.flex1').insertAdjacentHTML('beforeend','<span class="spin"></span>'); }
+        else{ node.classList.remove('active'); node.classList.add('done'); const sp=node.querySelector('.spin'); if(sp)sp.remove(); node.querySelector('.st-dot').innerHTML=icon('check'); }
+      }).then(res=>{ const c=m.querySelector('#sm-cancel'); c.textContent='Done'; c.classList.add('primary'); const dn=m.querySelector('#sm-done'); dn.classList.remove('hidden'); if(onDone)onDone(dn,res); })
+      .catch(e=>{ toast({type:'err',msg:e.message||'Failed.'}); closeModal(); });
+    }
+  });
+}
+function doTestConnection(){
+  stepModal('Test SAP connection', ['Resolving sap-gw.bhtelecom.ba','OAuth2 token','Ping /sap/bc/ping'],
+    cb=>api.testSapConnection(cb),
+    (dn,res)=>{ dn.innerHTML='<div class="callout accent mt12" style="font-size:12.5px">'+icon('checkCircle')+'<div><b>Connection healthy</b> — round-trip '+res.latency+' ms.</div></div>'; toast({type:'ok',title:'SAP reachable',msg:res.latency+' ms round-trip.'}); });
+}
+function doPullDelta(){
+  stepModal('Pull inbound master delta', ['Polling SAP change pointers','Fetching change document','Applying to local mirror'],
+    cb=>api.sapInboundDelta(cb),
+    (dn,res)=>{ const d=res.delta; dn.innerHTML='<div class="callout accent mt12" style="font-size:12.5px">'+icon('checkCircle')+'<div><b>Delta applied.</b> '+esc(d.asset)+' · '+esc(d.field)+': '+esc(d.old)+' → '+esc(d.new)+'. SAP remains the source of truth.</div></div>'; toast({type:'ok',title:'Inbound delta applied',msg:d.asset+' · '+d.field+' updated.'}); });
+}
+SCREENS['#/integration']=screenIntegration;
 
 /* ---- download helper (Blob → file) ---- */
 function downloadBlob(filename,content,mime){
@@ -2811,17 +3505,21 @@ SCREENS['#/commissions']=screenCommissions;
 const reportCache={data:null};
 function screenReports(view){
   view.innerHTML=
-    pageHead('Reports', 'Prescribed annual inventory report — book vs physical with recapitulation by location and category. Export to a real file or print to PDF.',
+    pageHead('Reports', 'Prescribed annual inventory report — book vs physical, recapitulation, and the signed commission minutes (Zapisnik). Export to real files or print to PDF.',
+      '<button class="btn navy" id="rep-zapisnik">'+icon('fileText')+'Commission minutes</button>'+
+      '<button class="btn" id="rep-xls">'+icon('download')+'Excel</button>'+
       '<button class="btn" id="rep-csv">'+icon('download')+'CSV</button>'+
       '<button class="btn" id="rep-html">'+icon('download')+'HTML</button>'+
-      '<button class="btn navy" id="rep-print">'+icon('fileText')+'Print / PDF</button>')+
+      '<button class="btn" id="rep-print">'+icon('fileText')+'Print</button>')+
     '<div id="rep-body">'+(reportCache.data?reportHtml(reportCache.data):skelTable(8,5))+'</div>'+
     disclaimerNote();
   const wire=()=>{
-    const c=$('#rep-csv'), h=$('#rep-html'), p=$('#rep-print');
+    const c=$('#rep-csv'), h=$('#rep-html'), p=$('#rep-print'), x=$('#rep-xls'), z=$('#rep-zapisnik');
     if(c) c.addEventListener('click',()=>exportReportCSV());
     if(h) h.addEventListener('click',()=>exportReportHTML());
     if(p) p.addEventListener('click',()=>printReport());
+    if(x) x.addEventListener('click',()=>exportReportExcel());
+    if(z) z.addEventListener('click',()=>openZapisnik());
   };
   wire();
   if(!reportCache.data){
@@ -2893,7 +3591,153 @@ function printReport(){
   setTimeout(()=>{ try{ w.focus(); w.print(); }catch(e){} },350);
   toast({type:'info',title:'Print view opened',msg:'Use your browser’s “Save as PDF”.'});
 }
+function exportReportExcel(){
+  if(!reportCache.data){ toast({type:'info',msg:'Report still loading.'}); return; }
+  const rows=reportRows();
+  const head='<tr>'+rows[0].map(h=>'<th style="background:#12273F;color:#fff;padding:6px;border:1px solid #888">'+h+'</th>').join('')+'</tr>';
+  const body=rows.slice(1).map(r=>'<tr>'+r.map((c,i)=>'<td style="padding:5px;border:1px solid #ccc;'+(i>=2?'text-align:right':'')+'">'+(c===''?'':c)+'</td>').join('')+'</tr>').join('');
+  const xls='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>Popis</x:Name></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><h3>BH Telecom — Inventory Report FY'+Store.get().fiscalYear+'</h3><table>'+head+body+'</table></body></html>';
+  downloadBlob('BHT_Inventory_Report_FY'+Store.get().fiscalYear+'.xls', xls, 'application/vnd.ms-excel');
+}
+function zapisnikHTML(){
+  const s=Store.get(); const com=Sel.activeCommission()||s.commissions[0];
+  const prog=Sel.progress(); const exp=Sel.financialExposure();
+  const shortages=s.dispositions.filter(d=>d.klass==='shortage'&&d.status!=='rejected');
+  const surpluses=s.dispositions.filter(d=>d.klass==='surplus'&&d.status!=='rejected');
+  const liabDisc=s.liabilities.filter(l=>l.status==='discrepancy');
+  const sig=(name,role)=>'<div class="sig"><div class="sig-line"></div><div class="sig-name">'+esc(name)+'</div><div class="sig-role">'+esc(role)+'</div></div>';
+  const exRows=(list,kind)=> list.length? list.map(d=>'<tr><td>'+esc(d.inventory_no||'(unregistered)')+'</td><td>'+esc(d.asset_name)+'</td><td style="text-align:right">'+fmtMoney(Math.abs(d.amount))+'</td><td>'+esc(d.status)+'</td></tr>').join('')
+    : '<tr><td colspan="4" style="color:#888;font-style:italic">None</td></tr>';
+  return '<!doctype html><html lang="bs"><head><meta charset="utf-8"><title>Zapisnik o popisu — '+esc(com.name)+'</title>'+
+    '<style>body{font-family:Georgia,serif;color:#1A1F28;max-width:820px;margin:36px auto;padding:0 26px;line-height:1.5}'+
+    'h1{font-size:22px;text-align:center;margin-bottom:2px}h2{font-size:15px;margin-top:26px;border-bottom:1.5px solid #12273F;padding-bottom:5px}'+
+    '.sub{text-align:center;color:#555;font-size:13px;margin-bottom:20px}'+
+    'table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12.5px}th,td{border:1px solid #ccc;padding:6px 8px;text-align:left}'+
+    'th{background:#F5F2EC;font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:.04em}'+
+    '.kv{display:flex;justify-content:space-between;border-bottom:1px solid #eee;padding:5px 0;font-size:13.5px}'+
+    '.sigs{display:flex;justify-content:space-between;gap:24px;margin-top:54px}.sig{flex:1;text-align:center}'+
+    '.sig-line{border-top:1px solid #333;margin-bottom:6px}.sig-name{font-weight:bold;font-size:13px}.sig-role{font-size:11px;color:#666}'+
+    '.foot{margin-top:40px;color:#888;font-size:11px;border-top:1px solid #ddd;padding-top:10px}.kicker{font-family:Arial,sans-serif;font-size:11px;color:#0C7A63;text-transform:uppercase;letter-spacing:.1em;text-align:center}</style></head><body>'+
+    '<div class="kicker">'+esc(s.tenant.name)+' · '+esc(com.locationIds.map(l=>Sel.locName(l).split(' — ')[0]).filter((v,i,a)=>a.indexOf(v)===i).join(', '))+'</div>'+
+    '<h1>ZAPISNIK o izvršenom godišnjem popisu</h1>'+
+    '<div class="sub">imovine i obaveza za fiskalnu godinu '+s.fiscalYear+' · '+esc(com.name)+'<br>Datum: '+fmtDateShort(Date.now())+' · Rok popisa: '+fmtDateShort(s.campaign.cutoff)+'</div>'+
+    '<p>Komisija za popis, imenovana za provođenje redovnog godišnjeg popisa, izvršila je popis imovine i obaveza i utvrdila sljedeće stanje:</p>'+
+    '<h2>1. Rekapitulacija imovine</h2>'+
+    '<div class="kv"><span>Ukupno sredstava u knjigama (SAP)</span><b>'+prog.total+'</b></div>'+
+    '<div class="kv"><span>Fizički popisano</span><b>'+prog.done+' ('+prog.pct+'%)</b></div>'+
+    '<div class="kv"><span>Vrijednost manjkova (shortage)</span><b>'+fmtMoney(exp.shortage)+'</b></div>'+
+    '<div class="kv"><span>Vrijednost viškova (surplus)</span><b>'+fmtMoney(exp.surplus)+'</b></div>'+
+    '<h2>2. Utvrđeni manjkovi</h2><table><tr><th>Inv. broj</th><th>Naziv</th><th style="text-align:right">Vrijednost</th><th>Status</th></tr>'+exRows(shortages)+'</table>'+
+    '<h2>3. Utvrđeni viškovi</h2><table><tr><th>Inv. broj</th><th>Naziv</th><th style="text-align:right">Procj. vrijednost</th><th>Status</th></tr>'+exRows(surpluses)+'</table>'+
+    '<h2>4. Obaveze — utvrđena odstupanja</h2><table><tr><th>Dokument</th><th>Dobavljač</th><th style="text-align:right">Knjiga</th><th style="text-align:right">Izvod</th><th style="text-align:right">Δ</th></tr>'+
+      (liabDisc.length? liabDisc.map(l=>'<tr><td>'+esc(l.doc_no)+'</td><td>'+esc(l.counterparty)+'</td><td style="text-align:right">'+fmtMoney(l.book_value)+'</td><td style="text-align:right">'+fmtMoney(l.statement_amount)+'</td><td style="text-align:right">'+fmtMoney(l.variance)+'</td></tr>').join('')
+        : '<tr><td colspan="5" style="color:#888;font-style:italic">Nema odstupanja</td></tr>')+'</table>'+
+    '<h2>5. Zaključak</h2><p>Komisija predlaže da se utvrđeni manjkovi i viškovi proknjiže u skladu sa odlukom nadležnog organa, nakon odobrenja računovodstva. Knjigovodstveni sistem (SAP) ostaje izvor istine; sve izmjene se vraćaju kontrolisano.</p>'+
+    '<div class="sigs">'+sig(com.president,'Predsjednik komisije')+com.members.map(m=>sig(m,'Član komisije')).join('')+'</div>'+
+    '<div class="foot">Interactive prototype — simulated backend &amp; data, no live SAP/server. Horalix Inventory Platform · generated '+fmtDate(Date.now())+'.</div>'+
+    '</body></html>';
+}
+function openZapisnik(){
+  const html=zapisnikHTML();
+  openModal({
+    title:'Commission minutes — Zapisnik',
+    body:'<div class="callout navy" style="font-size:12.5px;margin-bottom:12px">'+icon('fileText')+'<div>The legally-prescribed signed minutes the commission files. Preview below — print to PDF or download.</div></div>'+
+      '<div style="border:1px solid var(--line);border-radius:10px;overflow:hidden;height:420px"><iframe id="zap-frame" style="width:100%;height:100%;border:0;background:#fff"></iframe></div>',
+    footer:'<button class="btn" data-modal-close>Close</button>'+
+      '<button class="btn" id="zap-dl">'+icon('download')+'Download .html</button>'+
+      '<button class="btn navy" id="zap-print">'+icon('fileText')+'Print / PDF</button>',
+    onMount(m){
+      const f=m.querySelector('#zap-frame'); try{ f.contentDocument.open(); f.contentDocument.write(html); f.contentDocument.close(); }catch(e){ f.srcdoc=html; }
+      m.querySelector('#zap-dl').addEventListener('click',()=>downloadBlob('BHT_Zapisnik_FY'+Store.get().fiscalYear+'.html', html, 'text/html;charset=utf-8'));
+      m.querySelector('#zap-print').addEventListener('click',()=>{ const w=window.open('','_blank'); if(!w){ toast({type:'warn',msg:'Allow pop-ups to print.'}); return; } w.document.open(); w.document.write(html); w.document.close(); setTimeout(()=>{ try{ w.focus(); w.print(); }catch(e){} },350); });
+    }
+  });
+}
 SCREENS['#/reports']=screenReports;
+
+/* ---------- ANALYTICS (inline-SVG charts) ---------- */
+function svgDonut(segs, size){
+  size=size||140; const r=size/2-10, cx=size/2, cy=size/2, circ=2*Math.PI*r;
+  const total=segs.reduce((a,s)=>a+s.value,0)||1; let off=0;
+  let rings=segs.filter(s=>s.value>0).map(s=>{ const frac=s.value/total; const dash=frac*circ;
+    const el='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+s.color+'" stroke-width="14" stroke-dasharray="'+dash+' '+(circ-dash)+'" stroke-dashoffset="'+(-off)+'" transform="rotate(-90 '+cx+' '+cy+')"/>';
+    off+=dash; return el; }).join('');
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'">'+
+    '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="var(--paper2)" stroke-width="14"/>'+rings+'</svg>';
+}
+function svgVBars(items, opts){
+  opts=opts||{}; const w=opts.w||440, h=opts.h||180, padL=44, padB=34, padT=12, padR=10;
+  const iw=w-padL-padR, ih=h-padT-padB; const max=Math.max(1,...items.map(i=>i.value));
+  const bw=iw/items.length; const bar=Math.min(46, bw*0.62);
+  let bars='', labels='', grid='';
+  for(let g=0;g<=3;g++){ const y=padT+ih-(g/3)*ih; const lab=opts.fmt?opts.fmt(max*g/3):String(Math.round(max*g/3));
+    grid+='<line x1="'+padL+'" y1="'+y+'" x2="'+(w-padR)+'" y2="'+y+'" stroke="var(--line)"/>'+
+    '<text x="'+(padL-6)+'" y="'+(y+3)+'" text-anchor="end" font-size="9" fill="var(--faint)" font-family="Archivo,sans-serif">'+lab+'</text>'; }
+  items.forEach((it,idx)=>{ const x=padL+bw*idx+(bw-bar)/2; const bh=(it.value/max)*ih; const y=padT+ih-bh;
+    bars+='<rect x="'+x+'" y="'+y+'" width="'+bar+'" height="'+Math.max(0,bh)+'" rx="4" fill="'+(it.color||'var(--accent)')+'"><title>'+esc(it.label+': '+(opts.fmt?opts.fmt(it.value):it.value))+'</title></rect>';
+    labels+='<text x="'+(x+bar/2)+'" y="'+(h-padB+14)+'" text-anchor="middle" font-size="9.5" fill="var(--soft)" font-family="Archivo,sans-serif">'+esc(it.short||it.label)+'</text>'; });
+  return '<svg width="100%" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="xMidYMid meet">'+grid+bars+labels+'</svg>';
+}
+function screenAnalytics(view){
+  const s=Store.get(), day=86400000, total=s.assets.length;
+  const camp=s.campaign, start=camp.opened, end=camp.cutoff;
+  const totalDays=Math.max(1,Math.round((end-start)/day)), nowDay=clamp(Math.round((Date.now()-start)/day),0,totalDays);
+  // distinct counted timestamps
+  const firstTs={}; s.dispositions.forEach(d=>{ if(d.asset_id){ if(!firstTs[d.asset_id]||d.ts<firstTs[d.asset_id]) firstTs[d.asset_id]=d.ts; } });
+  const cts=Object.values(firstTs).sort((a,b)=>a-b);
+  // burn-down line
+  const W=760,H=240,padL=40,padB=28,padT=14,padR=14,iw=W-padL-padR,ih=H-padT-padB;
+  const sx=x=>padL+(x/totalDays)*iw, sy=y=>padT+ih-(y/100)*ih;
+  let actualPts='', c=0,j=0;
+  for(let dd=0; dd<=nowDay; dd++){ const cut=start+dd*day; while(j<cts.length && cts[j]<=cut){ c++; j++; } actualPts+=(actualPts?' ':'')+sx(dd)+','+sy(total?c/total*100:0); }
+  const curPct=total?Math.round(c/total*100):0;
+  const projDay = c>0 ? Math.min(totalDays*1.5, total/(c/Math.max(1,nowDay))) : totalDays*2;
+  const onTrack = projDay<=totalDays;
+  let grid='';
+  for(let g=0;g<=4;g++){ const y=padT+ih-(g/4)*ih; grid+='<line x1="'+padL+'" y1="'+y+'" x2="'+(W-padR)+'" y2="'+y+'" stroke="var(--line)"/><text x="'+(padL-6)+'" y="'+(y+3)+'" text-anchor="end" font-size="9" fill="var(--faint)" font-family="Archivo,sans-serif">'+(g*25)+'%</text>'; }
+  const ideal=sx(0)+','+sy(0)+' '+sx(totalDays)+','+sy(100);
+  const todayX=sx(nowDay);
+  const burn='<svg width="100%" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet">'+grid+
+    '<polyline points="'+ideal+'" fill="none" stroke="var(--faint)" stroke-width="1.5" stroke-dasharray="4 4"/>'+
+    '<line x1="'+todayX+'" y1="'+padT+'" x2="'+todayX+'" y2="'+(padT+ih)+'" stroke="var(--accentLine)" stroke-width="1.5"/>'+
+    '<text x="'+todayX+'" y="'+(padT-2)+'" text-anchor="middle" font-size="9" fill="var(--accent)" font-family="Archivo,sans-serif">today</text>'+
+    '<polyline points="'+actualPts+'" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/>'+
+    '<text x="'+(W-padR)+'" y="'+(sy(100)+12)+'" text-anchor="end" font-size="9" fill="var(--faint)" font-family="Archivo,sans-serif">cutoff '+fmtDateShort(end)+'</text>'+
+    '</svg>';
+  // disposition mix
+  const klassCount={}; s.dispositions.forEach(d=>{ klassCount[d.klass]=(klassCount[d.klass]||0)+1; });
+  const mix=[['matched','var(--accent)','Matched'],['shortage','var(--danger)','Shortage'],['surplus','var(--gold)','Surplus'],['duplicate-conflict','#caa24a','Duplicate'],['metadata-diff','var(--faint)','Metadata'],['value-change','#b5563f','Value chg']]
+    .map(([k,col,lab])=>({value:klassCount[k]||0,color:col,label:lab})).filter(x=>x.value>0);
+  // variance by directorate (shortage value)
+  const dirVar={}; s.locations.filter(l=>l.type==='directorate').forEach(d=>dirVar[d.id]={name:d.city,v:0});
+  s.dispositions.filter(d=>d.klass==='shortage'&&d.status!=='rejected'&&d.asset_id).forEach(d=>{ const a=s.assets.find(x=>x.id===d.asset_id); if(a){ const dir=Sel.loc(a.location_id)?.parent_id; if(dirVar[dir]) dirVar[dir].v+=Math.abs(d.amount); } });
+  const varBars=Object.values(dirVar).map(x=>({label:x.name,short:x.name,value:x.v,color:'var(--danger)'}));
+  // counted per category
+  const catCount={}; s.categories.forEach(cc=>catCount[cc.id]={n:Sel.catName(cc.id),c:0,t:0});
+  s.assets.forEach(a=>{ catCount[a.category].t++; if(a.status!=='registered')catCount[a.category].c++; });
+  const catBars=Object.values(catCount).map(x=>({label:x.n,short:x.n.split(' ')[0],value:x.c,color:'var(--navy)'}));
+
+  view.innerHTML=
+    pageHead('Analytics', 'Live campaign analytics — burn-down to the legal cutoff, disposition mix and variance by location & category.',
+      '<span class="chip '+(onTrack?'green':'amber')+'">'+(onTrack?'On track':'Behind pace')+'</span>')+
+    '<div class="card mb20"><div class="card-h"><h3>Burn-down to cutoff</h3>'+
+      '<span class="muted ui" style="font-size:11.5px">'+curPct+'% counted · projected completion ~day '+Math.round(projDay)+' of '+totalDays+'</span></div>'+
+      '<div class="card-b">'+burn+
+        '<div class="row gap16 mt8" style="font-family:var(--sans);font-size:11.5px;color:var(--soft)"><span><span style="display:inline-block;width:18px;height:3px;background:var(--accent);vertical-align:middle"></span> Actual</span>'+
+        '<span><span style="display:inline-block;width:18px;height:0;border-top:2px dashed var(--faint);vertical-align:middle"></span> Ideal (linear to cutoff)</span></div></div></div>'+
+    '<div class="grid" style="grid-template-columns:300px 1fr;align-items:start">'+
+      '<div class="card"><div class="card-h"><h3>Disposition mix</h3></div><div class="card-b center">'+
+        '<div style="position:relative;display:inline-block">'+svgDonut(mix,150)+
+          '<div style="position:absolute;inset:0;display:grid;place-items:center"><div style="text-align:center"><div style="font-family:var(--serif-d);font-size:26px;font-weight:600">'+s.dispositions.length+'</div><div class="muted ui" style="font-size:10px">dispositions</div></div></div></div>'+
+        '<div class="mt12" style="text-align:left">'+mix.map(m=>'<div class="row between" style="font-family:var(--sans);font-size:12px;padding:3px 0"><span><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:'+m.color+';margin-right:7px"></span>'+esc(m.label)+'</span><b>'+m.value+'</b></div>').join('')+'</div>'+
+      '</div></div>'+
+      '<div class="grid g2" style="align-items:start">'+
+        '<div class="card"><div class="card-h"><h3>Shortage variance by location</h3></div><div class="card-b">'+svgVBars(varBars,{fmt:v=>Math.round(v/1000)+'k'})+'</div></div>'+
+        '<div class="card"><div class="card-h"><h3>Counted by category</h3></div><div class="card-b">'+svgVBars(catBars,{})+'</div></div>'+
+      '</div>'+
+    '</div>'+ disclaimerNote();
+}
+SCREENS['#/analytics']=screenAnalytics;
 
 /* ---------- AUDIT LOG (Auditor) ---------- */
 const auditState={q:{search:'',actor:'',page:1,pageSize:14},result:null,loading:false,token:0};
@@ -2901,18 +3745,23 @@ function screenAudit(view){
   const s=Store.get();
   const actors=Array.from(new Set(s.audit.map(r=>r.actor))).sort();
   view.innerHTML=
-    pageHead('Audit log', 'Append-only, immutable record of every meaningful action — including admin actions. Correlation IDs link field event → review → ERP candidate.',
-      '<span class="tag-immutable">'+icon('lock','')+'append-only · read-only</span>')+
+    pageHead('Audit log', 'Append-only, hash-chained record of every meaningful action — including admin actions. Correlation IDs link field event → review → ERP document.',
+      '<button class="btn sm" id="aud-verify">'+icon('shield')+'Verify integrity</button>'+
+      '<button class="btn sm" id="aud-export">'+icon('download')+'Export signed log</button>'+
+      '<span class="tag-immutable">'+icon('lock','')+'append-only · hash-chained</span>')+
+    '<div id="aud-integrity"></div>'+
     '<div class="toolbar">'+
       '<div class="search"><span>'+icon('search')+'</span><input id="aud-search" type="text" placeholder="Search action, actor, asset, correlation, reason…" value="'+esc(auditState.q.search)+'"></div>'+
       '<div class="selct"><select id="aud-actor"><option value="">All actors</option>'+actors.map(a=>'<option '+(auditState.q.actor===a?'selected':'')+'>'+esc(a)+'</option>').join('')+'</select></div>'+
       '<span class="muted ui right" style="font-size:12px">'+s.audit.length+' total entries</span>'+
     '</div>'+
-    '<div id="aud-table">'+(auditState.result?auditTableHtml(auditState.result):skelTable(10,6))+'</div>'+
+    '<div id="aud-table">'+(auditState.result?auditTableHtml(auditState.result):skelTable(10,7))+'</div>'+
     disclaimerNote();
   const reload=()=>{ auditState.q.page=1; loadAudit(true); };
   const si=$('#aud-search'); si.addEventListener('input',debounce(()=>{ auditState.q.search=si.value; reload(); },260));
   $('#aud-actor').addEventListener('change',e=>{ auditState.q.actor=e.target.value; reload(); });
+  $('#aud-verify').addEventListener('click',doVerifyAudit);
+  $('#aud-export').addEventListener('click',doExportAudit);
   wireAuditTable();
   if(!auditState.result && !auditState.loading) loadAudit(false);
   else loadAudit(false);
@@ -2929,15 +3778,16 @@ function loadAudit(showSkel){
 function auditTableHtml(res){
   if(res.total===0) return '<div class="tbl-wrap">'+emptyState('shield','No matching entries','Adjust the search or actor filter.')+'</div>';
   let h='<div class="tbl-wrap"><table class="tbl"><thead><tr>'+
-    '<th>Timestamp</th><th>Actor</th><th>Action</th><th>Old → New</th><th>Approval</th><th>Correlation</th></tr></thead><tbody>';
+    '<th>#</th><th>Timestamp</th><th>Actor</th><th>Action</th><th>Old → New</th><th>Approval</th><th>Hash (chained)</th></tr></thead><tbody>';
   res.items.forEach(r=>{
-    h+='<tr><td style="font-size:12.5px;white-space:nowrap">'+fmtDate(r.ts)+'</td>'+
+    h+='<tr><td class="mono" style="font-size:11px;color:var(--faint)">'+(r.seq||'')+'</td>'+
+      '<td style="font-size:12.5px;white-space:nowrap">'+fmtDate(r.ts)+'</td>'+
       '<td style="font-size:13px"><div style="font-weight:600">'+esc(r.actor)+'</div><div class="muted ui" style="font-size:10.5px">'+esc(r.role)+'</div></td>'+
       '<td><span class="chip '+auditChipTone(r.action)+'" style="font-size:10px">'+esc(prettyAction(r.action))+'</span>'+
         (r.entity_id&&r.entity_id!=='—'?'<div class="mono" style="font-size:10.5px;color:var(--faint);margin-top:3px">'+esc(r.entity_id)+'</div>':'')+'</td>'+
       '<td style="font-size:12px;max-width:240px"><span class="muted">'+esc(r.old)+'</span> <span style="color:var(--accent)">→</span> '+esc(r.new)+(r.reason?'<div class="muted ui" style="font-size:11px;font-style:italic;margin-top:2px">“'+esc(r.reason)+'”</div>':'')+'</td>'+
       '<td style="font-size:12px">'+(r.approval&&r.approval!=='—'?esc(r.approval):'<span class="muted">—</span>')+'</td>'+
-      '<td class="mono" style="font-size:11px;color:var(--faint)">'+shortId(r.correlation_id)+'</td></tr>';
+      '<td class="mono" style="font-size:10.5px;color:var(--soft)" title="prev '+esc(r.prevHash||'')+'">'+esc(r.hash||'')+'<div class="muted" style="font-size:9px">↳ corr '+shortId(r.correlation_id)+'</div></td></tr>';
   });
   h+='</tbody></table>';
   const from=(res.page-1)*res.pageSize+1,to=Math.min(res.total,res.page*res.pageSize);
@@ -2954,7 +3804,74 @@ function auditChipTone(a){
 function wireAuditTable(){
   $$('#aud-table [data-page]').forEach(b=>b.addEventListener('click',()=>{ const p=parseInt(b.getAttribute('data-page'),10); if(!isNaN(p)){ auditState.q.page=p; loadAudit(true); } }));
 }
+function doVerifyAudit(){
+  const res=verifyAuditChain(Store.get().audit);
+  const box=$('#aud-integrity'); if(!box)return;
+  if(res.ok){
+    box.innerHTML='<div class="callout accent mb16 fade-in">'+icon('checkCircle')+'<div><b>Integrity verified — chain intact.</b> All '+res.count+' entries hash-link to the previous one; the chain head is <span class="mono">'+res.head+'</span>. Any edit, deletion or re-ordering would break the chain and be detected here.</div></div>';
+    toast({type:'ok',title:'Audit chain verified',msg:res.count+' entries · no tampering detected.'});
+  }else{
+    box.innerHTML='<div class="callout danger mb16 fade-in">'+icon('alert')+'<div><b>Integrity check FAILED at entry #'+(res.broken.index+1)+'</b> ('+esc(prettyAction(res.broken.action))+'). The hash chain is broken — tampering or corruption detected.</div></div>';
+    toast({type:'err',title:'Integrity check failed',msg:'Chain broken at #'+(res.broken.index+1)+'.'});
+  }
+}
+function doExportAudit(){
+  const s=Store.get(), audit=s.audit, v=verifyAuditChain(audit);
+  const payload={
+    system:'Horalix Inventory Platform', tenant:s.tenant.name, tenant_id:s.tenant.id, fiscal_year:s.fiscalYear,
+    exported_at:new Date().toISOString(), exported_by:Sel.currentUser().name,
+    algorithm:'FNV-1a hash chain (demo)', entries:audit.length, chain_head:v.head, chain_status:v.ok?'INTACT':'BROKEN',
+    signature:hashContent({head:v.head, n:audit.length, t:s.tenant.id, fy:s.fiscalYear}),
+    records:audit.map(r=>({seq:r.seq, ts:new Date(r.ts).toISOString(), actor:r.actor, role:r.role, action:r.action,
+      entity:r.entity_id, old:r.old, new:r.new, approval:r.approval, reason:r.reason,
+      correlation_id:r.correlation_id, prevHash:r.prevHash, hash:r.hash}))
+  };
+  downloadBlob('BHT_audit_log_signed_FY'+s.fiscalYear+'.json', JSON.stringify(payload,null,2), 'application/json');
+}
 SCREENS['#/audit']=screenAudit;
+
+/* ---------- ACCESS CONTROL — RBAC permission matrix (Admin / Auditor) ---------- */
+const CAPS=[
+  {cap:'Sign in (corporate SSO)', roles:ROLES.slice(), note:'SAML / OIDC in production'},
+  {cap:'View dashboard', roles:ROLES.slice()},
+  {cap:'Browse asset register', roles:ROLES.slice()},
+  {cap:'Import SAP master data', roles:['Tenant Admin']},
+  {cap:'Configure tenant, mapping & rules', roles:['Tenant Admin']},
+  {cap:'Create / assign commissions', roles:['Tenant Admin','Commission President']},
+  {cap:'Capture in the field (mobile)', roles:['Commission President','Commission Member']},
+  {cap:'Resolve conflicts', roles:['Tenant Admin','Commission President']},
+  {cap:'Approve financial exceptions', roles:['Tenant Admin','Accounting']},
+  {cap:'Approve own captured exception', roles:[], note:'blocked for everyone — separation of duties'},
+  {cap:'Prepare posting candidates', roles:['Tenant Admin','Accounting']},
+  {cap:'Release / post to SAP', roles:['Tenant Admin','Accounting']},
+  {cap:'View SAP console', roles:['Tenant Admin','Accounting','Auditor']},
+  {cap:'Generate prescribed reports', roles:['Tenant Admin','Accounting','Auditor','Commission President']},
+  {cap:'View & verify audit log', roles:['Tenant Admin','Accounting','Auditor']},
+  {cap:'Run AI queries (read-only)', roles:['Tenant Admin','Accounting','Auditor','Commission President']},
+  {cap:'Write / post via AI', roles:[], note:'impossible by design — AI is read-only'}
+];
+function screenAccess(view){
+  const cur=Store.get().ui.role;
+  view.innerHTML=
+    pageHead('Access control', 'Role-based access, scoped per tenant and enforced server-side. Every capability maps to exactly one set of roles — least privilege by design.',
+      '<span class="tag-immutable">'+icon('shield','')+'RBAC · per-tenant</span>')+
+    '<div class="callout navy mb16">'+icon('lock')+'<div>You are viewing as <b>'+esc(cur)+'</b>. The highlighted column is your effective access. In production these checks are enforced at the API and database (row-level security), not just in the UI.</div></div>'+
+    '<div class="tbl-wrap"><table class="tbl rbac"><thead><tr><th style="min-width:240px">Capability</th>'+
+      ROLES.map(r=>'<th class="'+(r===cur?'me':'')+'" style="text-align:center">'+esc(r.replace('Commission ','Comm. '))+'</th>').join('')+
+    '</tr></thead><tbody>'+
+      CAPS.map(c=>'<tr><td><div style="font-weight:600;font-size:13.5px">'+esc(c.cap)+'</div>'+
+        (c.note?'<div class="muted ui" style="font-size:11px">'+esc(c.note)+'</div>':'')+'</td>'+
+        ROLES.map(r=>{ const ok=c.roles.indexOf(r)>=0; return '<td class="'+(r===cur?'me':'')+'" style="text-align:center">'+
+          (ok?'<span class="rbac-yes" title="allowed">'+icon('check')+'</span>':'<span class="rbac-no" title="denied">'+icon('lock')+'</span>')+'</td>'; }).join('')+
+      '</tr>').join('')+
+    '</tbody></table></div>'+
+    '<div class="grid g3 mt20">'+
+      '<div class="callout accent" style="font-size:12.5px">'+icon('checkCircle')+'<div><b>Separation of duties</b> — the person who captures an exception can never approve it, even with the right role.</div></div>'+
+      '<div class="callout gold" style="font-size:12.5px">'+icon('eye')+'<div><b>Auditor</b> has broad read access and zero write access — full visibility, no ability to change records.</div></div>'+
+      '<div class="callout navy" style="font-size:12.5px">'+icon('database')+'<div><b>Tenant isolation</b> — every query is scoped by tenant_id; one tenant can never read another’s data.</div></div>'+
+    '</div>'+ disclaimerNote();
+}
+SCREENS['#/access']=screenAccess;
 
 /* ---------- AI INSIGHTS (SIMULATED) ---------- */
 const aiState={last:null, running:false, anomalies:null};
@@ -3447,7 +4364,7 @@ async function tourCapture(assetId,status){
     device:'mobile/'+mobileActor().split(' ')[0].toLowerCase()});
 }
 const Tour=(function(){
-  let active=false, i=0, working=false, steps=[];
+  let active=false, i=0, working=false, steps=[], tourLabel='Guided demo';
   function buildSteps(){ return [
     { title:'The annual inventory, end to end', surface:'web', role:'Tenant Admin', route:'#/dashboard',
       target:()=>'.page-head',
@@ -3542,6 +4459,114 @@ const Tour=(function(){
       why:'SAP stayed the source of truth, financials were gated behind a human release, and every step is auditable end-to-end. Explore freely — or hit Reset to start over.' }
   ]; }
 
+  /* ---- per-role guided tours ---- */
+  function buildAdminTour(){ return [
+    { title:'Tenant Admin — your console', role:'Tenant Admin', route:'#/setup', target:()=>'.page-head',
+      body:'As Tenant Admin you configure the tenant: fiscal year, the source of truth (locked to SAP), the location tree, categories and validation rules.',
+      why:'The platform mirrors SAP read-only — it never becomes the system of record.' },
+    { title:'Import master data', role:'Tenant Admin', route:'#/setup', target:()=>'#imp-sap',
+      body:'Pull the asset master from SAP (OData/BAPI) or import an Excel extract. Click “Pull from SAP” any time to watch the animated sync.',
+      why:'Both paths run through the same field mapping; SAP stays authoritative.' },
+    { title:'No-code field mapping', role:'Tenant Admin', route:'#/setup', target:()=>'.map-row',
+      body:'Map SAP fields to internal fields with toggles, no code — ANLN1→inventory_no, TXT50→name, KOSTL→cost_center …',
+      why:'Onboarding a new SAP landscape is configuration, not a development project.' },
+    { title:'Validation rules', role:'Tenant Admin', route:'#/setup', target:()=>'[data-rule]',
+      body:'Toggle the policies that govern the campaign — “photo required for write-off”, “a capturer cannot approve their own exception”, and more.',
+      why:'Policy is enforced by the system, not left to memory.' },
+    { title:'Commissions & worklists', role:'Tenant Admin', route:'#/commissions', target:()=>'[data-assign]',
+      body:'Create commissions and assign each a worklist by location. Members then capture on the mobile app.',
+      why:'Work is scoped per commission and per role — the basis of separation of duties.' },
+    { title:'Full visibility', role:'Tenant Admin', route:'#/dashboard', target:()=>'.page-head',
+      body:'Admin sees the whole picture — progress, exceptions, ERP return and audit. Other roles see only what they need.',
+      why:'Least-privilege access by design.' }
+  ]; }
+  function buildPresidentTour(){ return [
+    { title:'Commission President — your commission', role:'Commission President', route:'#/commissions', target:()=>'.card',
+      body:'You run a field commission. Here you see your members and worklist progress and assign assets by location.',
+      why:'You own the physical verification for your region.' },
+    { title:'Conflict Inbox', role:'Commission President', route:'#/conflicts', target:()=>'.card',
+      body:'When the field produces a conflict — a duplicate scan or stale master data — it lands here with both versions and full context (who, when, photo).',
+      why:'The system never picks a winner; a human decides.' },
+    { title:'Resolve a conflict', role:'Commission President', route:'#/conflicts', target:()=>'[data-resolve]',
+      action: async()=>{ const d=Sel.conflicts()[0]; if(d) await api.resolveConflict(d.id,'keep-first','Role demo: confirmed the first count is authoritative.'); },
+      body:'Choose a decision and a reason. The conflict clears, an audit row is appended, and the dashboard updates instantly.',
+      why:'Every resolution is recorded — fully traceable.' },
+    { title:'Campaign progress', role:'Commission President', route:'#/dashboard', target:()=>'.page-head',
+      body:'Track your campaign against the legal cutoff and see outstanding exceptions at a glance.',
+      why:'You always know where the count stands.' }
+  ]; }
+  function buildMemberTour(){ return [
+    { title:'Commission Member — field app', surface:'mobile', role:'Commission Member', target:()=>'#phone',
+      body:'Members verify physical reality in the field, often with no signal at all. Everything is captured locally first.',
+      why:'Offline-first: each capture is an immutable event (UUID + timestamp + content hash).' },
+    { title:'Your worklist', surface:'mobile', role:'Commission Member', action: async()=>{ Store.setUI({mobileTab:'lists'}); },
+      target:()=>'#m-body',
+      body:'Your assigned assets for the active commission. Tap one to capture, or use Scan, manual lookup, or add-unregistered.',
+      why:'Three equal capture paths — all produce the same immutable event.' },
+    { title:'Capture offline', surface:'mobile', role:'Commission Member',
+      action: async()=>{ Store.setUI({offline:true, mobileTab:'sync'}); await tourCapture(Store.get().demo.foundAssetId,'found'); },
+      target:()=>'#m-body',
+      body:'We toggled the phone OFFLINE and captured an asset as “found”. It queues locally with a live pending count.',
+      why:'No network needed; the outbox holds it until the server confirms it.' },
+    { title:'Capture a shortage', surface:'mobile', role:'Commission Member',
+      action: async()=>{ await tourCapture(Store.get().demo.shortAssetId,'shortage'); },
+      target:()=>'#m-body',
+      body:'A booked asset that cannot be found is captured as a shortage — a financial exception.',
+      why:'It will be gated by a human review before anything can post.' },
+    { title:'Go online & sync', surface:'mobile', role:'Commission Member',
+      action: async()=>{ Store.setUI({offline:false}); await mobileSync({drop:false}); },
+      target:()=>'#m-body',
+      body:'Back online, the outbox syncs idempotently. Captures now flow to the web portal and reconcile automatically.',
+      why:'Re-sending is always safe — no loss, no duplicates.' }
+  ]; }
+  function buildAccountingTour(){ return [
+    { title:'Accounting — the review gate', role:'Accounting', route:'#/review', target:()=>'.card',
+      body:'Financial exceptions — shortages, surpluses, value changes — queue here. This is the only path from a field finding to a posting candidate.',
+      why:'Nothing reaches SAP without approval, and whoever captured an item cannot approve it (separation of duties).' },
+    { title:'Approve an exception', role:'Accounting', route:'#/review', target:()=>'[data-approve]',
+      action: async()=>{ const d=Sel.reviews().filter(x=>canApproveReview(x).ok)[0]; if(d) await api.approve(d.id,'approve','Role demo: confirmed with custodian; relocation ruled out.'); },
+      body:'Approve with a reason. The exception becomes a posting candidate — staged, but still not posted.',
+      why:'A deliberate, audited human decision.' },
+    { title:'Prepare the candidate', role:'Accounting', route:'#/sync', target:()=>'#prep-btn',
+      action: async()=>{ await api.prepareCandidates(); },
+      body:'Prepare the posting candidate — the exact payload that would go to SAP. Nothing is posted yet.',
+      why:'The platform’s most autonomous step is “candidate”.' },
+    { title:'Release to SAP', role:'Accounting', route:'#/sync', target:()=>'#postings',
+      action: async()=>{ const p=Store.get().postings.filter(x=>!x.posted).sort((a,b)=>b.ts-a.ts)[0]; if(p) await api.sapPost(p.id); },
+      body:'You click Release — BAPI documents post to the simulated SAP and real document numbers (BELNR) come back.',
+      why:'Shortage → retirement (ABAVN), surplus → acquisition (ABZON) — all human-released.' },
+    { title:'Confirmed in SAP', role:'Accounting', route:'#/sap', target:()=>'.tbl-wrap',
+      body:'The posted documents now appear in the SAP console with the full RFC/BAPI interface log.',
+      why:'The round-trip is closed and SAP stayed the system of record.' }
+  ]; }
+  function buildAuditorTour(){ return [
+    { title:'Auditor — the audit log', role:'Auditor', route:'#/audit', target:()=>'.tbl-wrap',
+      body:'Every meaningful action is here, append-only and read-only — capture, reconcile, resolve, approve, post-to-SAP — linked by correlation IDs.',
+      why:'Admin actions are logged too. Nothing can be edited or deleted in the UI.' },
+    { title:'Filter & trace', role:'Auditor', route:'#/audit', target:()=>'.toolbar',
+      body:'Search by actor, action, asset or correlation ID to trace a single item end-to-end.',
+      why:'An unbroken chain from field event to SAP document.' },
+    { title:'AI insights (read-only)', role:'Auditor', route:'#/ai', target:()=>'#ai-pipeline',
+      action: async()=>{ await sleep(120); try{ await runAi(AI_PRESETS[0]); }catch(e){} },
+      body:'Ask in natural language. The model sees only the schema, proposes read-only SQL, a validator gates it, and the result is logged.',
+      why:'It can surface insight and anomalies, but can never write or post.' },
+    { title:'Anomaly signals', role:'Auditor', route:'#/ai', target:()=>'#ai-anom',
+      body:'Explainable statistical flags with stated reasons — signals, never verdicts.',
+      why:'They focus the audit; the decision stays human.' },
+    { title:'Read-only SAP view', role:'Auditor', route:'#/sap', target:()=>'.tbl-wrap',
+      body:'Inspect the SAP document log and interface activity — with no ability to change anything.',
+      why:'Full visibility, zero write access.' }
+  ]; }
+
+  const TOURS=[
+    {key:'full',       label:'Full end-to-end walkthrough', role:null,                  tone:'navy',   icon:'play',       desc:'The complete loop across every role (~20 steps).', build:buildSteps},
+    {key:'admin',      label:'Tenant Admin',                role:'Tenant Admin',         tone:'navy',   icon:'settings',   desc:'Setup, master import, field mapping, commissions.', build:buildAdminTour},
+    {key:'president',  label:'Commission President',        role:'Commission President', tone:'gold',   icon:'users',      desc:'Worklists, conflict inbox, resolving conflicts.',   build:buildPresidentTour},
+    {key:'member',     label:'Commission Member',           role:'Commission Member',    tone:'accent', icon:'smartphone', desc:'Mobile field app — offline capture & sync.',         build:buildMemberTour},
+    {key:'accounting', label:'Accounting',                  role:'Accounting',           tone:'gold',   icon:'scale',      desc:'Review gate, approvals, release to SAP.',            build:buildAccountingTour},
+    {key:'auditor',    label:'Auditor',                     role:'Auditor',              tone:'navy',   icon:'shield',     desc:'Audit log, AI insights, anomalies, traceability.',   build:buildAuditorTour}
+  ];
+
   function host(){ return $('#tour-host'); }
   function ensureDom(){
     host().innerHTML='<div class="tour-dim" id="tour-dim" style="position:absolute;inset:0;background:rgba(12,22,30,.5);pointer-events:none;transition:opacity .3s"></div>'+
@@ -3566,8 +4591,9 @@ const Tour=(function(){
   function renderPop(step, busy){
     const pop=$('#tour-pop'); if(!pop)return;
     pop.innerHTML=
-      '<div class="tp-h"><span class="tp-step">Guided demo</span>'+
-        '<button class="icon-x" id="tp-x" aria-label="Exit tour">'+icon('x')+'</button></div>'+
+      '<div class="tp-h"><span class="tp-step">'+esc(tourLabel)+'</span>'+
+        '<span class="row gap6"><button class="icon-x" id="tp-menu" title="All demos" aria-label="All demos">'+icon('list')+'</button>'+
+        '<button class="icon-x" id="tp-x" aria-label="Exit tour">'+icon('x')+'</button></span></div>'+
       '<div class="tp-b"><h4>'+step.title+'</h4><p>'+step.body+'</p>'+
         '<div class="tp-why"><b>Why it matters</b><br>'+step.why+'</div></div>'+
       '<div class="tp-f"><span class="tp-prog">Step '+(i+1)+' of '+steps.length+'</span>'+
@@ -3576,6 +4602,7 @@ const Tour=(function(){
           '<button class="btn primary sm" id="tp-next" '+(busy?'disabled':'')+'>'+(busy?'<span class="spinner"></span>Working…':(i===steps.length-1?'Finish':'Next'))+(busy?'':' '+iconInline('arrowRight'))+'</button>'+
         '</span></div>';
     $('#tp-x').addEventListener('click',stop);
+    const mn=$('#tp-menu'); if(mn) mn.addEventListener('click',()=>{ stop(); choose(); });
     const nb=$('#tp-next'); if(nb&&!busy) nb.addEventListener('click',()=>{ if(working)return; go(i+1); });
     const bb=$('#tp-back'); if(bb) bb.addEventListener('click',()=>{ if(working)return; go(i-1); });
   }
@@ -3610,11 +4637,31 @@ const Tour=(function(){
       pop.style.top=clamp((vh-ph)/2,12,vh-ph-12)+'px';
     }
   }
-  function start(){ if(active){ go(i); return; } active=true; i=0; steps=buildSteps(); Store.setUI({tourActive:true}, true); ensureDom(); go(0); }
+  function start(key){
+    const t = TOURS.find(x=>x.key===key) || TOURS[0];
+    if(active) stop();
+    active=true; i=0; steps=t.build(); tourLabel=t.label;
+    if(t.role) Store.setUI({role:t.role}, true);
+    Store.setUI({tourActive:true}, true); ensureDom(); go(0);
+  }
+  function choose(){
+    if(active) stop();
+    const picks=TOURS.map(t=>'<button class="tour-pick" data-tour="'+t.key+'">'+
+      '<span class="tp-ic '+t.tone+'">'+icon(t.icon)+'</span>'+
+      '<span class="flex1"><span class="tp-name">'+t.label+'</span><span class="tp-desc">'+esc(t.desc)+'</span></span>'+
+      iconInline('chevronRight')+'</button>').join('');
+    openModal({
+      title:'Guided demo',
+      body:'<p class="soft" style="font-size:13.5px;margin:0 0 12px">Pick a walkthrough. Each one switches to the right role and narrates what matters. Free-click exploration keeps working throughout.</p>'+
+        '<div class="tour-picks">'+picks+'</div>',
+      footer:'<button class="btn" data-modal-close>Close</button>',
+      onMount(m){ $$('[data-tour]',m).forEach(b=>b.addEventListener('click',()=>{ const k=b.getAttribute('data-tour'); closeModal(); setTimeout(()=>start(k),60); })); }
+    });
+  }
   function stop(){ active=false; Store.setUI({tourActive:false}, true); const h=host(); h.classList.remove('show'); h.innerHTML=''; }
   window.addEventListener('resize',()=>{ if(active) reposition(); });
   window.addEventListener('scroll',()=>{ if(active) reposition(); }, true);
-  return {start, stop, reposition, get active(){return active;}};
+  return {start, stop, choose, reposition, get active(){return active;}};
 })();
 
 /* ===========================================================================
