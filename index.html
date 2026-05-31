@@ -564,6 +564,84 @@ table.tbl tbody tr.click:hover{background:var(--paper2)}
 .pulse{animation:pulse 1.6s ease infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
 @media(max-width:920px){.shell{grid-template-columns:1fr}.sidebar{display:none}.view{padding:20px}}
+
+/* ============================================================
+   PITCH DECK — full-screen 16:9 presentation
+   ============================================================ */
+.deck-stage{position:fixed;inset:0;z-index:55;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(1200px 700px at 50% -20%, #16314b 0%, #0c1c2c 45%, #081521 100%);overflow:hidden;--dteal:#1bb7a4}
+.deck-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#1bb7a4,#0C7A63);z-index:62;transition:width .45s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 12px rgba(27,183,164,.5)}
+.deck-canvas{width:1280px;height:720px;flex:0 0 auto;transform-origin:center center;border-radius:18px;overflow:hidden;box-shadow:0 50px 130px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.04)}
+.dslide{position:absolute;inset:0;background:
+  radial-gradient(900px 520px at 88% -10%, #eef5f2 0%, transparent 55%),
+  radial-gradient(700px 480px at -8% 115%, #f1ede4 0%, transparent 50%), #fcfcfb;
+  padding:52px 60px;display:flex;flex-direction:column;font-family:var(--sans);color:#102338;overflow:hidden}
+/* deck chrome */
+.deck-bar{position:fixed;left:0;right:0;bottom:16px;display:flex;align-items:center;justify-content:center;gap:16px;z-index:62}
+.deck-nav{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.07);color:#fff;display:grid;place-items:center;cursor:pointer;transition:.15s;backdrop-filter:blur(8px)}
+.deck-nav:hover{background:rgba(255,255,255,.16);transform:scale(1.06)} .deck-nav:disabled{opacity:.3;cursor:default} .deck-nav svg{width:18px;height:18px}
+.deck-dots{display:flex;gap:6px;align-items:center}
+.deck-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.28);border:0;cursor:pointer;transition:.2s;padding:0}
+.deck-dot:hover{background:rgba(255,255,255,.55)} .deck-dot.on{width:24px;border-radius:5px;background:var(--dteal)}
+.deck-dot.apx{background:rgba(255,255,255,.18)} .deck-dot.apx.on{background:#7c8aa0}
+.deck-count{position:fixed;bottom:22px;right:22px;color:rgba(255,255,255,.6);font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:.04em;z-index:62}
+.deck-tools{position:fixed;top:16px;right:16px;display:flex;gap:8px;z-index:62}
+.deck-tool{height:34px;padding:0 12px;border-radius:9px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#fff;font-family:var(--sans);font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:7px;cursor:pointer;transition:.15s;backdrop-filter:blur(8px)}
+.deck-tool:hover{background:rgba(255,255,255,.16)} .deck-tool svg{width:15px;height:15px}
+.deck-hint{position:fixed;bottom:22px;left:22px;color:rgba(255,255,255,.45);font-family:var(--sans);font-size:11.5px;z-index:62}
+.deck-hint kbd{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);border-radius:4px;padding:1px 5px;font-size:10px;margin:0 1px}
+/* overview grid */
+.deck-grid{position:fixed;inset:0;z-index:63;background:rgba(8,21,33,.92);backdrop-filter:blur(6px);display:none;padding:44px;overflow:auto}
+.deck-grid.show{display:block}
+.deck-grid-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;max-width:1200px;margin:0 auto}
+.deck-thumb{position:relative;border-radius:12px;overflow:hidden;cursor:pointer;border:2px solid transparent;background:#fff;aspect-ratio:16/9;transition:.15s}
+.deck-thumb:hover{border-color:var(--dteal);transform:translateY(-3px)}
+.deck-thumb .dt-mini{position:absolute;inset:0;transform-origin:top left}
+.deck-thumb .dt-cap{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(transparent,rgba(8,21,33,.85));color:#fff;font-family:var(--sans);font-size:11px;font-weight:600;padding:18px 9px 7px}
+.deck-thumb .dt-num{position:absolute;top:7px;left:8px;background:rgba(8,21,33,.7);color:#fff;font-family:var(--sans);font-size:10px;font-weight:700;width:20px;height:20px;border-radius:6px;display:grid;place-items:center}
+
+/* ---- slide building blocks ---- */
+.d-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.d-logo{display:flex;align-items:center;gap:11px}
+.d-mark{width:38px;height:38px;flex:0 0 auto}
+.d-word{font-family:var(--sans);font-weight:800;letter-spacing:.2em;font-size:18px;color:#11233a}
+.d-kick{font-family:var(--sans);font-weight:700;letter-spacing:.02em;color:#0e9c8c;font-size:15px}
+.d-title{font-family:var(--sans);font-weight:800;letter-spacing:-.025em;color:#0e2236;font-size:50px;line-height:1.04;margin:0}
+.d-title.sm{font-size:42px} .d-title.lg{font-size:58px}
+.d-title .hl{color:var(--accent)}
+.d-sub{font-family:var(--serif-b);color:#5a6675;font-size:21px;line-height:1.4;margin:10px 0 0}
+.d-body{flex:1;display:flex;flex-direction:column;min-height:0}
+.dc{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 30px rgba(16,39,63,.06);padding:22px 24px}
+.dc.soft{box-shadow:0 6px 20px rgba(16,39,63,.05)}
+.d-icobox{width:54px;height:54px;border-radius:14px;background:var(--accentSoft);color:var(--accent);display:grid;place-items:center;flex:0 0 auto}
+.d-icobox svg{width:26px;height:26px} .d-icobox.navy{background:#e7edf3;color:var(--navy)} .d-icobox.sm{width:44px;height:44px} .d-icobox.sm svg{width:21px;height:21px}
+.d-h{font-family:var(--sans);font-weight:800;font-size:21px;color:#11233a;letter-spacing:-.01em}
+.d-p{font-family:var(--serif-b);font-size:15.5px;color:#64707e;line-height:1.5}
+.d-pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--sans);font-weight:700;font-size:12px;color:#0e9c8c;background:var(--accentSoft);border:1px solid var(--accentLine);border-radius:20px;padding:4px 11px}
+.d-band{background:linear-gradient(120deg,#0e2236,#143752);border-radius:18px;padding:22px 30px;color:#fff;font-family:var(--sans);display:flex;align-items:center;gap:18px}
+.d-band .bq{font-family:var(--serif-d);font-size:46px;color:var(--dteal);line-height:.6;opacity:.8}
+.d-band b{color:#fff} .d-band .ht{color:#3fd4c2;font-weight:800}
+.d-arrow{color:var(--accent);display:grid;place-items:center;flex:0 0 auto}
+.d-arrow svg{width:30px;height:30px;stroke-width:2.4}
+.d-num{width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--sans);font-weight:800;font-size:13px;display:grid;place-items:center;flex:0 0 auto}
+.d-num.hollow{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+.d-chip{font-family:var(--sans);font-weight:600;font-size:12.5px;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:9px;padding:7px 12px;display:inline-flex;align-items:center;gap:7px}
+.d-chip svg{width:14px;height:14px;color:var(--accent)}
+.d-metric{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 24px rgba(16,39,63,.06);padding:18px 20px;border-top:3px solid var(--accent)}
+.d-metric .m-v{font-family:var(--sans);font-weight:800;font-size:30px;color:#11233a;letter-spacing:-.02em;line-height:1}
+.d-metric .m-l{font-family:var(--sans);font-size:13px;color:#6a7585;margin-top:5px;font-weight:600}
+/* stagger animations */
+.dslide .anim{opacity:0;animation:dRise .62s cubic-bezier(.2,.8,.2,1) both}
+.dslide .anim.az{animation-name:dPop}
+@keyframes dRise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes dPop{from{opacity:0;transform:scale(.93)}to{opacity:1;transform:none}}
+.dconn{stroke:var(--accentLine);stroke-width:2;fill:none}
+.dconn.live{stroke:var(--accent)}
+/* mock devices on product slide */
+.d-phone{width:230px;height:466px;background:#0c1620;border-radius:34px;padding:9px;box-shadow:0 30px 70px rgba(8,21,33,.3);flex:0 0 auto}
+.d-phone .ps{width:100%;height:100%;background:#fcfbf8;border-radius:26px;overflow:hidden;display:flex;flex-direction:column}
+.d-web{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 50px rgba(16,39,63,.1);overflow:hidden;display:flex;flex-direction:column}
+@media(max-width:560px){.deck-grid-inner{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
@@ -1259,7 +1337,8 @@ const PERMS = {
   '#/reports':     ['Tenant Admin','Accounting','Auditor','Commission President'],
   '#/audit':       ['Tenant Admin','Auditor','Accounting'],
   '#/access':      ['Tenant Admin','Auditor'],
-  '#/ai':          ['Tenant Admin','Accounting','Auditor','Commission President']
+  '#/ai':          ['Tenant Admin','Accounting','Auditor','Commission President'],
+  '#/pitchdeck':   ROLES
 };
 function canAccess(route){
   const allowed = PERMS[route];
@@ -2289,7 +2368,9 @@ const NAV = [
   {route:'#/access', label:'Access control', icon:'lock'},
   {route:'#/ai', label:'AI insights', icon:'cpu', tag:'AI'},
   {section:'Configure'},
-  {route:'#/setup', label:'Setup & admin', icon:'settings'}
+  {route:'#/setup', label:'Setup & admin', icon:'settings'},
+  {section:'Presentation'},
+  {route:'#/pitchdeck', label:'Pitch deck', icon:'play', tag:'16:9'}
 ];
 
 function markSvg(){
@@ -2511,6 +2592,7 @@ const App = {
     withFocusPreserved(()=>{
       const root=$('#root');
       if(!ui.authed){ root.innerHTML=loginHtml(); wireLogin(); return; }
+      if(ui.route==='#/pitchdeck'){ root.innerHTML=Deck.html(); Deck.mount(); return; }
       if(ui.surface==='mobile'){
         root.innerHTML=topbarHtml()+'<div class="phone-stage" id="phone-stage"></div>'+footerHtml();
       }else{
@@ -4886,6 +4968,359 @@ const Tour=(function(){
   window.addEventListener('resize',()=>{ if(active) reposition(); });
   window.addEventListener('scroll',()=>{ if(active) reposition(); }, true);
   return {start, stop, choose, reposition, get active(){return active;}};
+})();
+
+/* ===========================================================================
+   MODULE: pitch deck — full-screen 16:9 animated presentation (#/pitchdeck)
+   =========================================================================== */
+function deckMark(){
+  return '<svg class="d-mark" viewBox="0 0 48 48" fill="none">'+
+    '<path d="M24 2.6 L43 13.3 V34.7 L24 45.4 L5 34.7 V13.3 Z" stroke="#11233a" stroke-width="2.3"/>'+
+    '<rect x="16" y="15" width="4.6" height="18" rx="1" fill="#11233a"/>'+
+    '<rect x="27.4" y="15" width="4.6" height="18" rx="1" fill="#11233a"/>'+
+    '<rect x="20.6" y="21.5" width="6.8" height="4.6" fill="#1bb7a4"/>'+
+  '</svg>';
+}
+function dHeader(kick, title, sub, cls){
+  return '<div class="anim"><div class="d-logo">'+deckMark()+'<span class="d-word">HORALIX</span></div></div>'+
+    (kick?'<div class="d-kick anim" style="margin-top:15px">'+esc(kick)+'</div>':'')+
+    '<h1 class="d-title '+(cls||'')+' anim" style="margin-top:'+(kick?'5px':'14px')+'">'+title+'</h1>'+
+    (sub?'<p class="d-sub anim">'+sub+'</p>':'')+
+    '<div style="height:18px"></div>';
+}
+function dCard(ic,tone,h,p,extra,delay){
+  return '<div class="dc anim" style="'+(delay||'')+'">'+
+    '<div class="d-icobox '+(tone||'')+'">'+icon(ic)+'</div>'+
+    '<div class="d-h" style="margin-top:14px">'+h+'</div>'+
+    (p?'<div class="d-p" style="margin-top:5px">'+p+'</div>':'')+(extra||'')+'</div>';
+}
+function stg(i){ return 'animation-delay:'+(0.05+0.06*i).toFixed(2)+'s'; }
+
+/* ---- the 16 slides ---- */
+const DECK_SLIDES = [
+// 1 — HERO
+{title:'Naslov', apx:false, build(){
+  const node=(ic,t,sub)=>'<div class="dc" style="padding:11px 13px;display:flex;align-items:center;gap:10px;box-shadow:0 6px 18px rgba(16,39,63,.07)"><div class="d-icobox sm" style="width:36px;height:36px;border-radius:10px">'+icon(ic)+'</div><div><div style="font-family:var(--sans);font-weight:800;font-size:13.5px;color:#11233a">'+t+'</div><div style="font-family:var(--sans);font-size:10.5px;color:#8a94a2">'+sub+'</div></div></div>';
+  const member=(n,r)=>'<div style="display:flex;align-items:center;gap:9px"><span class="avatar sm" style="background:#11233a">'+esc(initials(n))+'</span><div><div style="font-family:var(--sans);font-weight:700;font-size:12.5px;color:#11233a">'+esc(n)+'</div><div style="font-family:var(--sans);font-size:10.5px;color:#8a94a2">'+r+'</div></div></div>';
+  return '<div style="display:grid;grid-template-columns:1.02fr .98fr;gap:34px;flex:1;align-items:center;min-height:0">'+
+    '<div>'+
+      '<div class="d-logo anim">'+deckMark()+'<span class="d-word">HORALIX</span></div>'+
+      '<div class="d-kick anim" style="margin-top:24px">BH TechLab / BH Telecom Pitch</div>'+
+      '<h1 class="d-title lg anim" style="margin-top:8px">Platforma za<br>popis imovine<br>i obaveza</h1>'+
+      '<p class="d-sub anim" style="max-width:430px">Offline-first operativni sloj za zakonski proces popisa</p>'+
+      '<div class="anim" style="display:flex;gap:10px;margin-top:24px;flex-wrap:wrap;'+stg(2)+'">'+
+        '<div class="d-pill" style="padding:8px 14px;font-size:13px">'+icon('clock')+'12 sedmica do pilot-popisa</div>'+
+        '<div class="d-pill" style="padding:8px 14px;font-size:13px">'+icon('database')+'SAP-first bez vendor lock-ina</div>'+
+        '<div class="d-pill" style="padding:8px 14px;font-size:13px">'+icon('trendingUp')+'50% sufinansiranje</div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="anim az" style="'+stg(1)+'"><div style="position:relative;width:520px;height:430px;margin-left:auto;max-width:100%">'+
+      '<svg viewBox="0 0 520 430" style="position:absolute;inset:0;width:100%;height:100%">'+
+        '<circle cx="245" cy="215" r="150" fill="none" stroke="var(--accentLine)" stroke-dasharray="2 7" opacity=".8"/>'+
+        '<path class="dconn live" d="M120 120 C175 120 175 195 200 200"/>'+
+        '<path class="dconn live" d="M120 300 C175 300 175 235 200 232"/>'+
+        '<path class="dconn" d="M345 200 C390 200 380 70 405 70"/>'+
+        '<path class="dconn" d="M348 210 C390 210 385 165 405 165"/>'+
+        '<path class="dconn" d="M348 222 C390 222 385 262 405 262"/>'+
+        '<path class="dconn" d="M345 232 C390 232 380 357 405 357"/>'+
+      '</svg>'+
+      '<div style="position:absolute;left:198px;top:158px;width:150px;height:118px;border-radius:18px;background:#fff;border:1px solid var(--line);box-shadow:0 16px 40px rgba(16,39,63,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">'+deckMark().replace('class="d-mark"','class="d-mark" style="width:34px;height:34px"')+'<div style="font-family:var(--sans);font-weight:800;font-size:11px;letter-spacing:.04em;color:#11233a">PLATFORM CORE</div><div style="font-family:var(--sans);font-size:8.5px;color:#8a94a2;letter-spacing:.04em">ORCHESTRATION</div></div>'+
+      '<div style="position:absolute;left:0;top:96px;width:120px">'+node('database','SAP','data source')+'</div>'+
+      '<div style="position:absolute;left:0;top:276px;width:120px">'+node('fileText','Excel','data source')+'</div>'+
+      '<div style="position:absolute;right:0;top:47px;width:128px">'+node('smartphone','Mobile','field scan')+'</div>'+
+      '<div style="position:absolute;right:0;top:142px;width:128px">'+node('sync','Offline','sync / outbox')+'</div>'+
+      '<div style="position:absolute;right:0;top:239px;width:128px">'+node('shield','Audit','compliance')+'</div>'+
+      '<div style="position:absolute;right:0;top:334px;width:128px">'+node('barChart','Reports','dashboards')+'</div>'+
+    '</div></div>'+
+  '</div>'+
+  '<div class="anim" style="display:flex;gap:40px;padding-top:14px;border-top:1px solid var(--line);margin-top:6px;'+stg(3)+'">'+
+    member('Kerim Šabić','Product / Process / Commercialization')+
+    member('Affan Kapidžić','Architecture / SAP / Security / Sync')+
+    member('Neuman Alkhalil','Web / Reports / Delivery / QA')+
+  '</div>';
+}},
+// 2 — WHAT WE PROVE
+{title:'Šta dokazujemo', build(){
+  const cards=[['gauge','Razumijemo proces','Kerim'],['package','Arhitektura je realna','Affan'],['link','Integracija je riješena','Affan'],['shield','Sigurnost je po dizajnu','Affan'],['clipboard','Isporuka je planirana','Neuman'],['trendingUp','Komercijalno je održivo','Kerim']];
+  return dHeader('','Šta dokazujemo u 15 minuta','Ne ponavljamo aplikaciju. Dokazujemo sposobnost isporuke.')+
+    '<div class="d-body"><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;flex:1">'+
+    cards.map((c,i)=>'<div class="dc anim" style="display:flex;flex-direction:column;'+stg(i)+'"><div class="d-icobox">'+icon(c[0])+'</div>'+
+      '<div class="d-h" style="margin-top:16px;font-size:23px">'+c[1]+'</div>'+
+      '<div style="margin-top:auto;padding-top:16px"><span class="d-pill">'+icon('user')+esc(c[2])+'</span></div></div>').join('')+
+    '</div></div>';
+}},
+// 3 — PROBLEM IS PROCESS
+{title:'Problem je proces', build(){
+  const pains=[['users','Komisije u kratkom roku'],['mapPin','Više lokacija'],['fileText','ERP/Excel ≠ teren'],['hash','Oštećeni kodovi'],['wifiOff','Rad bez mreže'],['clock','Usaglašavanje u roku']];
+  return dHeader('','Problem nije registar — <span class="hl">problem je proces popisa</span>','','sm')+
+    '<div class="d-body"><div style="display:grid;grid-template-columns:1fr 1.05fr;gap:28px;flex:1">'+
+      '<div class="dc anim" style="display:flex;flex-direction:column;background:linear-gradient(160deg,#fff,#f4f8f6)">'+
+        '<div class="d-icobox" style="width:60px;height:60px">'+icon('fileText')+'</div>'+
+        '<div class="d-h" style="margin-top:16px;font-size:24px">Zakonski proces</div>'+
+        '<div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">'+
+          [['clock','Godišnji popis'],['clock','Rokovi'],['barChart','Izvještaji']].map(r=>'<div class="d-chip" style="font-size:14px;padding:11px 14px">'+icon(r[0])+r[1]+'</div>').join('')+
+        '</div></div>'+
+      '<div class="anim" style="display:flex;flex-direction:column;gap:11px;'+stg(1)+'">'+
+        pains.map(p=>'<div class="dc" style="display:flex;align-items:center;gap:13px;padding:14px 18px"><div class="d-icobox sm" style="background:var(--warnSoft);color:var(--warn)">'+icon(p[0])+'</div><div class="d-h" style="font-size:17px">'+p[1]+'</div></div>').join('')+
+      '</div>'+
+    '</div>'+
+    '<div class="d-band anim" style="margin-top:20px;'+stg(2)+'"><span class="bq">“</span><div style="font-size:19px;line-height:1.4"><b>Registar pamti šta biste <span class="ht">trebali imati</span>.</b><br>Mi vodimo proces kojim se dokazuje šta <span class="ht">stvarno postoji</span>.</div></div>'+
+    '</div>';
+}},
+// 4 — WHY NOW
+{title:'Zašto sada', build(){
+  return dHeader('','Zašto sada — zašto BH Telecom','Pravi problem, pravi korisnik, pravi trenutak za zajednički proizvod.')+
+    '<div class="d-body">'+
+    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px">'+
+      dCard('clipboard','','Interna potreba','Zakonski i operativni proces koji se mora riješiti pouzdano.','',stg(0))+
+      dCard('database','navy','Veliki realni sistem','Više lokacija, komisija, osnovnih sredstava i organizacionih jedinica.','',stg(1))+
+      dCard('trendingUp','','Komercijalni potencijal','Ako radi za BH Telecom, može se ponuditi i drugim velikim organizacijama.','',stg(2))+
+    '</div>'+
+    '<div class="anim" style="display:flex;align-items:center;justify-content:center;gap:18px;margin-top:auto;padding-top:14px;'+stg(3)+'">'+
+      '<div class="d-chip" style="font-size:15px;padding:12px 20px">'+icon('search')+'Problem</div>'+
+      '<span class="d-arrow">'+icon('arrowRight')+'</span>'+
+      '<div class="dc" style="padding:14px 22px;border:1.5px solid var(--accentLine);background:var(--accentSoft)"><div class="d-h" style="font-size:17px;color:var(--accent)">Pilot u BH Telecomu</div><div style="font-family:var(--sans);font-size:12px;color:#6a7585">Idealni partner i mjesto dokaza</div></div>'+
+      '<span class="d-arrow">'+icon('arrowRight')+'</span>'+
+      '<div class="d-chip" style="font-size:15px;padding:12px 20px">'+icon('zap')+'Zajednički proizvod</div>'+
+    '</div>'+
+    '<div class="d-band anim" style="margin-top:18px;padding:16px 26px;'+stg(4)+'">'+icon('checkCircle')+'<div style="font-size:16px">BH Telecom je idealan <span class="ht">anchor partner</span>: kompleksan sistem, jasna potreba, strateška vrijednost.</div></div>'+
+    '</div>';
+}},
+// 5 — 12-STEP WORKFLOW
+{title:'Operativni tok', build(){
+  const col=(hd,ic,items,hot)=>'<div class="dc anim" style="flex:1;display:flex;flex-direction:column;'+(hot?'border:2px solid var(--accentLine);box-shadow:0 16px 40px rgba(12,122,99,.12)':'')+'">'+
+    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><div class="d-icobox sm">'+icon(ic)+'</div><div style="font-family:var(--sans);font-weight:800;font-size:14px;letter-spacing:.06em;color:'+(hot?'var(--accent)':'#11233a')+'">'+hd+'</div></div>'+
+    items.map(it=>'<div style="display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid var(--line)"><div class="d-num">'+it[0]+'</div><span style="color:#62707f">'+icon(it[1],'')+'</span><div style="font-family:var(--sans);font-weight:600;font-size:14.5px;color:#1d2c3c">'+it[2]+'</div></div>').join('')+
+    '</div>';
+  return dHeader('','Operativni tok popisa — 12 koraka')+
+    '<div class="d-body"><div style="display:flex;align-items:stretch;gap:14px;flex:1">'+
+      col('PRIPREMA','settings',[[1,'database','Tenant setup'],[2,'upload','ERP/Excel uvoz'],[3,'clock','Ciklus popisa'],[4,'users','Komisije']])+
+      '<div style="display:flex;align-items:center"><span class="d-arrow">'+icon('arrowRight')+'</span></div>'+
+      col('TEREN OFFLINE','smartphone',[[5,'download','Preuzimanje listi'],[6,'hash','Sken QR/bar'],[7,'camera','Status + foto'],[8,'shield','Lokalna validacija']],true)+
+      '<div style="display:flex;align-items:center"><span class="d-arrow">'+icon('arrowRight')+'</span></div>'+
+      col('ZATVARANJE','checkCircle',[[9,'sync','Sinhronizacija'],[10,'inbox','Conflict Inbox'],[11,'barChart','Izvještaji'],[12,'database','Povrat u ERP']])+
+    '</div></div>';
+}},
+// 6 — PRODUCT / DEMO
+{title:'Kako izgleda', build(){
+  const arow=(t,chip,cc)=>'<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border:1px solid var(--line);border-radius:9px;margin-bottom:6px;background:#fff"><span style="font-family:var(--sans);font-size:10.5px;font-weight:600;color:#1d2c3c">'+t+'</span><span class="chip '+cc+'" style="font-size:8.5px;padding:2px 7px">'+chip+'</span></div>';
+  const kpi=(l,v,c)=>'<div style="background:var(--paper2);border:1px solid var(--line);border-radius:9px;padding:8px 9px"><div style="font-family:var(--sans);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#8a94a2">'+l+'</div><div style="font-family:var(--sans);font-weight:800;font-size:18px;color:'+c+'">'+v+'</div></div>';
+  return dHeader('','Kako to izgleda u praksi')+
+    '<div class="d-body"><div style="display:grid;grid-template-columns:250px 1fr;gap:30px;flex:1;align-items:center">'+
+      '<div class="d-phone anim az"><div class="ps">'+
+        '<div style="padding:10px 14px;border-bottom:1px solid var(--line)"><div style="font-family:var(--sans);font-weight:800;font-size:13px;color:#11233a">Spremno za offline rad</div><div style="font-family:var(--sans);font-size:10px;color:#8a94a2">Komisija 3 · 12 događaja čeka sync</div></div>'+
+        '<div style="padding:11px 13px;flex:1;overflow:hidden">'+
+          '<button style="width:100%;background:var(--accent);color:#fff;border:0;border-radius:11px;padding:11px;font-family:var(--sans);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:11px">'+icon('camera')+'Skeniraj kod</button>'+
+          arow('INV-004821 · Laptop','Zatečeno','green')+arow('INV-004907 · Switch','Oštećeno','amber')+arow('INV-004862 · Router','Manjak','red')+arow('INV-004933 · Stolica','Zatečeno','green')+
+        '</div>'+
+        '<div style="padding:8px;border-top:1px solid var(--line);display:flex;justify-content:space-around;color:#8a94a2">'+icon('list')+icon('camera')+icon('sync')+'</div>'+
+      '</div></div>'+
+      '<div class="d-web anim" style="'+stg(1)+'">'+
+        '<div style="padding:13px 18px;border-bottom:1px solid var(--line);background:rgba(252,251,248,.7)"><div style="font-family:var(--sans);font-weight:800;font-size:16px;color:#11233a">Radni sto predsjednika popisa</div></div>'+
+        '<div style="padding:16px 18px;flex:1">'+
+          '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">'+kpi('Dodijeljeno','250','#11233a')+kpi('Skenirano','63','var(--accent)')+kpi('Preostalo','187','var(--navy)')+kpi('Konflikti','2','var(--gold)')+'</div>'+
+          '<div style="border:1px solid var(--line);border-radius:10px;overflow:hidden">'+
+            [['Komisija 1','88%','green'],['Komisija 2','64%','amber'],['Komisija 3','41%','navy']].map(r=>'<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line);font-family:var(--sans);font-size:13px"><span style="font-weight:600;color:#1d2c3c">'+r[0]+'</span><span class="chip '+r[2]+'" style="font-size:10px">'+r[1]+'</span></div>').join('')+
+          '</div>'+
+          '<div style="display:flex;gap:8px;margin-top:14px">'+['Conflict Inbox','Excel / PDF','Audit trail'].map(c=>'<span class="d-chip" style="font-size:11.5px">'+c+'</span>').join('')+'</div>'+
+        '</div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="anim" style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;'+stg(2)+'"><div style="font-family:var(--sans);font-size:12.5px;color:#8a94a2">Demonstracioni prototip — produkcijski sistem kroz fazni plan isporuke</div>'+
+      '<button id="deck-livedemo" style="background:#11233a;color:#fff;border:0;border-radius:10px;padding:11px 18px;font-family:var(--sans);font-weight:700;font-size:13px;display:inline-flex;align-items:center;gap:8px;cursor:pointer">'+icon('play')+'Otvori živi demo</button></div>'+
+    '</div>';
+}},
+// 7 — TEAM
+{title:'Tim', build(){
+  const mem=(n,role,pts)=>'<div class="dc anim" style="display:flex;flex-direction:column;'+'">'+
+    '<div style="display:flex;align-items:center;gap:13px"><span class="avatar lg" style="background:#11233a;width:48px;height:48px;font-size:17px">'+esc(initials(n))+'</span><div><div class="d-h" style="font-size:20px">'+esc(n)+'</div><div style="font-family:var(--sans);font-weight:700;font-size:12.5px;color:var(--accent)">'+role+'</div></div></div>'+
+    '<div style="margin-top:16px;display:flex;flex-direction:column;gap:9px">'+pts.map(p=>'<div style="display:flex;gap:9px;align-items:flex-start;font-family:var(--sans);font-size:13.5px;color:#4a5663"><span style="color:var(--accent);margin-top:1px">'+icon('checkCircle','ic-sm')+'</span>'+p+'</div>').join('')+'</div></div>';
+  return dHeader('','Zašto Horalix može ovo isporučiti','Svaka kritična komponenta ima vlasnika — mi već gradimo i isporučujemo stvarne sisteme.')+
+    '<div class="d-body"><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;flex:1">'+
+      mem('Kerim Šabić','Product / Process / Commercialization',['Vodi proizvod i poslovni tok','Kontroliše scope, komunikaciju i pilot','Fokus na isporuku i komercijalizaciju'])+
+      mem('Affan Kapidžić','Architecture / SAP / Security / Sync',['Vodi arhitekturu i integracije','Rješava najteže tehničke rizike','Fokus na sigurnost i pouzdanost'])+
+      mem('Neuman Alkhalil','Web / Reports / Delivery / QA',['Vodi portal, izvještaje i QA','Osigurava isporuku i validaciju','Fokus na kvalitet i završetak pilota'])+
+    '</div>'+
+    '<div class="anim" style="display:flex;gap:9px;flex-wrap:wrap;margin-top:18px;'+stg(3)+'">'+
+      [['zap','Realni deploymenti'],['shield','Pilot u ASA Bolnici'],['cpu','Production software'],['database','ERP / SAP integration'],['smartphone','Offline-first mobile & dashboards']].map(c=>'<span class="d-chip">'+icon(c[0])+c[1]+'</span>').join('')+
+    '</div></div>';
+}},
+// 8 — ARCHITECTURE
+{title:'Arhitektura', build(){
+  const blk=(ic,t,s,dark)=>'<div style="flex:1;border-radius:13px;padding:13px 15px;display:flex;align-items:center;gap:11px;'+(dark?'background:#11233a;color:#fff':'background:#fff;border:1px solid var(--line);box-shadow:0 6px 18px rgba(16,39,63,.05)')+'"><span style="color:'+(dark?'var(--dteal)':'var(--accent)')+'">'+icon(ic)+'</span><div><div style="font-family:var(--sans);font-weight:800;font-size:14.5px;color:'+(dark?'#fff':'#11233a')+'">'+t+'</div>'+(s?'<div style="font-family:var(--sans);font-size:10.5px;color:'+(dark?'rgba(255,255,255,.55)':'#8a94a2')+'">'+s+'</div>':'')+'</div></div>';
+  const lay=(lab,ic,blocks,d)=>'<div class="anim" style="display:flex;align-items:stretch;gap:14px;'+d+'"><div style="width:150px;flex:0 0 auto;display:flex;align-items:center;gap:9px"><div class="d-icobox sm">'+icon(ic)+'</div><div style="font-family:var(--sans);font-weight:800;font-size:12.5px;letter-spacing:.08em;color:#11233a">'+lab+'</div></div><div style="flex:1;display:flex;gap:12px">'+blocks+'</div></div>';
+  return dHeader('','Sistemska arhitektura')+
+    '<div class="d-body" style="justify-content:center;gap:16px">'+
+      lay('KLIJENTI','users',blk('home','Web portal','React / Vite / TS')+blk('smartphone','Mobile app','React Native / Expo')+blk('lock','Keycloak / OIDC','AD/LDAP · MFA · RBAC'),stg(0))+
+      '<div class="anim" style="display:flex;justify-content:center;color:var(--accentLine);'+stg(1)+'">'+icon('chevronDown')+'</div>'+
+      lay('BACKEND','database',blk('zap','FastAPI','',1)+blk('database','PostgreSQL + RLS','',1)+blk('package','Redis + workeri','',1)+blk('box','MinIO','',1),stg(2))+
+      '<div class="anim" style="display:flex;justify-content:center;color:var(--accentLine);'+stg(3)+'">'+icon('chevronDown')+'</div>'+
+      lay('INTEGRACIJA','link','<div style="flex:1;background:#11233a;color:#fff;border-radius:13px;padding:14px 18px;display:flex;align-items:center;gap:12px"><span style="color:var(--dteal)">'+icon('link')+'</span><div style="font-family:var(--sans);font-weight:800;font-size:16px">SAP-first, ERP-agnostičan adapter</div><div style="margin-left:auto;display:flex;gap:8px">'+['OData','BAPI/RFC','Excel/CSV'].map(x=>'<span style="background:rgba(255,255,255,.1);border-radius:7px;padding:5px 10px;font-family:var(--sans);font-size:11px;font-weight:600">'+x+'</span>').join('')+'</div></div>',stg(4))+
+      '<div class="anim" style="display:flex;justify-content:flex-end;'+stg(5)+'"><span class="d-chip" style="background:var(--accentSoft);border-color:var(--accentLine);color:#0a5e4c">'+icon('database')+'BH Telecom Cloud ili on-prem</span></div>'+
+    '</div>';
+}},
+// 9 — OFFLINE SYNC
+{title:'Offline sync', build(){
+  const node=(ic,t,hot)=>'<div style="flex:1;text-align:center"><div style="height:96px;border-radius:14px;border:1px solid '+(hot?'var(--accentLine)':'var(--line)')+';background:'+(hot?'var(--accentSoft)':'#fff')+';box-shadow:0 8px 22px rgba(16,39,63,.06);display:grid;place-items:center;color:'+(hot?'var(--accent)':'#11233a')+'">'+icon(ic).replace('class="ic"','class="ic" style="width:34px;height:34px"')+'</div><div style="font-family:var(--sans);font-weight:700;font-size:13px;color:#1d2c3c;margin-top:9px">'+t+'</div></div>';
+  const ar='<div style="display:flex;align-items:center;color:#11233a;padding-bottom:24px">'+icon('arrowRight')+'</div>';
+  const call=(ic,t,tone)=>'<div style="display:inline-flex;align-items:center;gap:7px;border:1px solid '+(tone==='warn'?'#e7d9a8':'var(--accentLine)')+';background:'+(tone==='warn'?'var(--warnSoft)':'var(--accentSoft)')+';border-radius:9px;padding:6px 11px;font-family:var(--sans);font-size:11.5px;font-weight:600;color:'+(tone==='warn'?'var(--warn)':'#0a5e4c')+'">'+icon(ic,'ic-sm')+t+'</div>';
+  return dHeader('','Offline sinhronizacija bez gubitka unosa')+
+    '<div class="d-body">'+
+      '<div class="anim" style="display:flex;align-items:flex-start;gap:6px">'+node('smartphone','Uređaj')+ar+node('inbox','Local Outbox')+ar+node('sync','Sync API')+ar+node('database','Server')+ar+node('checkCircle','ACK',true)+ar+node('box','Clear confirmed')+'</div>'+
+      '<div class="anim" style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;'+stg(1)+'">'+call('hash','event UUID')+call('lock','idempotency key')+call('alert','resume after network interruption','warn')+call('users','Conflict Inbox','warn')+'</div>'+
+      '<div class="anim" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:auto;padding-top:18px;'+stg(2)+'">'+
+        [['gauge','UI ne čeka mrežu'],['shield','Outbox se ne briše bez ACK-a'],['users','Konflikti se ne skrivaju']].map(c=>'<div class="dc" style="display:flex;align-items:center;gap:13px"><div class="d-icobox sm">'+icon(c[0])+'</div><div class="d-h" style="font-size:17px">'+c[1]+'</div></div>').join('')+
+      '</div>'+
+    '</div>';
+}},
+// 10 — SAP INTEGRATION
+{title:'Integracija', build(){
+  const src=(ic,t,s,d)=>'<div class="dc anim" style="display:flex;align-items:center;gap:13px;'+d+'"><div class="d-icobox sm '+(ic==='database'?'':'')+'">'+icon(ic)+'</div><div><div class="d-h" style="font-size:17px">'+t+'</div><div style="font-family:var(--sans);font-size:11.5px;color:#8a94a2">'+s+'</div></div></div>';
+  return dHeader('','SAP / ERP / Excel integracija bez vendor lock-ina','','sm')+
+    '<div class="d-body"><div style="display:grid;grid-template-columns:1fr 60px 1fr 60px .9fr;align-items:center;gap:0;flex:1">'+
+      '<div style="display:flex;flex-direction:column;gap:13px">'+src('database','SAP OData','Standardni API pristup',stg(0))+src('package','SAP BAPI/RFC','Pouzdan enterprise pristup',stg(1))+src('fileText','Excel/CSV','Fleksibilan uvoz podataka',stg(2))+'</div>'+
+      '<div class="anim" style="display:flex;justify-content:center;color:var(--accent);'+stg(2)+'">'+icon('arrowRight')+'</div>'+
+      '<div class="anim az" style="background:#11233a;border-radius:18px;padding:24px;text-align:center;color:#fff;'+stg(1)+'"><div style="width:54px;height:54px;margin:0 auto;border-radius:14px;background:rgba(27,183,164,.15);display:grid;place-items:center;color:var(--dteal)">'+icon('link')+'</div><div style="font-family:var(--sans);font-weight:800;font-size:20px;margin-top:12px">Integracijski adapter</div><div style="font-family:var(--serif-b);font-style:italic;font-size:13px;color:var(--dteal);margin-top:2px">deklarativni mapping</div><div style="display:flex;justify-content:center;gap:14px;margin-top:16px">'+[['fileText','Mapiranje bez koda'],['sync','Validacija'],['shield','Audit trag']].map(x=>'<div style="font-family:var(--sans);font-size:9.5px;color:rgba(255,255,255,.7)"><div style="color:var(--dteal);margin-bottom:4px">'+icon(x[0],'ic-sm')+'</div>'+x[1]+'</div>').join('')+'</div></div>'+
+      '<div class="anim" style="display:flex;justify-content:center;color:var(--accent);'+stg(3)+'">'+icon('arrowRight')+'</div>'+
+      '<div class="dc anim" style="'+stg(2)+'"><div class="d-h" style="font-size:17px;text-align:center;margin-bottom:10px">Interni model</div>'+[['box','sredstva'],['mapPin','lokacije'],['users','komisije'],['clock','događaji'],['shield','audit']].map(x=>'<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-family:var(--sans);font-size:14px;color:#1d2c3c"><span style="color:var(--accent)">'+icon(x[0],'ic-sm')+'</span>'+x[1]+'</div>').join('')+'</div>'+
+    '</div>'+
+    '<div class="d-band anim" style="margin-top:18px;justify-content:center;'+stg(4)+'">'+icon('shield')+'<div style="font-size:16px;text-align:center">Povrat rezultata u SAP kroz finansijski review red — <span class="ht">NE auto-post</span></div></div>'+
+    '</div>';
+}},
+// 11 — SECURITY
+{title:'Sigurnost', build(){
+  const card=(ic,t,s,d)=>'<div class="dc anim" style="display:flex;align-items:center;gap:18px;'+d+'"><div class="d-icobox navy" style="width:60px;height:60px">'+icon(ic)+'</div><div><div class="d-h" style="font-size:22px">'+t+'</div><div style="font-family:var(--sans);font-size:14px;color:#7a8492;margin-top:3px">'+s+'</div></div></div>';
+  return dHeader('','Sigurnost, izolacija i audit — po dizajnu')+
+    '<div class="d-body"><div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;flex:1">'+
+      card('package','Tenant izolacija','PostgreSQL RLS',stg(0))+card('lock','Identitet i pristup','Keycloak/OIDC · AD/LDAP · MFA',stg(1))+
+      card('smartphone','Podaci na uređaju','SQLCipher · AES-256',stg(2))+card('shield','Audit i revizija','Append-only audit · SIEM-ready',stg(3))+
+    '</div>'+
+    '<div class="d-band anim" style="margin-top:20px;justify-content:center;'+stg(4)+'">'+icon('database')+'<div style="font-size:16px">Deployment na <span class="ht">BH Telecom Cloud</span> ili on-prem — osjetljivi podaci ostaju pod kontrolom</div></div>'+
+    '</div>';
+}},
+// 12 — DELIVERY PLAN
+{title:'Plan isporuke', build(){
+  const ph=[['target?','Sedmica 1','Discovery & scope lock','search'],['','Sedmice 2–3','Architecture & core','package'],['','Sedmice 4–5','Web portal','home'],['','Sedmice 6–7','Mobile offline + sync','smartphone'],['','Sedmice 8–9','ERP/Excel + reports','barChart'],['','Sedmice 10–12','UAT, pilot & handover','shield']];
+  return dHeader('','Plan isporuke — 12 sedmica do kontrolisanog pilot-popisa','','sm')+
+    '<div class="d-body">'+
+      '<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:13px">'+ph.map((p,i)=>'<div class="dc anim" style="text-align:center;padding:16px 12px;border-top:3px solid var(--accent);'+stg(i)+'"><div class="d-icobox" style="margin:0 auto;width:46px;height:46px">'+icon(p[3])+'</div><div style="font-family:var(--sans);font-weight:700;font-size:11.5px;color:var(--accent);margin-top:11px">'+p[1]+'</div><div style="font-family:var(--sans);font-weight:800;font-size:14px;color:#11233a;margin-top:3px;line-height:1.2">'+p[2]+'</div></div>').join('')+'</div>'+
+      '<div class="anim" style="position:relative;height:30px;margin:14px 6px 0;'+stg(2)+'"><div style="position:absolute;left:0;right:0;top:14px;height:2px;background:var(--line)"></div>'+[0,1,2,3,4,5,6,7,8,9,10,11].map((n,i)=>'<div style="position:absolute;top:8px;left:'+(i/11*100)+'%;transform:translateX(-50%);width:13px;height:13px;border-radius:50%;background:'+([0,2,4,6,8,11].indexOf(i)>=0?'var(--accent)':'#fff')+';border:2px solid '+([0,2,4,6,8,11].indexOf(i)>=0?'var(--accent)':'#c9d2da')+'"></div>').join('')+'</div>'+
+      '<div class="anim" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:auto;padding-top:18px;'+stg(3)+'">'+
+        [['refresh','Demo svake 2 sedmice'],['shield','Staging/UAT prije produkcije'],['filter','Must-have se štiti, opcionalno pada prvo']].map(c=>'<div class="dc" style="display:flex;align-items:center;gap:13px"><div class="d-icobox sm">'+icon(c[0]==='filter'?'filter':c[0])+'</div><div class="d-h" style="font-size:16px">'+c[1]+'</div></div>').join('')+
+      '</div>'+
+    '</div>';
+}},
+// 13 — RISK CONTROL
+{title:'Rizici', build(){
+  const pairs=[['SAP pristup','Discovery + test okruženje + Excel fallback'],['Sync konflikti','Outbox + idempotency + Conflict Inbox'],['Loši master-podaci','Validacija prije uvoza'],['Izgubljen uređaj','Šifrovano lokalno skladište'],['Tenant leakage','RLS + cross-tenant testovi'],['Scope creep','MoSCoW + change request'],['Usvajanje korisnika','Offline-first UX + obuka']];
+  return dHeader('','Rizici koje kontrolišemo','','sm')+
+    '<div class="d-body">'+
+      '<div style="display:grid;grid-template-columns:1fr 44px 1.2fr;gap:8px 0;align-items:center">'+
+        '<div style="font-family:var(--sans);font-weight:800;font-size:12px;letter-spacing:.06em;color:var(--warn);display:flex;align-items:center;gap:8px;padding-bottom:4px">'+icon('alert','ic-sm')+'RIZICI</div><div></div><div style="font-family:var(--sans);font-weight:800;font-size:12px;letter-spacing:.06em;color:var(--accent);display:flex;align-items:center;gap:8px;padding-bottom:4px">'+icon('shield','ic-sm')+'KAKO IH KONTROLIŠEMO</div>'+
+        pairs.map((p,i)=>'<div class="anim" style="background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 14px;font-family:var(--sans);font-weight:700;font-size:14px;color:#1d2c3c;display:flex;align-items:center;gap:9px;'+stg(i*0.5)+'"><span style="color:var(--warn)">'+icon('alert','ic-sm')+'</span>'+p[0]+'</div>'+
+          '<div class="anim" style="display:flex;align-items:center;justify-content:center;color:var(--accent);'+stg(i*0.5)+'">'+icon('arrowRight','ic-sm')+'</div>'+
+          '<div class="anim" style="background:var(--accentSoft);border:1px solid var(--accentLine);border-radius:10px;padding:9px 14px;font-family:var(--sans);font-weight:600;font-size:13.5px;color:#0a5e4c;display:flex;align-items:center;gap:9px;'+stg(i*0.5)+'"><span>'+icon('checkCircle','ic-sm')+'</span>'+p[1]+'</div>').join('')+
+      '</div>'+
+      '<div class="d-band anim" style="margin-top:16px;'+stg(4)+'"><span class="bq">“</span><div style="font-size:18px;line-height:1.4">Ne pobjeđuje tim koji obećava najviše funkcija, nego tim koji najbolje <span class="ht">kontroliše rizike isporuke</span>.</div></div>'+
+    '</div>';
+}},
+// 14 — COMMERCIALIZATION
+{title:'Komercijalizacija', build(){
+  const m=(v,l,d)=>'<div class="d-metric anim" style="'+d+'"><div class="m-v">'+v+'</div><div class="m-l">'+l+'</div></div>';
+  const step=(t)=>'<div class="d-chip" style="font-size:13.5px;padding:11px 16px;font-weight:700;color:#11233a">'+t+'</div>';
+  return dHeader('','Komercijalizacija sa BH Telecomom')+
+    '<div class="d-body">'+
+      '<div style="font-family:var(--sans);font-weight:700;font-size:14px;color:var(--accent);margin-bottom:12px">BH Telecom kao sidreni korisnik</div>'+
+      '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">'+m('9','regionalnih direkcija',stg(0))+m('76','prodajnih mjesta',stg(1))+m('1.623','LTE baznih stanica',stg(2))+m('1,28 mlrd','KM aktiva',stg(3))+'</div>'+
+      '<div class="anim" style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:24px;flex-wrap:wrap;'+stg(4)+'">'+step('Referentni korisnik')+icon('arrowRight','ic-sm')+step('B2B / SaaS katalog')+icon('arrowRight','ic-sm')+step('FusionX eDIH')+icon('arrowRight','ic-sm')+step('Javni sektor i regija')+'</div>'+
+      '<div class="anim" style="text-align:center;margin-top:14px;font-family:var(--sans);font-size:12.5px;color:#8a94a2;'+stg(5)+'">Starter · Professional · Enterprise · setup + pretplata</div>'+
+      '<div class="d-band anim" style="margin-top:auto;justify-content:center;'+stg(6)+'"><div style="font-size:20px;font-weight:800;text-align:center">Spremni smo u discovery fazi sa BH Telecom timom <span class="ht">zaključati obim i krenuti</span>.</div></div>'+
+    '</div>';
+}},
+// 15 — APPENDIX 1: deployments
+{title:'Deploymenti', apx:true, build(){
+  const card=(t,tag,sub,d)=>'<div class="dc anim" style="display:flex;flex-direction:column;'+d+'"><div class="d-icobox">'+icon('zap')+'</div><div class="d-h" style="margin-top:14px;font-size:21px">'+t+'</div><div class="d-pill" style="margin-top:8px;align-self:flex-start">'+tag+'</div><div class="d-p" style="margin-top:10px">'+sub+'</div></div>';
+  return dHeader('Appendix','Deploymenti i iskustvo isporuke')+
+    '<div class="d-body"><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;flex:1">'+
+      card('CardiologyAI','Production deploymenti','Dr Nabil · ASA Bolnica · UKC Maribor · Muscat Hospital',stg(0))+
+      card('SmartBed AI','Deployed pilot','ASA Bolnica',stg(1))+
+      card('Antibiotic AI','Production software','Clinical workflow product',stg(2))+
+    '</div>'+
+    '<div class="anim" style="display:flex;gap:9px;flex-wrap:wrap;margin-top:18px;'+stg(3)+'">'+['Production systems','ERP / SAP integration','Offline-first mobile apps','Enterprise dashboards','Real user environments'].map(c=>'<span class="d-chip">'+icon('checkCircle')+c+'</span>').join('')+'</div></div>';
+}},
+// 16 — APPENDIX 2: deep tech
+{title:'Deep-dive', apx:true, build(){
+  const b=(ic,t,dark)=>'<div style="border-radius:11px;padding:11px 13px;display:flex;align-items:center;gap:9px;'+(dark?'background:#11233a;color:#fff':'background:#fff;border:1px solid var(--line)')+'"><span style="color:'+(dark?'var(--dteal)':'var(--accent)')+'">'+icon(ic,'ic-sm')+'</span><span style="font-family:var(--sans);font-weight:700;font-size:12.5px;color:'+(dark?'#fff':'#11233a')+'">'+t+'</span></div>';
+  const zone=(lab,inner,d)=>'<div class="anim" style="border:1.5px dashed var(--accentLine);border-radius:14px;padding:14px;'+d+'"><div style="font-family:var(--sans);font-weight:800;font-size:11px;letter-spacing:.06em;color:var(--accent);margin-bottom:10px">'+lab+'</div><div style="display:flex;gap:10px;flex-wrap:wrap">'+inner+'</div></div>';
+  return dHeader('Appendix','Tehnički deep-dive — deployment, sync i sigurnosne granice','','sm')+
+    '<div class="d-body" style="gap:14px;justify-content:center">'+
+      zone('CLIENT ZONE',b('home','Web portal')+b('smartphone','Mobile app')+b('lock','Local encrypted storage (SQLCipher)'),stg(0))+
+      '<div class="anim" style="text-align:center;color:var(--accentLine);'+stg(1)+'">'+icon('chevronDown')+'</div>'+
+      zone('SERVICE ZONE',b('zap','Sync API')+b('package','Backend services')+b('database','PostgreSQL + RLS',1)+b('package','Redis / workers',1)+b('box','MinIO',1)+b('lock','Keycloak / OIDC'),stg(2))+
+      '<div class="anim" style="text-align:center;color:var(--accentLine);'+stg(3)+'">'+icon('chevronDown')+'</div>'+
+      zone('INTEGRATION & TRUST BOUNDARY',b('link','SAP / Excel adapter',1)+b('shield','Audit / monitoring')+b('database','BH Telecom Cloud / on-prem'),stg(4))+
+    '</div>';
+}}
+];
+
+const Deck = (function(){
+  let i=0;
+  function fit(){ const c=$('#deck-canvas'); if(!c)return; const s=Math.min((window.innerWidth-48)/1280,(window.innerHeight-92)/720); c.style.transform='scale('+Math.max(.2,s)+')'; }
+  function html(){
+    return '<div class="deck-stage" id="deck-stage">'+
+      '<div class="deck-progress" id="deck-progress"></div>'+
+      '<div class="deck-tools">'+
+        '<button class="deck-tool" id="deck-grid-btn">'+icon('dashboard')+'Pregled</button>'+
+        '<button class="deck-tool" id="deck-fs">'+icon('eye')+'Fullscreen</button>'+
+        '<button class="deck-tool" id="deck-exit">'+icon('x')+'Izlaz</button>'+
+      '</div>'+
+      '<div class="deck-canvas" id="deck-canvas"><div class="dslide" id="dslide"></div></div>'+
+      '<div class="deck-bar">'+
+        '<button class="deck-nav" id="deck-prev">'+icon('chevronRight','')+'</button>'+
+        '<div class="deck-dots" id="deck-dots"></div>'+
+        '<button class="deck-nav" id="deck-next">'+icon('chevronRight')+'</button>'+
+      '</div>'+
+      '<div class="deck-count" id="deck-count"></div>'+
+      '<div class="deck-hint"><kbd>←</kbd><kbd>→</kbd> slajdovi · <kbd>F</kbd> fullscreen · <kbd>O</kbd> pregled · <kbd>Esc</kbd> izlaz</div>'+
+      '<div class="deck-grid" id="deck-grid"><div class="deck-grid-inner" id="deck-grid-inner"></div></div>'+
+    '</div>';
+  }
+  function mount(){ fit(); render();
+    $('#deck-prev').addEventListener('click',prev); $('#deck-next').addEventListener('click',next);
+    $('#deck-exit').addEventListener('click',exit); $('#deck-fs').addEventListener('click',toggleFs);
+    $('#deck-grid-btn').addEventListener('click',toggleGrid);
+    $('#deck-prev').querySelector('svg').style.transform='rotate(180deg)';
+  }
+  function render(){
+    const sl=DECK_SLIDES[i]; const host=$('#dslide'); if(!host)return;
+    host.innerHTML=sl.build();   /* fresh .anim elements auto-play their CSS keyframes */
+    // dots
+    const dots=$('#deck-dots'); if(dots) dots.innerHTML=DECK_SLIDES.map((s,n)=>'<button class="deck-dot'+(s.apx?' apx':'')+(n===i?' on':'')+'" data-d="'+n+'" title="'+esc(s.title)+'"></button>').join('');
+    $$('#deck-dots [data-d]').forEach(b=>b.addEventListener('click',()=>go(parseInt(b.getAttribute('data-d'),10))));
+    const cnt=$('#deck-count'); if(cnt) cnt.textContent=(i+1)+' / '+DECK_SLIDES.length;
+    const pr=$('#deck-progress'); if(pr) pr.style.width=((i+1)/DECK_SLIDES.length*100)+'%';
+    $('#deck-prev').disabled=(i===0); $('#deck-next').disabled=(i===DECK_SLIDES.length-1);
+    const ld=$('#deck-livedemo'); if(ld) ld.addEventListener('click',()=>{ exit(); setTimeout(()=>{ navigate('#/dashboard'); toast({type:'info',title:'Živi demo',msg:'Ovo je stvarna aplikacija — probajte “Guided demo”.'}); },80); });
+  }
+  function go(n){ i=clamp(n,0,DECK_SLIDES.length-1); render(); }
+  function next(){ if(i<DECK_SLIDES.length-1) go(i+1); }
+  function prev(){ if(i>0) go(i-1); }
+  function exit(){ if(document.fullscreenElement){ try{document.exitFullscreen();}catch(e){} } navigate('#/dashboard'); }
+  function toggleFs(){ const el=$('#deck-stage'); if(!document.fullscreenElement){ try{ el.requestFullscreen(); }catch(e){} } else { try{ document.exitFullscreen(); }catch(e){} } }
+  function toggleGrid(){ const g=$('#deck-grid'); if(!g)return; const showing=g.classList.toggle('show');
+    if(showing){ g.querySelector('#deck-grid-inner').innerHTML=DECK_SLIDES.map((s,n)=>'<div class="deck-thumb" data-t="'+n+'"><div class="dt-num">'+(n+1)+'</div><div class="dt-cap">'+esc(s.title)+'</div></div>').join('');
+      $$('#deck-grid [data-t]').forEach(b=>b.addEventListener('click',()=>{ g.classList.remove('show'); go(parseInt(b.getAttribute('data-t'),10)); })); } }
+  function onKey(e){
+    if($('#deck-grid') && $('#deck-grid').classList.contains('show')){ if(e.key==='Escape'||e.key==='o'||e.key==='O'){ $('#deck-grid').classList.remove('show'); } return; }
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){ e.preventDefault(); next(); }
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){ e.preventDefault(); prev(); }
+    else if(e.key==='Home'){ go(0); } else if(e.key==='End'){ go(DECK_SLIDES.length-1); }
+    else if(e.key==='Escape'){ exit(); } else if(e.key==='f'||e.key==='F'){ toggleFs(); } else if(e.key==='o'||e.key==='O'){ toggleGrid(); }
+  }
+  // module-level listeners (active only on the deck route)
+  document.addEventListener('keydown',e=>{ if(Store.get && Store.get() && Store.get().ui.route==='#/pitchdeck' && Store.get().ui.authed) onKey(e); });
+  window.addEventListener('resize',()=>{ if(Store.get && Store.get() && Store.get().ui.route==='#/pitchdeck') fit(); });
+  return {html, mount, go, fit, get index(){return i;}};
 })();
 
 /* ===========================================================================
