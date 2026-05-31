@@ -245,6 +245,32 @@ table.tbl.rbac td:last-child,table.tbl.rbac th:last-child{border-right:0}
 .rbac-no{color:var(--faint);opacity:.45;display:inline-grid;place-items:center} .rbac-no svg{width:13px;height:13px}
 table.tbl.rbac .me{background:var(--accentSoft)}
 table.tbl.rbac thead th.me{background:#dcefe8;color:#0a5e4c}
+/* SAP Fiori launchpad */
+.fiori-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(192px,1fr));gap:14px}
+.ftile{background:#fff;border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow-sm);transition:.16s;overflow:hidden}
+.ftile:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.ftile.navy{border-top-color:var(--navy)} .ftile.gold{border-top-color:var(--gold)} .ftile.danger{border-top-color:var(--danger)} .ftile.accent{border-top-color:var(--accent)}
+.ftile .ft-lab{font-family:var(--sans);font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--faint)}
+.ftile .ft-val{font-family:var(--serif-d);font-size:25px;font-weight:600;line-height:1}
+.ftile .ft-sub{font-family:var(--sans);font-size:11px;color:var(--faint);margin-top:3px}
+.ftile .ft-chart{margin-top:10px;height:38px}
+.widget-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;align-items:start}
+@media(max-width:1100px){.widget-grid{grid-template-columns:1fr}}
+.widget{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-sm);overflow:hidden}
+.widget-h{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line)}
+.widget-h h4{font-size:14px;display:flex;align-items:center;gap:8px;color:var(--ink)} .widget-h h4 svg{color:var(--soft)}
+.widget-b{padding:14px 16px}
+.widget-rm{background:transparent;border:0;color:var(--faint);cursor:pointer;width:26px;height:26px;border-radius:7px;display:grid;place-items:center}
+.widget-rm:hover{background:var(--dangerSoft);color:var(--danger)} .widget-rm svg{width:15px;height:15px}
+.add-tile{border:1.5px dashed #d8d2c6;background:var(--paper2);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:150px;cursor:pointer;color:var(--faint);font-family:var(--sans);font-weight:600;font-size:13px;transition:.15s}
+.add-tile:hover{border-color:var(--accent);color:var(--accent);background:var(--accentSoft)}
+.add-tile .add-ic{width:42px;height:42px;border-radius:11px;background:#fff;border:1px solid var(--line);display:grid;place-items:center} .add-tile:hover .add-ic{border-color:var(--accentLine)} .add-tile .add-ic svg{width:20px;height:20px}
+.catalog{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:560px){.catalog{grid-template-columns:1fr}}
+.cat-item{display:flex;gap:11px;align-items:flex-start;border:1px solid var(--line);border-radius:11px;padding:11px 12px;cursor:pointer;text-align:left;background:#fff;transition:.13s}
+.cat-item:hover{border-color:var(--accentLine);box-shadow:var(--shadow-sm)}
+.cat-item.added{opacity:.55;pointer-events:none}
+.cat-ic{width:34px;height:34px;border-radius:9px;background:var(--accentSoft);color:var(--accent);display:grid;place-items:center;flex:0 0 auto} .cat-ic svg{width:17px;height:17px}
 
 /* chips */
 .chip{display:inline-flex;align-items:center;gap:5px;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.02em;padding:3px 9px;border-radius:20px;border:1px solid transparent;white-space:nowrap;line-height:1.5}
@@ -888,6 +914,7 @@ function seedData(){
           gateway:'https://sap-gw.bhtelecom.ba/sap/opu/odata', rfcUser:'RFC_HORALIX',
           documents:[], callLog:[], deltas:[], deadLetter:[],
           schedule:{ window:'02:00–03:00 CET', enabled:true },
+          dashboard:['assets-by-class','nbv-by-category','value-by-location','recent-calls'],
           seq:{belnr:4900000001, anln:5200} },
     masterImported:true,            // pre-imported so register has data
     events:[],                      // server-received immutable events
@@ -3171,44 +3198,119 @@ function doReleaseToSap(id){
 SCREENS['#/sync']=screenSync;
 
 /* ---------- SAP CONSOLE (read-only view of the simulated SAP ERP) ---------- */
+/* ---- Fiori-style micro-charts & widget primitives ---- */
+const SAP_PALETTE=['var(--navy)','var(--accent)','var(--gold)','var(--danger)','#6a8199','#caa24a','#13937a','#244563','#b5563f'];
+function svgMiniBars(values,color){ values=values.filter(v=>!isNaN(v)); const w=120,h=38,n=values.length||1,bw=w/n,max=Math.max(1,...values); let b='';
+  values.forEach((v,i)=>{ const bh=Math.max(2,(v/max)*(h-2)); b+='<rect x="'+(i*bw+1.5)+'" y="'+(h-bh)+'" width="'+Math.max(1,bw-3)+'" height="'+bh+'" rx="2" fill="'+color+'" opacity="'+(0.5+0.5*(v/max)).toFixed(2)+'"/>'; });
+  return '<svg viewBox="0 0 '+w+' '+h+'" width="100%" height="38" preserveAspectRatio="none">'+b+'</svg>'; }
+function svgMiniDonut(pct,color){ pct=clamp(pct||0,0,100); const r=15,c=2*Math.PI*r,off=c*(1-pct/100);
+  return '<svg width="44" height="44" viewBox="0 0 44 44"><circle cx="22" cy="22" r="15" fill="none" stroke="var(--paper2)" stroke-width="5"/><circle cx="22" cy="22" r="15" fill="none" stroke="'+color+'" stroke-width="5" stroke-linecap="round" stroke-dasharray="'+c+'" stroke-dashoffset="'+off+'" transform="rotate(-90 22 22)"/><text x="22" y="25" text-anchor="middle" font-size="10" font-family="Archivo,sans-serif" font-weight="700" fill="var(--soft)">'+Math.round(pct)+'</text></svg>'; }
+function fioriTile(o){
+  return '<div class="ftile '+(o.tone||'')+'"><div class="ft-lab">'+esc(o.lab)+'</div>'+
+    '<div class="row between" style="align-items:flex-end;margin-top:5px"><div><div class="ft-val">'+o.val+'</div><div class="ft-sub">'+esc(o.sub||'')+'</div></div>'+
+    (o.donut!=null?'<div style="flex:0 0 auto">'+svgMiniDonut(o.donut,o.donutColor||'var(--accent)')+'</div>':'')+'</div>'+
+    (o.chart?'<div class="ft-chart">'+o.chart+'</div>':'')+'</div>';
+}
+function donutLegend(segs, center){
+  segs=segs.filter(s=>s.value>0);
+  if(!segs.length) return '<div class="muted ui center" style="font-size:12.5px;padding:28px 0">No data yet</div>';
+  return '<div class="row gap16" style="align-items:center"><div style="position:relative;flex:0 0 auto">'+svgDonut(segs,126)+
+    (center?'<div style="position:absolute;inset:0;display:grid;place-items:center"><div style="text-align:center"><div style="font-family:var(--serif-d);font-size:17px;font-weight:600;line-height:1">'+center.big+'</div><div class="muted ui" style="font-size:9px">'+esc(center.small)+'</div></div></div>':'')+'</div>'+
+    '<div class="flex1" style="min-width:0">'+segs.map(m=>'<div class="row between" style="font-family:var(--sans);font-size:12px;padding:2.5px 0;gap:8px"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:'+m.color+';margin-right:7px"></span>'+esc(m.label)+'</span><b style="white-space:nowrap">'+(m.display||m.value)+'</b></div>').join('')+'</div></div>';
+}
+function widgetTable(cols,rows){
+  return '<div class="tbl-wrap" style="border:0;box-shadow:none;max-height:300px"><table class="tbl"><thead><tr>'+cols.map((c,i)=>'<th'+(i>0?' style="text-align:right"':'')+'>'+esc(c)+'</th>').join('')+'</tr></thead><tbody>'+
+    (rows.length?rows.map(r=>'<tr>'+r.map((c,i)=>i===0?'<td class="mono" style="font-size:12px">'+esc(c)+'</td>':'<td class="tnum" style="text-align:right">'+esc(c)+'</td>').join('')+'</tr>').join(''):'<tr><td colspan="'+cols.length+'" class="muted">No rows</td></tr>')+'</tbody></table></div>';
+}
+function widgetList(items){
+  if(!items.length) return '<div class="muted ui center" style="font-size:12.5px;padding:28px 0">Empty</div>';
+  return '<div style="max-height:300px;overflow:auto">'+items.map(it=>'<div class="row between" style="padding:8px 0;border-bottom:1px solid var(--line);align-items:flex-start;gap:8px"><div class="row gap8" style="min-width:0">'+(it.ic||'')+'<div style="min-width:0"><div style="font-size:12.5px;font-weight:600;font-family:var(--sans);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+it.left+'</div><div class="muted ui" style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(it.sub||'')+'</div></div></div><div style="text-align:right;font-size:11px;flex:0 0 auto">'+(it.right||'')+'</div></div>').join('')+'</div>';
+}
+const SAP_WIDGETS={
+  'assets-by-class':{title:'Assets by class',icon:'database',desc:'Count of fixed assets per ANLKL class (bar)',render(s){
+    const g={}; s.assets.forEach(a=>{ const k=(a.asset_class.split('·')[1]||a.asset_class).trim(); g[k]=(g[k]||0)+1; });
+    return svgVBars(Object.keys(g).map(k=>({label:k,short:k.split(' ')[0],value:g[k],color:'var(--navy)'})),{}); }},
+  'master-apc-by-class':{title:'Capitalized value by class',icon:'database',desc:'Gross APC per class (bar)',render(s){
+    const g={}; s.assets.forEach(a=>{ const k=(a.asset_class.split('·')[1]||a.asset_class).trim(); g[k]=(g[k]||0)+(a.acquisition_value||a.book_value); });
+    return svgVBars(Object.keys(g).map(k=>({label:k,short:k.split(' ')[0],value:Math.round(g[k]),color:'var(--navy)'})),{fmt:v=>Math.round(v/1000)+'k'}); }},
+  'nbv-by-category':{title:'Net book value by category',icon:'barChart',desc:'NBV distribution (donut)',render(s){
+    const g={}; s.assets.forEach(a=>{ const k=Sel.catName(a.category); g[k]=(g[k]||0)+a.book_value; });
+    const total=Object.values(g).reduce((a,b)=>a+b,0);
+    return donutLegend(Object.keys(g).map((k,i)=>({label:k,value:Math.round(g[k]),display:fmtMoney(g[k]),color:SAP_PALETTE[i%SAP_PALETTE.length]})),{big:Math.round(total/1000)+'k',small:'KM NBV'}); }},
+  'value-by-location':{title:'Capitalized value by directorate',icon:'mapPin',desc:'APC by location (bar)',render(s){
+    const g={}; s.locations.filter(l=>l.type==='directorate').forEach(d=>g[d.city]=0);
+    s.assets.forEach(a=>{ const dl=Sel.loc(a.location_id); const dir=dl&&dl.parent_id; const dd=Sel.loc(dir); const c=dd&&dd.city; if(c)g[c]=(g[c]||0)+(a.acquisition_value||a.book_value); });
+    return svgVBars(Object.keys(g).map(k=>({label:k,short:k,value:Math.round(g[k]),color:'var(--accent)'})),{fmt:v=>Math.round(v/1000)+'k'}); }},
+  'top-cost-centers':{title:'Top cost centers',icon:'hash',desc:'Highest NBV by KOSTL (table)',render(s){
+    const g={}; s.assets.forEach(a=>{ g[a.cost_center]=g[a.cost_center]||{n:0,v:0}; g[a.cost_center].n++; g[a.cost_center].v+=a.book_value; });
+    const rows=Object.keys(g).map(k=>({k,n:g[k].n,v:g[k].v})).sort((a,b)=>b.v-a.v).slice(0,6).map(x=>[x.k.split(' · ')[0],x.n,fmtMoney(x.v)]);
+    return widgetTable(['Cost center','Assets','NBV'],rows); }},
+  'deprec-by-category':{title:'Accumulated depreciation',icon:'trendingDown',desc:'By category (bar)',render(s){
+    const g={}; s.assets.forEach(a=>{ const k=Sel.catName(a.category); g[k]=(g[k]||0)+(a.accumulated_depreciation||0); });
+    return svgVBars(Object.keys(g).map(k=>({label:k,short:k.split(' ')[0],value:Math.round(g[k]),color:'var(--gold)'})),{fmt:v=>Math.round(v/1000)+'k'}); }},
+  'assets-by-status':{title:'Assets by status',icon:'box',desc:'Inventory status mix (donut)',render(s){
+    const g={}; s.assets.forEach(a=>g[a.status]=(g[a.status]||0)+1);
+    const col={registered:'var(--faint)',counted:'var(--accent)',shortage:'var(--danger)',conflict:'var(--gold)',damaged:'#caa24a','written-off':'#b5563f'};
+    return donutLegend(Object.keys(g).map(k=>({label:(STATUS_CHIP[k]&&STATUS_CHIP[k].t)||k,value:g[k],color:col[k]||'var(--navy)'})),{big:s.assets.length,small:'assets'}); }},
+  'docs-by-type':{title:'SAP documents by type',icon:'fileText',desc:'Posted BELNR by doctype (donut)',render(s){
+    const g={}; s.sap.documents.forEach(d=>g[d.doctype]=(g[d.doctype]||0)+1);
+    return donutLegend(Object.keys(g).map((k,i)=>({label:k,value:g[k],color:SAP_PALETTE[i%SAP_PALETTE.length]})),{big:s.sap.documents.length,small:'docs'}); }},
+  'document-log':{title:'Document log (BELNR)',icon:'fileText',desc:'Posted FI/CO documents (table)',render(s){
+    return widgetTable(['BELNR','Tx','Amount'], s.sap.documents.slice(0,8).map(d=>[d.belnr,d.txCode,fmtMoney(d.amount)])); }},
+  'recent-calls':{title:'Interface log',icon:'sync',desc:'RFC / BAPI / OData calls (list)',render(s){
+    return widgetList(s.sap.callLog.slice(0,8).map(c=>({ic:'<span class="sap-dir '+(c.dir==='in'?'in':'out')+'">'+icon(c.dir==='in'?'download':'upload')+'</span>',left:esc(c.name),sub:esc(c.summary||''),right:'<span class="chip '+(/OK|200|COMMIT|authenticated/.test(c.status)?'green':'grey')+'" style="font-size:9.5px">'+esc(c.status)+'</span>'}))); }},
+  'inbound-deltas':{title:'Inbound master deltas',icon:'download',desc:'SAP → platform changes (list)',render(s){
+    return widgetList(s.sap.deltas.slice(0,8).map(d=>({left:esc(d.asset),sub:esc(d.field+': '+d.old+' → '+d.new),right:timeAgo(d.ts)}))); }},
+  'asset-age':{title:'Asset age profile',icon:'clock',desc:'Assets by acquisition age (bar)',render(s){
+    const buckets={'<1y':0,'1–3y':0,'3–6y':0,'6y+':0}; const day=86400000;
+    s.assets.forEach(a=>{ const y=(Date.now()-a.acquired)/(365*day); if(y<1)buckets['<1y']++; else if(y<3)buckets['1–3y']++; else if(y<6)buckets['3–6y']++; else buckets['6y+']++; });
+    return svgVBars(Object.keys(buckets).map(k=>({label:k,short:k,value:buckets[k],color:'var(--accent)'})),{}); }}
+};
+api.sapAddWidget=function(id){ Store.commit(s=>{ if(SAP_WIDGETS[id] && s.sap.dashboard.indexOf(id)<0) s.sap.dashboard.push(id); }); };
+api.sapRemoveWidget=function(id){ Store.commit(s=>{ s.sap.dashboard=s.sap.dashboard.filter(x=>x!==id); }); };
+function renderSapWidget(id){ const w=SAP_WIDGETS[id]; if(!w)return ''; let body=''; try{ body=w.render(Store.get()); }catch(e){ body='<div class="muted ui" style="padding:14px">—</div>'; }
+  return '<div class="widget fade-in"><div class="widget-h"><h4>'+icon(w.icon,'ic-md')+esc(w.title)+'</h4><button class="widget-rm" data-rm="'+id+'" title="Remove tile" aria-label="Remove">'+icon('x')+'</button></div><div class="widget-b">'+body+'</div></div>'; }
+function openSapCatalog(){
+  const dash=Store.get().sap.dashboard;
+  openModal({ title:'Add an analytics tile',
+    body:'<p class="soft" style="font-size:13px;margin-top:0;margin-bottom:14px">Build your own SAP dashboard — pick the tables and charts you want to see. Live data, no code.</p>'+
+      '<div class="catalog">'+Object.keys(SAP_WIDGETS).map(id=>{ const w=SAP_WIDGETS[id]; const added=dash.indexOf(id)>=0;
+        return '<button class="cat-item'+(added?' added':'')+'" data-add="'+id+'"><span class="cat-ic">'+icon(w.icon)+'</span><span style="min-width:0"><span style="display:block;font-family:var(--sans);font-weight:700;font-size:13px;color:var(--ink)">'+esc(w.title)+(added?' ✓':'')+'</span><span style="display:block;font-size:11.5px;color:var(--faint)">'+esc(w.desc)+'</span></span></button>'; }).join('')+'</div>',
+    footer:'<button class="btn primary" data-modal-close>Done</button>',
+    onMount(m){ $$('[data-add]',m).forEach(b=>b.addEventListener('click',()=>{ const id=b.getAttribute('data-add'); if(Store.get().sap.dashboard.indexOf(id)>=0)return; api.sapAddWidget(id); toast({type:'ok',title:'Tile added',msg:SAP_WIDGETS[id].title}); b.classList.add('added'); b.querySelector('span span').textContent=SAP_WIDGETS[id].title+' ✓'; })); }
+  });
+}
 function screenSap(view){
-  const s=Store.get(); const st=api.sapStatus(); const docs=s.sap.documents; const calls=s.sap.callLog;
-  const pendingRelease=s.postings.filter(p=>!p.posted).length;
+  const s=Store.get(), st=api.sapStatus();
+  const nbvByCat=Object.values((function(){const g={};s.assets.forEach(a=>{g[a.category]=(g[a.category]||0)+a.book_value;});return g;})());
+  const depByCat=Object.values((function(){const g={};s.assets.forEach(a=>{g[a.category]=(g[a.category]||0)+(a.accumulated_depreciation||0);});return g;})());
+  const classCnt=Object.values((function(){const g={};s.assets.forEach(a=>{const k=(a.asset_class.split('·')[1]||a.asset_class).trim();g[k]=(g[k]||0)+1;});return g;})());
+  const docsByType=Object.values((function(){const g={};s.sap.documents.forEach(d=>g[d.doctype]=(g[d.doctype]||0)+1);return g;})());
+  const nbvPct=st.capital?Math.round(st.nbv/st.capital*100):0;
+  const tiles=
+    fioriTile({lab:'Fixed assets',val:'<span class="tnum">'+fmtNum(st.master)+'</span>',sub:'asset master · AS03',tone:'navy',chart:svgMiniBars(classCnt,'var(--navy)')})+
+    fioriTile({lab:'Capitalized · APC',val:fmtMoney(st.capital),sub:'gross acquisition value',tone:'accent',donut:nbvPct,donutColor:'var(--accent)'})+
+    fioriTile({lab:'Net book value',val:fmtMoney(st.nbv),sub:nbvPct+'% of APC',tone:'accent',chart:svgMiniBars(nbvByCat,'var(--accent)')})+
+    fioriTile({lab:'Accum. depreciation',val:fmtMoney(st.capital-st.nbv),sub:'ordinary depreciation',tone:'gold',chart:svgMiniBars(depByCat,'var(--gold)')})+
+    fioriTile({lab:'Documents posted',val:'<span class="tnum">'+fmtNum(st.documents)+'</span>',sub:'FI/CO · BELNR',tone:'gold',chart:svgMiniBars(docsByType.length?docsByType:[0,0,0],'var(--gold)')})+
+    fioriTile({lab:'Retired in SAP',val:'<span class="tnum">'+fmtNum(st.retired)+'</span>',sub:'via ABAVN',tone:st.retired?'danger':'navy',chart:svgMiniBars([s.assets.filter(a=>a.sapStatus==='active'||!a.sapStatus).length, st.retired, s.assets.filter(a=>a.sapStatus==='impaired').length],st.retired?'var(--danger)':'var(--navy)')});
+  const dash=s.sap.dashboard||[];
+  const widgets=dash.map(renderSapWidget).join('')+
+    '<button class="add-tile" id="sap-add"><span class="add-ic">'+icon('plus')+'</span>Add analytics tile</button>';
   view.innerHTML=
     pageHead('SAP ERP <span class="chip gold" style="vertical-align:middle;margin-left:8px;font-size:10px">SIMULATED</span>',
-      'The system of record. This is a simulated SAP ERP running in-browser — the platform reads master data from here and returns approved postings under human control.',
-      '<span class="tag-immutable">'+icon('database')+'system of record</span>')+
-    '<div class="callout navy mb20">'+icon('database')+'<div><b>'+esc(st.system)+'</b> · client <b>'+st.client+'</b> · company code <b>'+st.companyCode+'</b> · service user <span class="mono">RFC_HORALIX</span> · <span style="color:var(--accent)">●</span> connected</div></div>'+
-    '<div class="grid g4 mb20">'+
-      kpi('Fixed assets','<span class="tnum">'+fmtNum(st.master)+'</span>','asset master (AS03)','navy','database')+
-      kpi('Capitalized (APC)',fmtMoney(st.capital),'NBV '+fmtMoney(st.nbv),'accent','barChart')+
-      kpi('Documents posted','<span class="tnum">'+fmtNum(st.documents)+'</span>','FI/CO BELNR',st.documents?'gold':'navy','fileText')+
-      kpi('Retired in SAP','<span class="tnum">'+fmtNum(st.retired)+'</span>','via ABAVN',st.retired?'danger':'navy','trendingDown')+
-    '</div>'+
-    '<div class="grid" style="grid-template-columns:1.35fr 1fr;align-items:start">'+
-      // document log
-      '<div class="card"><div class="card-h"><h3>'+icon('fileText')+' Document log</h3><span class="muted ui" style="font-size:11px">BKPF / ANEP · newest first</span></div>'+
-        (docs.length?
-          '<div class="tbl-wrap" style="border:0;box-shadow:none"><table class="tbl"><thead><tr><th>BELNR</th><th>Document type</th><th>Tx</th><th>Asset</th><th style="text-align:right">Amount</th><th>Posted</th></tr></thead><tbody>'+
-          docs.map(d=>'<tr><td class="mono">'+esc(d.belnr)+'</td>'+
-            '<td><span class="chip '+sapDocTone(d.klass)+'" style="font-size:10px">'+esc(d.doctype)+'</span></td>'+
-            '<td class="mono">'+esc(d.txCode)+'</td><td class="mono" style="font-size:12px">'+esc(d.asset)+'</td>'+
-            '<td class="tnum" style="text-align:right">'+fmtMoney(d.amount)+'</td>'+
-            '<td style="font-size:11.5px;white-space:nowrap">'+fmtDate(d.date)+'<div class="muted ui" style="font-size:10px">'+esc(d.byUser)+'</div></td></tr>').join('')+
-          '</tbody></table></div>'
-          : emptyState('fileText','No documents posted yet','Approve a financial exception, prepare a candidate in ERP Sync, then click “Release to SAP”. Documents (BELNR) will appear here.','<button class="btn primary sm" data-go="#/sync">'+icon('database')+'Go to ERP Sync</button>'))+
-      '</div>'+
-      // call log
-      '<div class="card"><div class="card-h"><h3>'+icon('sync')+' Interface log</h3><span class="muted ui" style="font-size:11px">RFC · BAPI · OData</span></div>'+
-        '<div class="card-b" style="max-height:520px;overflow:auto">'+
-          calls.map(c=>'<div class="row gap8" style="padding:9px 0;border-bottom:1px solid var(--line);align-items:flex-start">'+
-            '<span class="sap-dir '+(c.dir==='in'?'in':'out')+'" title="'+(c.dir==='in'?'platform → SAP':'SAP ← platform')+'">'+icon(c.dir==='in'?'download':'upload')+'</span>'+
-            '<div class="flex1"><div class="mono" style="font-size:12px;color:var(--ink)">'+esc(c.name)+'</div>'+
-              '<div class="muted ui" style="font-size:11px">'+esc(c.summary||'')+'</div></div>'+
-            '<div style="text-align:right"><span class="chip '+(/OK|200|authenticated|COMMIT/.test(c.status)?'green':'grey')+'" style="font-size:10px">'+esc(c.status)+'</span>'+
-              '<div class="muted ui" style="font-size:10px;margin-top:3px">'+timeAgo(c.ts)+'</div></div></div>').join('')+
-        '</div></div>'+
-    '</div>'+ disclaimerNote();
+      'SAP Fiori-style launchpad over the system of record. Smart tiles for live KPIs, plus a dashboard you build yourself.',
+      '<button class="btn navy" id="sap-add2">'+icon('plus')+'Add tile</button>'+
+      '<span class="tag-immutable">'+icon('database','')+'system of record</span>')+
+    '<div class="callout navy mb20">'+icon('database')+'<div><b>'+esc(st.system)+'</b> · client <b>'+st.client+'</b> · company code <b>'+st.companyCode+'</b> · service user <span class="mono">RFC_HORALIX</span> · <span style="color:var(--accent)">●</span> connected · <a data-go="#/integration">integration health →</a></div></div>'+
+    '<div class="fiori-tiles mb24">'+tiles+'</div>'+
+    '<div class="row between mb12"><h3 style="font-size:16px;display:flex;align-items:center;gap:8px">'+icon('barChart','ic-md')+'My SAP analytics</h3>'+
+      '<span class="muted ui" style="font-size:11.5px">'+dash.length+' tiles · click <b>+</b> to add, <b>×</b> to remove</span></div>'+
+    '<div class="widget-grid" id="sap-widgets">'+widgets+'</div>'+
+    disclaimerNote();
+  const a1=$('#sap-add'); if(a1)a1.addEventListener('click',openSapCatalog);
+  const a2=$('#sap-add2'); if(a2)a2.addEventListener('click',openSapCatalog);
+  $$('#sap-widgets [data-rm]').forEach(b=>b.addEventListener('click',()=>{ api.sapRemoveWidget(b.getAttribute('data-rm')); toast({type:'info',msg:'Tile removed.'}); }));
 }
 function sapDocTone(klass){
   return {shortage:'red','value-change':'red',surplus:'gold','metadata-diff':'grey'}[klass]||'navy';
