@@ -5176,36 +5176,51 @@ const DECK_SLIDES = [
 }},
 // 4 — WHY NOW
 {title:'Zašto sada', build(){
+  const arg=(ic,h,p,foot,tone,d)=>'<div class="dc anim" style="display:flex;flex-direction:column;border-top:3px solid '+(tone==='navy'?'var(--navy)':'var(--accent)')+';padding:20px 22px;'+d+'">'+
+    '<div class="d-icobox sm '+(tone==='navy'?'navy':'')+'">'+icon(ic)+'</div>'+
+    '<div class="d-h" style="margin-top:13px;font-size:20px">'+h+'</div>'+
+    '<div class="d-p" style="margin-top:7px;font-size:14.5px;flex:1">'+p+'</div>'+
+    '<div style="margin-top:13px;border-top:1px solid var(--line);padding-top:10px;display:flex;align-items:center;gap:8px;font-family:var(--sans);font-size:11.5px;font-weight:700;color:'+(tone==='navy'?'var(--navy)':'var(--accent)')+'">'+icon('checkCircle','ic-sm')+foot+'</div>'+
+  '</div>';
+  const conn='<div style="display:flex;align-items:center;width:42px;flex:0 0 auto"><div class="flowh"><span class="fl-dot"></span><span class="fl-dot" style="animation-delay:.7s"></span></div></div>';
   return dHeader('','Zašto sada — zašto BH Telecom','Pravi problem, pravi korisnik, pravi trenutak za zajednički proizvod.')+
-    '<div class="d-body">'+
+    '<div class="d-body" style="justify-content:center;gap:26px">'+
     '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px">'+
-      dCard('clipboard','','Interna potreba','Zakonski i operativni proces koji se mora riješiti pouzdano.','',stg(0))+
-      dCard('database','navy','Veliki realni sistem','Više lokacija, komisija, osnovnih sredstava i organizacionih jedinica.','',stg(1))+
-      dCard('trendingUp','','Komercijalni potencijal','Ako radi za BH Telecom, može se ponuditi i drugim velikim organizacijama.','',stg(2))+
+      arg('clipboard','Interna potreba','Zakonski i operativni proces koji se mora riješiti pouzdano.','Zakonska obaveza','',stg(0))+
+      arg('database','Veliki realni sistem','Više lokacija, komisija, osnovnih sredstava i organizacionih jedinica.','Realna kompleksnost','navy',stg(1))+
+      arg('trendingUp','Komercijalni potencijal','Ako radi za BH Telecom, može se ponuditi i drugim velikim organizacijama.','Ponovljiv proizvod','',stg(2))+
     '</div>'+
-    '<div class="anim" style="display:flex;align-items:center;justify-content:center;gap:18px;margin-top:auto;padding-top:14px;'+stg(3)+'">'+
-      '<div class="d-chip" style="font-size:15px;padding:12px 20px">'+icon('search')+'Problem</div>'+
-      '<span class="d-arrow">'+icon('arrowRight')+'</span>'+
-      '<div class="dc" style="padding:14px 22px;border:1.5px solid var(--accentLine);background:var(--accentSoft)"><div class="d-h" style="font-size:17px;color:var(--accent)">Pilot u BH Telecomu</div><div style="font-family:var(--sans);font-size:12px;color:#6a7585">Idealni partner i mjesto dokaza</div></div>'+
-      '<span class="d-arrow">'+icon('arrowRight')+'</span>'+
-      '<div class="d-chip" style="font-size:15px;padding:12px 20px">'+icon('zap')+'Zajednički proizvod</div>'+
+    '<div class="anim" style="display:flex;align-items:center;justify-content:center;gap:6px;'+stg(3)+'">'+
+      '<div class="d-chip" style="font-size:14.5px;padding:12px 20px">'+icon('search')+'Problem</div>'+
+      conn+
+      '<div class="dc" style="position:relative;padding:15px 28px;border:2px solid var(--accent);background:var(--accentSoft);box-shadow:0 14px 36px rgba(12,122,99,.24)">'+
+        '<div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-family:var(--sans);font-weight:800;font-size:9px;letter-spacing:.1em;padding:3px 11px;border-radius:20px">ANCHOR</div>'+
+        '<div class="d-h" style="font-size:18px;color:var(--accent)">Pilot u BH Telecomu</div>'+
+        '<div style="font-family:var(--sans);font-size:12px;color:#0a5e4c">Idealni partner i mjesto dokaza</div>'+
+      '</div>'+
+      conn+
+      '<div class="d-chip" style="font-size:14.5px;padding:12px 20px">'+icon('zap')+'Zajednički proizvod</div>'+
     '</div>'+
-    '<div class="d-band anim" style="margin-top:18px;padding:16px 26px;'+stg(4)+'">'+icon('checkCircle')+'<div style="font-size:16px">BH Telecom je idealan <span class="ht">anchor partner</span>: kompleksan sistem, jasna potreba, strateška vrijednost.</div></div>'+
+    '<div class="d-band anim" style="padding:16px 28px;'+stg(4)+'">'+icon('checkCircle')+'<div style="font-size:17px">BH Telecom je idealan <span class="ht">anchor partner</span> — jasna potreba, realni sistem, strateška vrijednost.</div></div>'+
     '</div>';
 }},
 // 5 — 12-STEP WORKFLOW
 {title:'Operativni tok', build(){
-  const col=(hd,ic,items,hot)=>'<div class="dc anim" style="flex:1;display:flex;flex-direction:column;'+(hot?'border:2px solid var(--accentLine);box-shadow:0 16px 40px rgba(12,122,99,.12)':'')+'">'+
-    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><div class="d-icobox sm">'+icon(ic)+'</div><div style="font-family:var(--sans);font-weight:800;font-size:14px;letter-spacing:.06em;color:'+(hot?'var(--accent)':'#11233a')+'">'+hd+'</div></div>'+
-    items.map(it=>'<div style="display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid var(--line)"><div class="d-num">'+it[0]+'</div><span style="color:#62707f">'+icon(it[1],'')+'</span><div style="font-family:var(--sans);font-weight:600;font-size:14.5px;color:#1d2c3c">'+it[2]+'</div></div>').join('')+
+  const col=(hd,ic,items,foot,hot,d)=>'<div class="dc anim" style="flex:1;display:flex;flex-direction:column;padding:18px 18px;'+(hot?'border:2px solid var(--accent);box-shadow:0 18px 46px rgba(12,122,99,.16)':'')+';'+d+'">'+
+    '<div style="display:flex;align-items:center;gap:10px"><div class="d-icobox sm'+(hot?'':' navy')+'">'+icon(ic)+'</div><div><div style="font-family:var(--sans);font-weight:800;font-size:13.5px;letter-spacing:.05em;color:'+(hot?'var(--accent)':'#11233a')+'">'+hd+'</div>'+(hot?'<div style="font-family:var(--sans);font-size:10px;font-weight:700;color:var(--accent)">diferencijator proizvoda</div>':'')+'</div></div>'+
+    '<div style="flex:1;display:flex;flex-direction:column;justify-content:space-around;margin:8px 0">'+
+      items.map(it=>'<div style="display:flex;align-items:center;gap:11px"><div class="d-num" style="width:25px;height:25px;font-size:11.5px">'+it[0]+'</div><span style="color:#62707f;display:flex">'+icon(it[1],'ic-sm')+'</span><div style="font-family:var(--sans);font-weight:600;font-size:14px;color:#1d2c3c">'+it[2]+'</div></div>').join('')+
+    '</div>'+
+    '<div style="border-top:1px solid var(--line);padding-top:9px;font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.01em;color:'+(hot?'var(--accent)':'#8a94a2')+'">'+foot+'</div>'+
     '</div>';
-  return dHeader('','Operativni tok popisa — 12 koraka')+
-    '<div class="d-body"><div style="display:flex;align-items:stretch;gap:14px;flex:1">'+
-      col('PRIPREMA','settings',[[1,'database','Tenant setup'],[2,'upload','ERP/Excel uvoz'],[3,'clock','Ciklus popisa'],[4,'users','Komisije']])+
-      '<div style="display:flex;align-items:center"><span class="d-arrow">'+icon('arrowRight')+'</span></div>'+
-      col('TEREN OFFLINE','smartphone',[[5,'download','Preuzimanje listi'],[6,'hash','Sken QR/bar'],[7,'camera','Status + foto'],[8,'shield','Lokalna validacija']],true)+
-      '<div style="display:flex;align-items:center"><span class="d-arrow">'+icon('arrowRight')+'</span></div>'+
-      col('ZATVARANJE','checkCircle',[[9,'sync','Sinhronizacija'],[10,'inbox','Conflict Inbox'],[11,'barChart','Izvještaji'],[12,'database','Povrat u ERP']])+
+  const conn='<div style="display:flex;align-items:center;width:30px;flex:0 0 auto"><div class="flowh"><span class="fl-dot"></span><span class="fl-dot" style="animation-delay:.7s"></span></div></div>';
+  return dHeader('','Operativni tok popisa — 12 koraka','Od pripreme podataka do validiranog povrata u ERP — bez izgubljenih unosa.')+
+    '<div class="d-body"><div style="display:flex;align-items:stretch;gap:8px;flex:1">'+
+      col('PRIPREMA','settings',[[1,'database','Tenant setup'],[2,'upload','ERP/Excel uvoz'],[3,'clock','Ciklus popisa'],[4,'users','Komisije']],'Tenant, podaci i komisije spremni',false,stg(0))+
+      conn+
+      col('TEREN OFFLINE','smartphone',[[5,'download','Preuzimanje listi'],[6,'hash','Sken QR/bar'],[7,'camera','Status + foto'],[8,'shield','Lokalna validacija']],'Radi bez mreže — ništa se ne gubi',true,stg(1))+
+      conn+
+      col('ZATVARANJE','checkCircle',[[9,'sync','Sinhronizacija'],[10,'inbox','Conflict Inbox'],[11,'barChart','Izvještaji'],[12,'database','Povrat u ERP']],'Validiran povrat u ERP',false,stg(2))+
     '</div></div>';
 }},
 // 6 — PRODUCT / DEMO
@@ -5278,15 +5293,15 @@ const DECK_SLIDES = [
 }},
 // 9 — OFFLINE SYNC
 {title:'Offline sync', build(){
-  const node=(ic,t,hot)=>'<div style="flex:1;text-align:center"><div style="height:88px;border-radius:14px;border:1px solid '+(hot?'var(--accentLine)':'var(--line)')+';background:'+(hot?'var(--accentSoft)':'#fff')+';box-shadow:0 8px 22px rgba(16,39,63,.06);display:grid;place-items:center;color:'+(hot?'var(--accent)':'#11233a')+'">'+icon(ic).replace('class="ic"','class="ic" style="width:32px;height:32px"')+'</div><div style="font-family:var(--sans);font-weight:700;font-size:13px;color:#1d2c3c;margin-top:8px">'+t+'</div></div>';
-  const ar='<div class="anim" style="display:flex;align-items:center;padding-bottom:22px;width:38px;flex:0 0 auto"><div class="flowh"><span class="fl-dot"></span><span class="fl-dot" style="animation-delay:.7s"></span></div></div>';
-  const call=(ic,t,tone)=>'<div style="display:inline-flex;align-items:center;gap:7px;border:1px solid '+(tone==='warn'?'#e7d9a8':'var(--accentLine)')+';background:'+(tone==='warn'?'var(--warnSoft)':'var(--accentSoft)')+';border-radius:9px;padding:6px 11px;font-family:var(--sans);font-size:11.5px;font-weight:600;color:'+(tone==='warn'?'var(--warn)':'#0a5e4c')+'">'+icon(ic,'ic-sm')+t+'</div>';
-  return dHeader('','Offline sinhronizacija bez gubitka unosa')+
-    '<div class="d-body">'+
-      '<div class="anim" style="display:flex;align-items:flex-start;gap:6px">'+node('smartphone','Uređaj')+ar+node('inbox','Local Outbox')+ar+node('sync','Sync API')+ar+node('database','Server')+ar+node('checkCircle','ACK',true)+ar+node('box','Clear confirmed')+'</div>'+
-      '<div class="anim" style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;'+stg(1)+'">'+call('hash','event UUID')+call('lock','idempotency key')+call('alert','resume after network interruption','warn')+call('users','Conflict Inbox','warn')+'</div>'+
-      '<div class="anim" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:auto;padding-top:18px;'+stg(2)+'">'+
-        [['gauge','UI ne čeka mrežu'],['shield','Outbox se ne briše bez ACK-a'],['users','Konflikti se ne skrivaju']].map(c=>'<div class="dc" style="display:flex;align-items:center;gap:13px"><div class="d-icobox sm">'+icon(c[0])+'</div><div class="d-h" style="font-size:17px">'+c[1]+'</div></div>').join('')+
+  const node=(ic,t,hot)=>'<div style="flex:1;text-align:center"><div style="height:80px;border-radius:14px;border:'+(hot?'2px solid var(--accent)':'1px solid var(--line)')+';background:'+(hot?'var(--accentSoft)':'#fff')+';box-shadow:'+(hot?'0 14px 32px rgba(12,122,99,.22)':'0 8px 22px rgba(16,39,63,.06)')+';display:grid;place-items:center;color:'+(hot?'var(--accent)':'#11233a')+'">'+icon(ic).replace('class="ic"','class="ic" style="width:30px;height:30px"')+'</div><div style="font-family:var(--sans);font-weight:'+(hot?'800':'700')+';font-size:12.5px;color:'+(hot?'var(--accent)':'#1d2c3c')+';margin-top:7px">'+t+'</div></div>';
+  const ar='<div class="anim" style="display:flex;align-items:center;padding-bottom:20px;width:34px;flex:0 0 auto"><div class="flowh"><span class="fl-dot"></span><span class="fl-dot" style="animation-delay:.7s"></span></div></div>';
+  const call=(ic,t,tone)=>'<div style="display:inline-flex;align-items:center;gap:7px;border:1px solid '+(tone==='warn'?'#e7d9a8':'var(--accentLine)')+';background:'+(tone==='warn'?'var(--warnSoft)':'var(--accentSoft)')+';border-radius:9px;padding:6px 12px;font-family:var(--sans);font-size:11.5px;font-weight:600;color:'+(tone==='warn'?'var(--warn)':'#0a5e4c')+'">'+icon(ic,'ic-sm')+t+'</div>';
+  return dHeader('','Offline sinhronizacija bez gubitka unosa','Lokalni unos čeka u outboxu, ide kroz Sync API, server vraća ACK — i tek tada se potvrđeni unos briše.')+
+    '<div class="d-body" style="justify-content:center;gap:24px">'+
+      '<div class="anim" style="display:flex;align-items:flex-start;gap:4px">'+node('smartphone','Uređaj')+ar+node('inbox','Local Outbox')+ar+node('sync','Sync API')+ar+node('database','Server')+ar+node('checkCircle','ACK',true)+ar+node('box','Clear confirmed')+'</div>'+
+      '<div class="anim" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;'+stg(1)+'">'+call('hash','event UUID')+call('lock','idempotency key')+call('alert','resume after network interruption','warn')+call('users','Conflict Inbox','warn')+'</div>'+
+      '<div class="anim" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;'+stg(2)+'">'+
+        [['gauge','UI ne čeka mrežu'],['shield','Outbox se ne briše bez ACK-a'],['users','Konflikti se ne skrivaju']].map(c=>'<div class="dc" style="display:flex;align-items:center;gap:12px;padding:14px 16px"><div class="d-icobox sm">'+icon(c[0])+'</div><div class="d-h" style="font-size:14.5px;line-height:1.25">'+c[1]+'</div></div>').join('')+
       '</div>'+
     '</div>';
 }},
@@ -5344,38 +5359,60 @@ const DECK_SLIDES = [
 // 14 — COMMERCIALIZATION
 {title:'Komercijalizacija', build(){
   const m=(l,d,dc)=>'<div class="d-metric anim" style="'+d+'"><div class="m-v" '+(dc||'')+'>0</div><div class="m-l">'+l+'</div></div>';
-  const step=(t)=>'<div class="d-chip" style="font-size:13.5px;padding:11px 16px;font-weight:700;color:#11233a">'+t+'</div>';
+  const fn=(ic,t,s,hot)=>'<div style="flex:1;background:'+(hot?'var(--accentSoft)':'#fff')+';border:'+(hot?'2px solid var(--accent)':'1px solid var(--line)')+';border-radius:14px;box-shadow:0 10px 26px rgba(16,39,63,.07);padding:13px 12px;text-align:center;min-width:0">'+
+    '<div style="width:38px;height:38px;margin:0 auto;border-radius:11px;background:'+(hot?'#fff':'var(--accentSoft)')+';display:grid;place-items:center;color:var(--accent)">'+icon(ic,'ic-sm')+'</div>'+
+    '<div style="font-family:var(--sans);font-weight:800;font-size:13px;color:#11233a;margin-top:9px;line-height:1.2">'+t+'</div>'+
+    '<div style="font-family:var(--sans);font-size:10.5px;color:#8a94a2;margin-top:2px">'+s+'</div></div>';
+  const conn='<div style="display:flex;align-items:center;width:38px;flex:0 0 auto"><div class="flowh"><span class="fl-dot"></span><span class="fl-dot" style="animation-delay:.7s"></span></div></div>';
+  const net='<svg viewBox="0 0 420 260" preserveAspectRatio="xMidYMid meet" style="position:absolute;right:-10px;bottom:-20px;width:440px;height:280px;opacity:.06;pointer-events:none" fill="none" stroke="#11233a" stroke-width="1.4">'+
+    '<path d="M60 70 L150 40 L250 90 L210 170 L120 200 L60 70 M250 90 L350 60 L390 150 L300 210 L210 170"/>'+
+    '<path d="M150 40 L210 170 M350 60 L300 210 M120 200 L300 210"/>'+
+    ['60,70','150,40','250,90','350,60','390,150','300,210','210,170','120,200'].map(p=>'<circle cx="'+p.split(',')[0]+'" cy="'+p.split(',')[1]+'" r="4" fill="#11233a" stroke="none"/>').join('')+'</svg>';
   return dHeader('','Komercijalizacija sa BH Telecomom')+
-    '<div class="d-body">'+
-      '<div style="font-family:var(--sans);font-weight:700;font-size:14px;color:var(--accent);margin-bottom:12px">BH Telecom kao sidreni korisnik</div>'+
-      '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">'+m('regionalnih direkcija',stg(0),'data-count="9"')+m('prodajnih mjesta',stg(1),'data-count="76"')+m('LTE baznih stanica',stg(2),'data-count="1623"')+m('KM aktiva',stg(3),'data-count="1.28" data-dp="2" data-suf=" mlrd"')+'</div>'+
-      '<div class="anim" style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:24px;flex-wrap:wrap;'+stg(4)+'">'+step('Referentni korisnik')+icon('arrowRight','ic-sm')+step('B2B / SaaS katalog')+icon('arrowRight','ic-sm')+step('FusionX eDIH')+icon('arrowRight','ic-sm')+step('Javni sektor i regija')+'</div>'+
-      '<div class="anim" style="text-align:center;margin-top:14px;font-family:var(--sans);font-size:12.5px;color:#8a94a2;'+stg(5)+'">Starter · Professional · Enterprise · setup + pretplata</div>'+
-      '<div class="d-band anim" style="margin-top:auto;justify-content:center;'+stg(6)+'"><div style="font-size:20px;font-weight:800;text-align:center">Spremni smo u discovery fazi sa BH Telecom timom <span class="ht">zaključati obim i krenuti</span>.</div></div>'+
+    '<div class="d-body" style="position:relative;overflow:hidden;justify-content:center;gap:22px">'+net+
+      '<div style="position:relative;z-index:1">'+
+        '<div style="font-family:var(--sans);font-weight:700;font-size:14px;color:var(--accent);margin-bottom:12px">BH Telecom kao sidreni korisnik</div>'+
+        '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">'+m('regionalnih direkcija',stg(0),'data-count="9"')+m('prodajnih mjesta',stg(1),'data-count="76"')+m('LTE baznih stanica',stg(2),'data-count="1623"')+m('KM aktiva',stg(3),'data-count="1.28" data-dp="2" data-suf=" mlrd"')+'</div>'+
+      '</div>'+
+      '<div class="anim" style="position:relative;z-index:1;border:1px solid var(--line);border-radius:16px;background:rgba(252,251,248,.7);padding:16px 18px;'+stg(4)+'">'+
+        '<div style="font-family:var(--sans);font-weight:800;font-size:10.5px;letter-spacing:.08em;color:#8a94a2;text-align:center;margin-bottom:12px">PUT KOMERCIJALIZACIJE</div>'+
+        '<div style="display:flex;align-items:stretch;justify-content:center;gap:2px">'+fn('users','Referentni korisnik','BH Telecom',1)+conn+fn('package','B2B / SaaS katalog','ponuda')+conn+fn('link','FusionX eDIH','EU mreža')+conn+fn('mapPin','Javni sektor i regija','skaliranje')+'</div>'+
+        '<div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:14px">'+['Starter','Professional','Enterprise','setup + pretplata'].map(p=>'<span class="d-chip" style="font-size:11.5px;padding:6px 13px">'+p+'</span>').join('')+'</div>'+
+      '</div>'+
+      '<div class="d-band anim" style="position:relative;z-index:1;justify-content:center;'+stg(5)+'"><div style="font-size:19px;font-weight:800;text-align:center">Spremni smo u discovery fazi sa BH Telecom timom <span class="ht">zaključati obim i krenuti</span>.</div></div>'+
     '</div>';
 }},
 // 15 — APPENDIX 1: deployments
 {title:'Deploymenti', apx:true, build(){
-  const card=(t,tag,sub,d)=>'<div class="dc anim" style="display:flex;flex-direction:column;'+d+'"><div class="d-icobox">'+icon('zap')+'</div><div class="d-h" style="margin-top:14px;font-size:21px">'+t+'</div><div class="d-pill" style="margin-top:8px;align-self:flex-start">'+tag+'</div><div class="d-p" style="margin-top:10px">'+sub+'</div></div>';
-  return dHeader('Appendix','Deploymenti i iskustvo isporuke')+
-    '<div class="d-body"><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;flex:1">'+
-      card('CardiologyAI','Production deploymenti','Dr Nabil · ASA Bolnica · UKC Maribor · Muscat Hospital',stg(0))+
-      card('SmartBed AI','Deployed pilot','ASA Bolnica',stg(1))+
-      card('Antibiotic AI','Production software','Clinical workflow product',stg(2))+
+  const card=(t,tag,sub,bullets,d)=>'<div class="dc anim" style="display:flex;flex-direction:column;padding:20px 22px;'+d+'">'+
+    '<div style="display:flex;align-items:center;justify-content:space-between"><div class="d-icobox sm">'+icon('zap')+'</div><span class="d-pill anim" style="'+stg(4)+'">'+tag+'</span></div>'+
+    '<div class="d-h" style="margin-top:13px;font-size:20px">'+t+'</div>'+
+    '<div class="d-p" style="margin-top:5px;font-size:12.5px;line-height:1.45">'+sub+'</div>'+
+    '<div style="margin-top:13px;border-top:1px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:9px;flex:1">'+
+      bullets.map(b=>'<div style="display:flex;align-items:center;gap:9px;font-family:var(--sans);font-size:12.5px;font-weight:600;color:#1d2c3c"><span style="color:var(--accent);display:flex">'+icon('checkCircle','ic-sm')+'</span>'+b+'</div>').join('')+
+    '</div></div>';
+  return dHeader('Appendix','Deploymenti i iskustvo isporuke','','sm')+
+    '<div class="d-body" style="justify-content:center;gap:22px"><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px">'+
+      card('CardiologyAI','Production deployment','Dr Nabil · ASA Bolnica · UKC Maribor · Muscat Hospital',['Clinical workflow','Structured reporting','Real user feedback'],stg(0))+
+      card('SmartBed AI','Deployed pilot','ASA Bolnica',['IoT-ready workflow','Bed status dashboard','Operational visibility'],stg(1))+
+      card('Antibiotic AI','Production software','Clinical workflow product',['Rules engine','Patient-specific logic','Decision support UX'],stg(2))+
     '</div>'+
-    '<div class="anim" style="display:flex;gap:9px;flex-wrap:wrap;margin-top:18px;'+stg(3)+'">'+['Production systems','ERP / SAP integration','Offline-first mobile apps','Enterprise dashboards','Real user environments'].map(c=>'<span class="d-chip">'+icon('checkCircle')+c+'</span>').join('')+'</div></div>';
+    '<div class="anim" style="display:flex;gap:9px;justify-content:center;flex-wrap:wrap;'+stg(3)+'">'+['Production systems','ERP / SAP integration','Offline-first mobile apps','Enterprise dashboards','Real user environments'].map(c=>'<span style="display:inline-flex;align-items:center;gap:7px;font-family:var(--sans);font-weight:700;font-size:12px;color:#0a5e4c;background:var(--accentSoft);border:1px solid var(--accentLine);border-radius:20px;padding:7px 14px">'+icon('checkCircle','ic-sm')+c+'</span>').join('')+'</div></div>';
 }},
 // 16 — APPENDIX 2: deep tech
 {title:'Deep-dive', apx:true, build(){
-  const b=(ic,t,dark)=>'<div style="border-radius:11px;padding:11px 13px;display:flex;align-items:center;gap:9px;'+(dark?'background:#11233a;color:#fff':'background:#fff;border:1px solid var(--line)')+'"><span style="color:'+(dark?'var(--dteal)':'var(--accent)')+'">'+icon(ic,'ic-sm')+'</span><span style="font-family:var(--sans);font-weight:700;font-size:12.5px;color:'+(dark?'#fff':'#11233a')+'">'+t+'</span></div>';
-  const zone=(lab,inner,d)=>'<div class="anim" style="border:1.5px dashed var(--accentLine);border-radius:14px;padding:14px;'+d+'"><div style="font-family:var(--sans);font-weight:800;font-size:11px;letter-spacing:.06em;color:var(--accent);margin-bottom:10px">'+lab+'</div><div style="display:flex;gap:10px;flex-wrap:wrap">'+inner+'</div></div>';
+  const b=(ic,t,dark)=>'<div style="border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:8px;'+(dark?'background:#11233a;color:#fff':'background:#fff;border:1px solid var(--line)')+'"><span style="color:'+(dark?'var(--dteal)':'var(--accent)')+';display:flex">'+icon(ic,'ic-sm')+'</span><span style="font-family:var(--sans);font-weight:700;font-size:12px;color:'+(dark?'#fff':'#11233a')+'">'+t+'</span></div>';
+  const zone=(lab,inner,tag,d)=>'<div class="anim" style="border:1.5px dashed var(--accentLine);border-radius:14px;padding:12px 15px;'+d+'">'+
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px"><div style="font-family:var(--sans);font-weight:800;font-size:10.5px;letter-spacing:.07em;color:var(--accent)">'+lab+'</div>'+(tag?'<span style="font-family:var(--sans);font-weight:700;font-size:9.5px;color:var(--navy);background:#eef2f6;border:1px solid #dde5ec;border-radius:12px;padding:3px 10px">'+tag+'</span>':'')+'</div>'+
+    '<div style="display:flex;gap:9px;flex-wrap:wrap">'+inner+'</div></div>';
   return dHeader('Appendix','Tehnički deep-dive — deployment, sync i sigurnosne granice','','sm')+
-    '<div class="d-body" style="gap:14px;justify-content:center">'+
-      zone('CLIENT ZONE',b('home','Web portal')+b('smartphone','Mobile app')+b('lock','Local encrypted storage (SQLCipher)'),stg(0))+
+    '<div class="d-body" style="gap:10px;justify-content:center">'+
+      zone('CLIENT ZONE',b('home','Web portal')+b('smartphone','Mobile app')+b('lock','Local encrypted storage (SQLCipher)'),'Encrypted local storage',stg(0))+
       flowV()+
-      zone('SERVICE ZONE',b('zap','Sync API')+b('package','Backend services')+b('database','PostgreSQL + RLS',1)+b('package','Redis / workers',1)+b('box','MinIO',1)+b('lock','Keycloak / OIDC'),stg(2))+
+      zone('SERVICE ZONE',b('zap','Sync API')+b('package','Backend services')+b('database','PostgreSQL + RLS',1)+b('package','Redis / workers',1)+b('box','MinIO',1)+b('lock','Keycloak / OIDC'),'RLS · OIDC · Least privilege',stg(2))+
       flowV()+
-      zone('INTEGRATION & TRUST BOUNDARY',b('link','SAP / Excel adapter',1)+b('shield','Audit / monitoring')+b('database','BH Telecom Cloud / on-prem'),stg(4))+
+      zone('INTEGRATION & TRUST BOUNDARY',b('link','SAP / Excel adapter',1)+b('shield','Audit / monitoring')+b('database','BH Telecom Cloud / on-prem'),'Audit trail',stg(4))+
+      '<div class="anim" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:2px;'+stg(5)+'">'+['OIDC','RLS','Audit trail','Encrypted local storage','Least privilege'].map(s=>'<span style="display:inline-flex;align-items:center;gap:6px;font-family:var(--sans);font-weight:700;font-size:11px;color:var(--navy);background:#fff;border:1px solid var(--line);border-radius:20px;padding:5px 12px"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block"></span>'+s+'</span>').join('')+'</div>'+
     '</div>';
 }}
 ];
