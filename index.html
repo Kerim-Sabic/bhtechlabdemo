@@ -603,7 +603,7 @@ table.tbl tbody tr.click:hover{background:var(--paper2)}
 /* ---- slide building blocks ---- */
 .d-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
 .d-logo{display:flex;align-items:center;gap:11px}
-.d-mark{width:38px;height:38px;flex:0 0 auto}
+.d-mark{width:36px;height:36px;flex:0 0 auto;color:#11233a}
 .d-word{font-family:var(--sans);font-weight:800;letter-spacing:.2em;font-size:18px;color:#11233a}
 .d-kick{font-family:var(--sans);font-weight:700;letter-spacing:.02em;color:#0e9c8c;font-size:15px}
 .d-title{font-family:var(--sans);font-weight:800;letter-spacing:-.025em;color:#0e2236;font-size:50px;line-height:1.04;margin:0}
@@ -633,8 +633,30 @@ table.tbl tbody tr.click:hover{background:var(--paper2)}
 /* stagger animations */
 .dslide .anim{opacity:0;animation:dRise .62s cubic-bezier(.2,.8,.2,1) both}
 .dslide .anim.az{animation-name:dPop}
+.dslide .anim.al{animation-name:dLeft}
+.dslide .anim.ar{animation-name:dRight}
+.dslide .anim.ab{animation-name:dBlur}
 @keyframes dRise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
 @keyframes dPop{from{opacity:0;transform:scale(.93)}to{opacity:1;transform:none}}
+@keyframes dLeft{from{opacity:0;transform:translateX(-34px)}to{opacity:1;transform:none}}
+@keyframes dRight{from{opacity:0;transform:translateX(34px)}to{opacity:1;transform:none}}
+@keyframes dBlur{from{opacity:0;filter:blur(8px);transform:scale(1.02)}to{opacity:1;filter:blur(0);transform:none}}
+/* slide-to-slide transitions */
+.dslide.tr-next{animation:slIn .5s cubic-bezier(.16,.84,.3,1)}
+.dslide.tr-prev{animation:slInL .5s cubic-bezier(.16,.84,.3,1)}
+.dslide.tr-out-next{animation:slOut .19s cubic-bezier(.4,0,1,1) both}
+.dslide.tr-out-prev{animation:slOutR .19s cubic-bezier(.4,0,1,1) both}
+@keyframes slIn{from{opacity:0;transform:translateX(64px) scale(.99)}to{opacity:1;transform:none}}
+@keyframes slInL{from{opacity:0;transform:translateX(-64px) scale(.99)}to{opacity:1;transform:none}}
+@keyframes slOut{to{opacity:0;transform:translateX(-46px) scale(.985)}}
+@keyframes slOutR{to{opacity:0;transform:translateX(46px) scale(.985)}}
+/* connector draw-on */
+.dconn.draw{stroke-dasharray:1;stroke-dashoffset:1;animation:drawline 1.05s .28s cubic-bezier(.3,.7,.25,1) both}
+@keyframes drawline{to{stroke-dashoffset:0}}
+/* living background — a real layer behind the slide canvas */
+.deck-bg{position:absolute;inset:-28%;z-index:0;pointer-events:none;background:radial-gradient(640px 640px at 28% 26%, rgba(27,183,164,.16), transparent 62%),radial-gradient(700px 700px at 76% 78%, rgba(46,92,140,.30), transparent 60%);animation:bgdrift 22s ease-in-out infinite alternate}
+@keyframes bgdrift{0%{transform:translate(-24px,12px) scale(1)}100%{transform:translate(46px,-28px) scale(1.14)}}
+.deck-canvas{position:relative;z-index:2}
 .dconn{stroke:var(--accentLine);stroke-width:2;fill:none}
 .dconn.live{stroke:var(--accent)}
 /* mock devices on product slide */
@@ -4973,13 +4995,15 @@ const Tour=(function(){
 /* ===========================================================================
    MODULE: pitch deck — full-screen 16:9 animated presentation (#/pitchdeck)
    =========================================================================== */
+/* the real Horalix mark — interlocking "H" gem (single even-odd path) */
+function hLogoPath(){
+  return '<path fill-rule="evenodd" d="'+
+    'M25 11 L50 29 L75 11 C84 14 89 20 89 32 L89 68 C89 80 84 86 75 89 L50 71 L25 89 C16 86 11 80 11 68 L11 32 C11 20 16 14 25 11 Z'+
+    ' M34 29 L66 29 L66 46 C58 46 54 40 50 40 C46 40 42 46 34 46 Z'+
+    ' M66 71 L34 71 L34 54 C42 54 46 60 50 60 C54 60 58 54 66 54 Z"/>';
+}
 function deckMark(){
-  return '<svg class="d-mark" viewBox="0 0 48 48" fill="none">'+
-    '<path d="M24 2.6 L43 13.3 V34.7 L24 45.4 L5 34.7 V13.3 Z" stroke="#11233a" stroke-width="2.3"/>'+
-    '<rect x="16" y="15" width="4.6" height="18" rx="1" fill="#11233a"/>'+
-    '<rect x="27.4" y="15" width="4.6" height="18" rx="1" fill="#11233a"/>'+
-    '<rect x="20.6" y="21.5" width="6.8" height="4.6" fill="#1bb7a4"/>'+
-  '</svg>';
+  return '<svg class="d-mark" viewBox="0 0 100 100" fill="currentColor">'+hLogoPath()+'</svg>';
 }
 function dHeader(kick, title, sub, cls){
   return '<div class="anim"><div class="d-logo">'+deckMark()+'<span class="d-word">HORALIX</span></div></div>'+
@@ -5017,12 +5041,12 @@ const DECK_SLIDES = [
     '<div class="anim az" style="'+stg(1)+'"><div style="position:relative;width:520px;height:430px;margin-left:auto;max-width:100%">'+
       '<svg viewBox="0 0 520 430" style="position:absolute;inset:0;width:100%;height:100%">'+
         '<circle cx="245" cy="215" r="150" fill="none" stroke="var(--accentLine)" stroke-dasharray="2 7" opacity=".8"/>'+
-        '<path class="dconn live" d="M120 120 C175 120 175 195 200 200"/>'+
-        '<path class="dconn live" d="M120 300 C175 300 175 235 200 232"/>'+
-        '<path class="dconn" d="M345 200 C390 200 380 70 405 70"/>'+
-        '<path class="dconn" d="M348 210 C390 210 385 165 405 165"/>'+
-        '<path class="dconn" d="M348 222 C390 222 385 262 405 262"/>'+
-        '<path class="dconn" d="M345 232 C390 232 380 357 405 357"/>'+
+        '<path class="dconn live draw" pathLength="1" d="M120 120 C175 120 175 195 200 200"/>'+
+        '<path class="dconn live draw" pathLength="1" d="M120 300 C175 300 175 235 200 232"/>'+
+        '<path class="dconn draw" pathLength="1" d="M345 200 C390 200 380 70 405 70"/>'+
+        '<path class="dconn draw" pathLength="1" d="M348 210 C390 210 385 165 405 165"/>'+
+        '<path class="dconn draw" pathLength="1" d="M348 222 C390 222 385 262 405 262"/>'+
+        '<path class="dconn draw" pathLength="1" d="M345 232 C390 232 380 357 405 357"/>'+
       '</svg>'+
       '<div style="position:absolute;left:198px;top:158px;width:150px;height:118px;border-radius:18px;background:#fff;border:1px solid var(--line);box-shadow:0 16px 40px rgba(16,39,63,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">'+deckMark().replace('class="d-mark"','class="d-mark" style="width:34px;height:34px"')+'<div style="font-family:var(--sans);font-weight:800;font-size:11px;letter-spacing:.04em;color:#11233a">PLATFORM CORE</div><div style="font-family:var(--sans);font-size:8.5px;color:#8a94a2;letter-spacing:.04em">ORCHESTRATION</div></div>'+
       '<div style="position:absolute;left:0;top:96px;width:120px">'+node('database','SAP','data source')+'</div>'+
@@ -5104,7 +5128,7 @@ const DECK_SLIDES = [
 // 6 — PRODUCT / DEMO
 {title:'Kako izgleda', build(){
   const arow=(t,chip,cc)=>'<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border:1px solid var(--line);border-radius:9px;margin-bottom:6px;background:#fff"><span style="font-family:var(--sans);font-size:10.5px;font-weight:600;color:#1d2c3c">'+t+'</span><span class="chip '+cc+'" style="font-size:8.5px;padding:2px 7px">'+chip+'</span></div>';
-  const kpi=(l,v,c)=>'<div style="background:var(--paper2);border:1px solid var(--line);border-radius:9px;padding:8px 9px"><div style="font-family:var(--sans);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#8a94a2">'+l+'</div><div style="font-family:var(--sans);font-weight:800;font-size:18px;color:'+c+'">'+v+'</div></div>';
+  const kpi=(l,v,c,dc)=>'<div style="background:var(--paper2);border:1px solid var(--line);border-radius:9px;padding:8px 9px"><div style="font-family:var(--sans);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#8a94a2">'+l+'</div><div style="font-family:var(--sans);font-weight:800;font-size:18px;color:'+c+'" '+(dc||'')+'>'+v+'</div></div>';
   return dHeader('','Kako to izgleda u praksi')+
     '<div class="d-body"><div style="display:grid;grid-template-columns:250px 1fr;gap:30px;flex:1;align-items:center">'+
       '<div class="d-phone anim az"><div class="ps">'+
@@ -5118,7 +5142,7 @@ const DECK_SLIDES = [
       '<div class="d-web anim" style="'+stg(1)+'">'+
         '<div style="padding:13px 18px;border-bottom:1px solid var(--line);background:rgba(252,251,248,.7)"><div style="font-family:var(--sans);font-weight:800;font-size:16px;color:#11233a">Radni sto predsjednika popisa</div></div>'+
         '<div style="padding:16px 18px;flex:1">'+
-          '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">'+kpi('Dodijeljeno','250','#11233a')+kpi('Skenirano','63','var(--accent)')+kpi('Preostalo','187','var(--navy)')+kpi('Konflikti','2','var(--gold)')+'</div>'+
+          '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">'+kpi('Dodijeljeno','250','#11233a','data-count="250"')+kpi('Skenirano','63','var(--accent)','data-count="63"')+kpi('Preostalo','187','var(--navy)','data-count="187"')+kpi('Konflikti','2','var(--gold)','data-count="2"')+'</div>'+
           '<div style="border:1px solid var(--line);border-radius:10px;overflow:hidden">'+
             [['Komisija 1','88%','green'],['Komisija 2','64%','amber'],['Komisija 3','41%','navy']].map(r=>'<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line);font-family:var(--sans);font-size:13px"><span style="font-weight:600;color:#1d2c3c">'+r[0]+'</span><span class="chip '+r[2]+'" style="font-size:10px">'+r[1]+'</span></div>').join('')+
           '</div>'+
@@ -5226,12 +5250,12 @@ const DECK_SLIDES = [
 }},
 // 14 — COMMERCIALIZATION
 {title:'Komercijalizacija', build(){
-  const m=(v,l,d)=>'<div class="d-metric anim" style="'+d+'"><div class="m-v">'+v+'</div><div class="m-l">'+l+'</div></div>';
+  const m=(l,d,dc)=>'<div class="d-metric anim" style="'+d+'"><div class="m-v" '+(dc||'')+'>0</div><div class="m-l">'+l+'</div></div>';
   const step=(t)=>'<div class="d-chip" style="font-size:13.5px;padding:11px 16px;font-weight:700;color:#11233a">'+t+'</div>';
   return dHeader('','Komercijalizacija sa BH Telecomom')+
     '<div class="d-body">'+
       '<div style="font-family:var(--sans);font-weight:700;font-size:14px;color:var(--accent);margin-bottom:12px">BH Telecom kao sidreni korisnik</div>'+
-      '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">'+m('9','regionalnih direkcija',stg(0))+m('76','prodajnih mjesta',stg(1))+m('1.623','LTE baznih stanica',stg(2))+m('1,28 mlrd','KM aktiva',stg(3))+'</div>'+
+      '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">'+m('regionalnih direkcija',stg(0),'data-count="9"')+m('prodajnih mjesta',stg(1),'data-count="76"')+m('LTE baznih stanica',stg(2),'data-count="1623"')+m('KM aktiva',stg(3),'data-count="1.28" data-dp="2" data-suf=" mlrd"')+'</div>'+
       '<div class="anim" style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:24px;flex-wrap:wrap;'+stg(4)+'">'+step('Referentni korisnik')+icon('arrowRight','ic-sm')+step('B2B / SaaS katalog')+icon('arrowRight','ic-sm')+step('FusionX eDIH')+icon('arrowRight','ic-sm')+step('Javni sektor i regija')+'</div>'+
       '<div class="anim" style="text-align:center;margin-top:14px;font-family:var(--sans);font-size:12.5px;color:#8a94a2;'+stg(5)+'">Starter · Professional · Enterprise · setup + pretplata</div>'+
       '<div class="d-band anim" style="margin-top:auto;justify-content:center;'+stg(6)+'"><div style="font-size:20px;font-weight:800;text-align:center">Spremni smo u discovery fazi sa BH Telecom timom <span class="ht">zaključati obim i krenuti</span>.</div></div>'+
@@ -5265,9 +5289,10 @@ const DECK_SLIDES = [
 
 const Deck = (function(){
   let i=0;
-  function fit(){ const c=$('#deck-canvas'); if(!c)return; const s=Math.min((window.innerWidth-48)/1280,(window.innerHeight-92)/720); c.style.transform='scale('+Math.max(.2,s)+')'; }
+  function fit(){ const c=$('#deck-canvas'); if(!c)return; const vw=window.innerWidth||1280, vh=window.innerHeight||800; const s=Math.min((vw-48)/1280,(vh-92)/720); c.style.transform='scale('+(s>.1?s:1)+')'; }
   function html(){
     return '<div class="deck-stage" id="deck-stage">'+
+      '<div class="deck-bg"></div>'+
       '<div class="deck-progress" id="deck-progress"></div>'+
       '<div class="deck-tools">'+
         '<button class="deck-tool" id="deck-grid-btn">'+icon('dashboard')+'Pregled</button>'+
@@ -5285,15 +5310,20 @@ const Deck = (function(){
       '<div class="deck-grid" id="deck-grid"><div class="deck-grid-inner" id="deck-grid-inner"></div></div>'+
     '</div>';
   }
-  function mount(){ fit(); render();
+  function mount(){ fit(); render(); setTimeout(fit,60); setTimeout(fit,300);
     $('#deck-prev').addEventListener('click',prev); $('#deck-next').addEventListener('click',next);
     $('#deck-exit').addEventListener('click',exit); $('#deck-fs').addEventListener('click',toggleFs);
     $('#deck-grid-btn').addEventListener('click',toggleGrid);
     $('#deck-prev').querySelector('svg').style.transform='rotate(180deg)';
   }
-  function render(){
+  let busy=false, tT=null;
+  function render(dir){
     const sl=DECK_SLIDES[i]; const host=$('#dslide'); if(!host)return;
+    host.className='dslide';
     host.innerHTML=sl.build();   /* fresh .anim elements auto-play their CSS keyframes */
+    void host.offsetWidth;       /* reflow so the entrance animation restarts */
+    host.classList.add(dir<0?'tr-prev':'tr-next');
+    countUpAll(host);
     // dots
     const dots=$('#deck-dots'); if(dots) dots.innerHTML=DECK_SLIDES.map((s,n)=>'<button class="deck-dot'+(s.apx?' apx':'')+(n===i?' on':'')+'" data-d="'+n+'" title="'+esc(s.title)+'"></button>').join('');
     $$('#deck-dots [data-d]').forEach(b=>b.addEventListener('click',()=>go(parseInt(b.getAttribute('data-d'),10))));
@@ -5301,8 +5331,23 @@ const Deck = (function(){
     const pr=$('#deck-progress'); if(pr) pr.style.width=((i+1)/DECK_SLIDES.length*100)+'%';
     $('#deck-prev').disabled=(i===0); $('#deck-next').disabled=(i===DECK_SLIDES.length-1);
     const ld=$('#deck-livedemo'); if(ld) ld.addEventListener('click',()=>{ exit(); setTimeout(()=>{ navigate('#/dashboard'); toast({type:'info',title:'Živi demo',msg:'Ovo je stvarna aplikacija — probajte “Guided demo”.'}); },80); });
+    fit();
   }
-  function go(n){ i=clamp(n,0,DECK_SLIDES.length-1); render(); }
+  function countUpAll(root){
+    $$('[data-count]',root).forEach(el=>{
+      const target=parseFloat(el.getAttribute('data-count')); if(isNaN(target))return;
+      const dp=parseInt(el.getAttribute('data-dp')||'0',10), suf=el.getAttribute('data-suf')||'', pre=el.getAttribute('data-pre')||'';
+      const fmt=v=>{ const s=v.toFixed(dp), p=s.split('.'); const ig=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,'.'); return pre+(p[1]?ig+','+p[1]:ig)+suf; };
+      const dur=950, t0=(typeof performance!=='undefined'?performance.now():Date.now());
+      el.textContent=fmt(0);
+      (function step(){ const now=(typeof performance!=='undefined'?performance.now():Date.now()); const p=Math.min(1,(now-t0)/dur); const e=1-Math.pow(1-p,3); el.textContent=fmt(target*e); if(p<1) requestAnimationFrame(step); else el.textContent=fmt(target); })();
+    });
+  }
+  function go(n){ n=clamp(n,0,DECK_SLIDES.length-1); if(n===i||busy)return; const dir=n>i?1:-1;
+    const host=$('#dslide'); if(host){ host.className='dslide '+(dir>0?'tr-out-next':'tr-out-prev'); }
+    busy=true; clearTimeout(tT); tT=setTimeout(()=>{ i=n; render(dir); busy=false; },180);
+  }
+  function jump(n){ i=clamp(n,0,DECK_SLIDES.length-1); render(1); }
   function next(){ if(i<DECK_SLIDES.length-1) go(i+1); }
   function prev(){ if(i>0) go(i-1); }
   function exit(){ if(document.fullscreenElement){ try{document.exitFullscreen();}catch(e){} } navigate('#/dashboard'); }
