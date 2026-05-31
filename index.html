@@ -246,14 +246,14 @@ table.tbl.rbac td:last-child,table.tbl.rbac th:last-child{border-right:0}
 table.tbl.rbac .me{background:var(--accentSoft)}
 table.tbl.rbac thead th.me{background:#dcefe8;color:#0a5e4c}
 /* SAP Fiori launchpad */
-.fiori-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(192px,1fr));gap:14px}
-.ftile{background:#fff;border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow-sm);transition:.16s;overflow:hidden}
+.fiori-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(204px,1fr));gap:14px}
+.ftile{background:#fff;border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow-sm);transition:.16s;overflow:hidden}
 .ftile:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
 .ftile.navy{border-top-color:var(--navy)} .ftile.gold{border-top-color:var(--gold)} .ftile.danger{border-top-color:var(--danger)} .ftile.accent{border-top-color:var(--accent)}
-.ftile .ft-lab{font-family:var(--sans);font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--faint)}
-.ftile .ft-val{font-family:var(--serif-d);font-size:25px;font-weight:600;line-height:1}
-.ftile .ft-sub{font-family:var(--sans);font-size:11px;color:var(--faint);margin-top:3px}
-.ftile .ft-chart{margin-top:10px;height:38px}
+.ftile .ft-lab{font-family:var(--sans);font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ftile .ft-val{font-family:var(--serif-d);font-size:23px;font-weight:600;line-height:1.05;letter-spacing:-.01em;white-space:nowrap}
+.ftile .ft-sub{font-family:var(--sans);font-size:11px;color:var(--faint);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ftile .ft-chart{margin-top:12px;height:36px;opacity:.92}
 .widget-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;align-items:start}
 @media(max-width:1100px){.widget-grid{grid-template-columns:1fr}}
 .widget{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-sm);overflow:hidden}
@@ -679,6 +679,13 @@ function fmtMoney(n){
   const v = Math.round(Number(n)||0);
   return v.toLocaleString('de-DE') + ' KM';
 }
+function fmtMoneyShort(n){
+  const v = Math.round(Number(n)||0), a = Math.abs(v);
+  if(a>=1e6) return (v/1e6).toFixed(2).replace(/\.?0+$/,'') + 'M KM';
+  if(a>=1e4) return Math.round(v/1e3) + 'k KM';
+  if(a>=1e3) return (v/1e3).toFixed(1).replace(/\.0$/,'') + 'k KM';
+  return v.toLocaleString('de-DE') + ' KM';
+}
 function fmtNum(n){ return (Number(n)||0).toLocaleString('en-US'); }
 function fmtDate(ts){
   if(!ts) return '—';
@@ -905,7 +912,7 @@ function seedData(){
   }
 
   const state = {
-    version:4,
+    version:5,
     tenant, tenants, fiscalYear:2026, sourceOfTruth:tenant.sourceOfTruth,
     locations, categories, assets, liabilities, commissions, campaign,
     mappings, validationRules,
@@ -1149,7 +1156,7 @@ function locName(locations,id){ const l=locations.find(x=>x.id===id); return l?l
    The UI subscribes to the store. Only the api module mutates domain data;
    UI-only flags (route, surface, role) go through store.setUI.
    =========================================================================== */
-const STORE_KEY = 'horalix.inventory.v4';
+const STORE_KEY = 'horalix.inventory.v5';
 const Store = (function(){
   let state = null;
   const subs = [];
@@ -1158,7 +1165,7 @@ const Store = (function(){
   function load(){
     try{
       const raw = localStorage.getItem(STORE_KEY);
-      if(raw){ const parsed = JSON.parse(raw); if(parsed && parsed.version===4) return parsed; }
+      if(raw){ const parsed = JSON.parse(raw); if(parsed && parsed.version===5) return parsed; }
     }catch(e){ /* corrupt → reseed */ }
     return null;
   }
@@ -1854,6 +1861,67 @@ api.retryDeadLetter = async function(id){
     _activity(s,{type:'erp', icon:'sync', text:'<b>Dead-letter retried</b> — '+d.op+' committed'});
     ok=true; });
   return {ok};
+};
+
+/* ---- CRUD on the asset master via simulated OData + BAPI (write-through to SAP) ---- */
+api.createAsset = async function(data){
+  await net(260,460);
+  if(!data.name || !data.category) throw {status:422, message:'Name and category are required.'};
+  const acq=Math.max(1, Math.round(Number(data.acquisition_value)||0));
+  if(!acq) throw {status:422, message:'Acquisition value is required.'};
+  let asset=null, calls=[];
+  Store.commit(s=>{
+    const inv='INV-'+String(s.sap.seq.anln++).padStart(6,'0');
+    const cat=s.categories.find(c=>c.id===data.category);
+    asset={ id:'a'+uuid().slice(0,6), inventory_no:inv, anln2:'0000', name:data.name,
+      serial:data.serial||('NEW-'+rnd(100000,999999)), category:data.category,
+      asset_class:(cat?cat.anlkl+' · '+cat.anName:'3100 · IT Endpoint'),
+      location_id:data.location_id||'dir-sa-wh', cost_center:data.cost_center||'100200 · IT & Mreža SA',
+      custodian:data.custodian||'BH Telecom', acquired:Date.now(), capitalized:Date.now(), useful_life:5,
+      acquisition_value:acq, accumulated_depreciation:0, book_value:acq, status:'registered', sapStatus:'active',
+      history:[{ts:Date.now(), actor:Sel.currentUser().name, action:'Created in SAP via BAPI_FIXEDASSET_CREATE — '+inv}], photo:null, lastEventId:null };
+    s.assets.push(asset);
+    calls=[{verb:'POST', url:"/sap/opu/odata/sap/ZFI_ASSET_SRV/AssetMasterSet", status:'201 Created'},
+           {bapi:'BAPI_FIXEDASSET_CREATE', status:'OK · ANLN1 '+inv}];
+    _sapCall(s,{dir:'in', kind:'OData', name:'POST /AssetMasterSet', summary:inv+' · '+data.name, status:'201 Created'});
+    _sapCall(s,{dir:'in', kind:'BAPI', name:'BAPI_FIXEDASSET_CREATE', summary:inv+' · APC '+fmtMoney(acq), status:'OK · ANLN1 '+inv});
+    _audit(s,{action:'ASSET_CREATED', entity:'asset', entity_id:inv, old:'—', new:data.name+' · APC '+fmtMoney(acq), device:'web/portal → SAP'});
+    _activity(s,{type:'create', icon:'plus', text:'<b>Asset created</b> '+inv+' via BAPI_FIXEDASSET_CREATE'});
+  });
+  return {ok:true, asset, calls};
+};
+api.updateAsset = async function(id, patch){
+  await net(220,420);
+  let asset=null, changes=[];
+  Store.commit(s=>{
+    const a=s.assets.find(x=>x.id===id); if(!a) return;
+    Object.keys(patch).forEach(k=>{ let nv=patch[k]; if(k==='acquisition_value') nv=Math.round(Number(nv)||a[k]);
+      if(nv!=null && nv!=='' && String(nv)!==String(a[k])){ changes.push({field:k, old:a[k], 'new':nv}); a[k]=nv; } });
+    if(changes.some(c=>c.field==='acquisition_value')){ a.book_value=a.acquisition_value-(a.accumulated_depreciation||0); }
+    if(changes.length){
+      a.history.push({ts:Date.now(), actor:Sel.currentUser().name, action:'Updated in SAP via BAPI_FIXEDASSET_CHANGE'});
+      _sapCall(s,{dir:'in', kind:'OData', name:"PATCH /AssetMasterSet('"+a.inventory_no+"')", summary:changes.map(c=>c.field).join(', '), status:'204 No Content'});
+      _sapCall(s,{dir:'in', kind:'BAPI', name:'BAPI_FIXEDASSET_CHANGE', summary:a.inventory_no+' · '+changes.length+' field(s)', status:'OK'});
+      changes.forEach(c=>_audit(s,{action:'ASSET_UPDATED', entity:'asset', entity_id:a.inventory_no, old:c.field+': '+c.old, 'new':c.field+': '+c['new'], device:'web/portal → SAP'}));
+      _activity(s,{type:'update', icon:'edit', text:'<b>Asset updated</b> '+a.inventory_no+' · '+changes.map(c=>c.field).join(', ')});
+    }
+    asset=JSON.parse(JSON.stringify(a));
+  });
+  return {ok:true, asset, changes};
+};
+api.deleteAsset = async function(id){
+  await net(240,440);
+  let inv=null;
+  Store.commit(s=>{
+    const a=s.assets.find(x=>x.id===id); if(!a) return; inv=a.inventory_no;
+    s.assets=s.assets.filter(x=>x.id!==id);
+    s.dispositions=s.dispositions.filter(d=>d.asset_id!==id);
+    _sapCall(s,{dir:'in', kind:'BAPI', name:'BAPI_FIXEDASSET_RETIREMENT_POST', summary:inv+' · full retirement (ABAVN)', status:'OK'});
+    _sapCall(s,{dir:'in', kind:'OData', name:"DELETE /AssetMasterSet('"+inv+"')", summary:inv, status:'204 No Content'});
+    _audit(s,{action:'ASSET_DELETED', entity:'asset', entity_id:inv, old:a.name, 'new':'retired & removed from mirror', device:'web/portal → SAP'});
+    _activity(s,{type:'delete', icon:'x', text:'<b>Asset deleted</b> '+inv+' via OData DELETE'});
+  });
+  return {ok:true, inventory_no:inv};
 };
 
 /* ===========================================================================
@@ -2691,8 +2759,10 @@ function screenRegister(view){
   const statusOpts=['<option value="">Any status</option>']
     .concat(['registered','counted','conflict','shortage','damaged','written-off'].map(st=>'<option value="'+st+'"'+(regState.q.status===st?' selected':'')+'>'+(STATUS_CHIP[st]?STATUS_CHIP[st].t:st)+'</option>')).join('');
 
+  const canCrud=['Tenant Admin'].indexOf(s.ui.role)>=0;
   view.innerHTML=
-    pageHead('Asset register', 'All '+fmtNum(s.assets.length)+' assets mirrored from '+esc(s.sourceOfTruth)+' — read-only book record.',
+    pageHead('Asset register', 'All '+fmtNum(s.assets.length)+' assets, mirrored from '+esc(s.sourceOfTruth)+'. Create, change and retire write through to SAP via OData &amp; BAPI.',
+      (canCrud?'<button class="btn primary" id="reg-new">'+icon('plus')+'New asset</button>':'')+
       '<span class="tag-immutable">'+icon('database','')+'SAP = source of truth</span>')+
     '<div class="toolbar">'+
       '<div class="search"><span>'+icon('search')+'</span><input id="reg-search" type="text" placeholder="Search name, inventory no., serial, custodian…" value="'+esc(regState.q.search)+'" aria-label="Search assets"></div>'+
@@ -2711,9 +2781,54 @@ function screenRegister(view){
   $('#reg-cat').addEventListener('change',e=>{ regState.q.category=e.target.value; reload(); });
   $('#reg-status').addEventListener('change',e=>{ regState.q.status=e.target.value; reload(); });
   $('#reg-clear').addEventListener('click',()=>{ regState.q={search:'',location:'',category:'',status:'',sort:'inventory_no',dir:'asc',page:1,pageSize:12}; regState.result=null; App.render(); });
+  const nb=$('#reg-new'); if(nb) nb.addEventListener('click',()=>openAssetForm(null));
 
   wireRegTable();
   if(!regState.result && !regState.loading) loadRegister(false);
+}
+/* ---- asset CRUD form (create / edit) ---- */
+function openAssetForm(asset){
+  const s=Store.get(); const isEdit=!!asset;
+  const catSel=s.categories.map(c=>'<option value="'+c.id+'"'+((asset&&asset.category===c.id)?' selected':'')+'>'+esc(c.name)+'</option>').join('');
+  const locSel=s.locations.filter(l=>l.parent_id).map(l=>'<option value="'+l.id+'"'+((asset&&asset.location_id===l.id)?' selected':'')+'>'+esc(l.name)+'</option>').join('');
+  openModal({
+    title:(isEdit?'Edit asset — '+asset.inventory_no:'Create asset'),
+    body:'<div class="callout navy" style="font-size:12px;margin-bottom:14px">'+icon('database')+'<div>'+(isEdit?'Changes write through to SAP via <span class="mono">OData PATCH</span> + <span class="mono">BAPI_FIXEDASSET_CHANGE</span>.':'A new fixed asset is created in SAP via <span class="mono">OData POST</span> + <span class="mono">BAPI_FIXEDASSET_CREATE</span>, returning a new ANLN1.')+'</div></div>'+
+      '<div class="grid g2" style="gap:0 14px">'+
+        '<div class="field"><label>Asset name</label><input id="af-name" type="text" value="'+esc(asset?asset.name:'')+'" placeholder="e.g. Dell Latitude 5550"><div class="errmsg">Required.</div></div>'+
+        '<div class="field"><label>Serial (SERNR)</label><input id="af-serial" type="text" value="'+esc(asset?asset.serial:'')+'" placeholder="auto if blank"></div>'+
+        '<div class="field"><label>Category</label><select id="af-cat">'+catSel+'</select></div>'+
+        '<div class="field"><label>Location (STORT)</label><select id="af-loc">'+locSel+'</select></div>'+
+        '<div class="field"><label>Cost center (KOSTL)</label><input id="af-cc" type="text" value="'+esc(asset?asset.cost_center:'100200 · IT & Mreža SA')+'"></div>'+
+        '<div class="field"><label>Custodian</label><input id="af-cust" type="text" value="'+esc(asset?asset.custodian:'BH Telecom')+'"></div>'+
+        '<div class="field"><label>Acquisition value (KANSW, KM)</label><input id="af-acq" type="number" value="'+(asset?asset.acquisition_value:'')+'" placeholder="e.g. 1800"><div class="errmsg">Required.</div></div>'+
+      '</div>',
+    footer:'<button class="btn" data-modal-close>Cancel</button><button class="btn primary" id="af-go">'+icon(isEdit?'check':'plus')+(isEdit?'Save → SAP':'Create in SAP')+'</button>',
+    onMount(m){
+      m.querySelector('#af-go').addEventListener('click',async()=>{
+        const name=m.querySelector('#af-name').value.trim();
+        const acqv=m.querySelector('#af-acq').value;
+        let bad=false;
+        const nf=m.querySelector('#af-name').closest('.field'); if(!name){ nf.classList.add('err'); bad=true; } else nf.classList.remove('err');
+        const af=m.querySelector('#af-acq').closest('.field'); if(acqv===''||Number(acqv)<=0){ af.classList.add('err'); bad=true; } else af.classList.remove('err');
+        if(bad) return;
+        const data={ name, serial:m.querySelector('#af-serial').value.trim(), category:m.querySelector('#af-cat').value,
+          location_id:m.querySelector('#af-loc').value, cost_center:m.querySelector('#af-cc').value.trim(),
+          custodian:m.querySelector('#af-cust').value.trim(), acquisition_value:acqv };
+        const btn=m.querySelector('#af-go'); btn.disabled=true; btn.innerHTML='<span class="spinner"></span>'+(isEdit?'OData PATCH…':'OData POST…');
+        try{
+          if(isEdit){ const r=await api.updateAsset(asset.id, data); closeModal(); toast({type:'ok',title:'Saved to SAP',msg:r.changes.length+' field(s) · BAPI_FIXEDASSET_CHANGE · 204'}); regState.result=null; if(Store.get().ui.route==='#/register') loadRegister(false); openAssetDrawer(asset.id); }
+          else { const r=await api.createAsset(data); closeModal(); toast({type:'ok',title:'Created in SAP',msg:r.asset.inventory_no+' · POST /AssetMasterSet → 201 · BAPI_FIXEDASSET_CREATE'}); regState.result=null; if(Store.get().ui.route==='#/register') loadRegister(false); openAssetDrawer(r.asset.id); }
+        }catch(e){ btn.disabled=false; btn.innerHTML=icon(isEdit?'check':'plus')+(isEdit?'Save → SAP':'Create in SAP'); toast({type:'err',title:'SAP rejected',msg:e.message}); }
+      });
+    }
+  });
+}
+async function confirmDeleteAsset(asset){
+  const ok=await confirmModal({title:'Delete asset '+asset.inventory_no+'?',message:'This posts a full retirement (BAPI_FIXEDASSET_RETIREMENT_POST) and removes the record from the mirror (OData DELETE). This cannot be undone.',confirm:'Delete in SAP',danger:true});
+  if(!ok)return;
+  try{ const r=await api.deleteAsset(asset.id); closeDrawer(); toast({type:'ok',title:'Deleted in SAP',msg:r.inventory_no+' · DELETE /AssetMasterSet → 204'}); regState.result=null; if(Store.get().ui.route==='#/register') loadRegister(false); }
+  catch(e){ toast({type:'err',msg:e.message}); }
 }
 function loadRegister(showSkel){
   regState.loading=true; const tok=++regState.token;
@@ -2877,7 +2992,12 @@ function openAssetDrawer(id){
         '<div class="row gap8 mt8">'+statusChip(a.status)+'<span class="mono" style="font-size:12px;color:var(--faint)">'+esc(a.inventory_no)+'</span></div></div>'+
         '<button class="icon-x" data-drawer-close aria-label="Close">'+icon('x')+'</button></div>'+
       '<div class="drawer-b">'+
-        '<div class="callout navy" style="font-size:12px">'+icon('lock')+'<div>Book record mirrored from SAP — <b>read-only</b>. Field captures append history; they never overwrite the master.</div></div>'+
+        (['Tenant Admin'].indexOf(Store.get().ui.role)>=0
+          ? '<div class="row gap8 mb16"><button class="btn sm" data-edit-asset="'+a.id+'">'+icon('edit')+'Edit</button>'+
+            '<button class="btn sm danger" data-del-asset="'+a.id+'">'+icon('x')+'Delete</button>'+
+            '<span class="muted ui right" style="font-size:11px;align-self:center">writes via OData / BAPI</span></div>'
+          : '')+
+        '<div class="callout navy" style="font-size:12px">'+icon('lock')+'<div>Master mirrored from SAP. Changes here write through to SAP (OData + BAPI); field captures append history without overwriting the master.</div></div>'+
         '<div class="label mt20 mb8">Master record</div>'+
         '<dl class="dl">'+
           dlRow('Inventory no. (ANLN1)','<span class="mono">'+esc(a.inventory_no)+'</span>')+
@@ -2909,6 +3029,8 @@ function openAssetDrawer(id){
       '</div>';
     const host=$('#drawer-host .drawer'); if(host) host.innerHTML=html;
     $$('#drawer-host [data-drawer-close]').forEach(b=>b.addEventListener('click',closeDrawer));
+    const eb=$('#drawer-host [data-edit-asset]'); if(eb) eb.addEventListener('click',()=>openAssetForm(a));
+    const db=$('#drawer-host [data-del-asset]'); if(db) db.addEventListener('click',()=>confirmDeleteAsset(a));
   }).catch(()=>toast({type:'err',msg:'Could not load asset.'}));
 }
 function dlRow(k,v){ return '<dt>'+esc(k)+'</dt><dd>'+v+'</dd>'; }
@@ -3266,8 +3388,8 @@ const SAP_WIDGETS={
     s.assets.forEach(a=>{ const y=(Date.now()-a.acquired)/(365*day); if(y<1)buckets['<1y']++; else if(y<3)buckets['1–3y']++; else if(y<6)buckets['3–6y']++; else buckets['6y+']++; });
     return svgVBars(Object.keys(buckets).map(k=>({label:k,short:k,value:buckets[k],color:'var(--accent)'})),{}); }}
 };
-api.sapAddWidget=function(id){ Store.commit(s=>{ if(SAP_WIDGETS[id] && s.sap.dashboard.indexOf(id)<0) s.sap.dashboard.push(id); }); };
-api.sapRemoveWidget=function(id){ Store.commit(s=>{ s.sap.dashboard=s.sap.dashboard.filter(x=>x!==id); }); };
+api.sapAddWidget=function(id){ Store.commit(s=>{ if(!Array.isArray(s.sap.dashboard)) s.sap.dashboard=[]; if(SAP_WIDGETS[id] && s.sap.dashboard.indexOf(id)<0) s.sap.dashboard.push(id); }); };
+api.sapRemoveWidget=function(id){ Store.commit(s=>{ if(!Array.isArray(s.sap.dashboard)) s.sap.dashboard=[]; s.sap.dashboard=s.sap.dashboard.filter(x=>x!==id); }); };
 function renderSapWidget(id){ const w=SAP_WIDGETS[id]; if(!w)return ''; let body=''; try{ body=w.render(Store.get()); }catch(e){ body='<div class="muted ui" style="padding:14px">—</div>'; }
   return '<div class="widget fade-in"><div class="widget-h"><h4>'+icon(w.icon,'ic-md')+esc(w.title)+'</h4><button class="widget-rm" data-rm="'+id+'" title="Remove tile" aria-label="Remove">'+icon('x')+'</button></div><div class="widget-b">'+body+'</div></div>'; }
 function openSapCatalog(){
@@ -3289,9 +3411,9 @@ function screenSap(view){
   const nbvPct=st.capital?Math.round(st.nbv/st.capital*100):0;
   const tiles=
     fioriTile({lab:'Fixed assets',val:'<span class="tnum">'+fmtNum(st.master)+'</span>',sub:'asset master · AS03',tone:'navy',chart:svgMiniBars(classCnt,'var(--navy)')})+
-    fioriTile({lab:'Capitalized · APC',val:fmtMoney(st.capital),sub:'gross acquisition value',tone:'accent',donut:nbvPct,donutColor:'var(--accent)'})+
-    fioriTile({lab:'Net book value',val:fmtMoney(st.nbv),sub:nbvPct+'% of APC',tone:'accent',chart:svgMiniBars(nbvByCat,'var(--accent)')})+
-    fioriTile({lab:'Accum. depreciation',val:fmtMoney(st.capital-st.nbv),sub:'ordinary depreciation',tone:'gold',chart:svgMiniBars(depByCat,'var(--gold)')})+
+    fioriTile({lab:'Capitalized · APC',val:fmtMoneyShort(st.capital),sub:'gross acquisition value',tone:'accent',donut:nbvPct,donutColor:'var(--accent)'})+
+    fioriTile({lab:'Net book value',val:fmtMoneyShort(st.nbv),sub:nbvPct+'% of APC',tone:'accent',chart:svgMiniBars(nbvByCat,'var(--accent)')})+
+    fioriTile({lab:'Accum. depreciation',val:fmtMoneyShort(st.capital-st.nbv),sub:'ordinary depreciation',tone:'gold',chart:svgMiniBars(depByCat,'var(--gold)')})+
     fioriTile({lab:'Documents posted',val:'<span class="tnum">'+fmtNum(st.documents)+'</span>',sub:'FI/CO · BELNR',tone:'gold',chart:svgMiniBars(docsByType.length?docsByType:[0,0,0],'var(--gold)')})+
     fioriTile({lab:'Retired in SAP',val:'<span class="tnum">'+fmtNum(st.retired)+'</span>',sub:'via ABAVN',tone:st.retired?'danger':'navy',chart:svgMiniBars([s.assets.filter(a=>a.sapStatus==='active'||!a.sapStatus).length, st.retired, s.assets.filter(a=>a.sapStatus==='impaired').length],st.retired?'var(--danger)':'var(--navy)')});
   const dash=s.sap.dashboard||[];
