@@ -1,0 +1,10 @@
+# Node / test tooling (jsdom is installed ad-hoc for verification only)
+node_modules/
+
+# Local verification & screenshot artifacts (never part of the deploy)
+_*/
+_*.html
+_*.js
+shots/
+*.png
+package-lock.json
