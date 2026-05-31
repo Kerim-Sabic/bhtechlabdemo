@@ -75,8 +75,8 @@ svg.ic-2xl{width:40px;height:40px;stroke-width:1.6}
 .topbar .sep{width:1px;height:26px;background:var(--line)}
 .topbar .spacer{flex:1}
 .wordmark{font-family:var(--sans);font-weight:700;letter-spacing:.16em;font-size:14px;color:var(--navy)}
-.mark{width:26px;height:26px;border-radius:7px;background:var(--accent);display:grid;place-items:center;flex:0 0 auto;box-shadow:inset 0 0 0 2px rgba(255,255,255,.0)}
-.mark i{display:block;width:11px;height:11px;border:2px solid #fff;border-radius:3px}
+.brand-h{width:28px;height:28px;color:var(--navy);flex:0 0 auto;display:block}
+.brand-h.lg{width:42px;height:42px} .brand-h.xl{width:50px;height:50px}
 
 /* segmented switcher */
 .seg{display:inline-flex;background:var(--paper2);border:1px solid var(--line);border-radius:9px;padding:3px;gap:2px}
@@ -575,7 +575,7 @@ table.tbl tbody tr.click:hover{background:var(--paper2)}
 .dslide{position:absolute;inset:0;background:
   radial-gradient(900px 520px at 88% -10%, #eef5f2 0%, transparent 55%),
   radial-gradient(700px 480px at -8% 115%, #f1ede4 0%, transparent 50%), #fcfcfb;
-  padding:52px 60px;display:flex;flex-direction:column;font-family:var(--sans);color:#102338;overflow:hidden}
+  padding:42px 56px;display:flex;flex-direction:column;font-family:var(--sans);color:#102338;overflow:hidden}
 /* deck chrome */
 .deck-bar{position:fixed;left:0;right:0;bottom:16px;display:flex;align-items:center;justify-content:center;gap:16px;z-index:62}
 .deck-nav{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.07);color:#fff;display:grid;place-items:center;cursor:pointer;transition:.15s;backdrop-filter:blur(8px)}
@@ -606,10 +606,10 @@ table.tbl tbody tr.click:hover{background:var(--paper2)}
 .d-mark{width:36px;height:36px;flex:0 0 auto;color:#11233a}
 .d-word{font-family:var(--sans);font-weight:800;letter-spacing:.2em;font-size:18px;color:#11233a}
 .d-kick{font-family:var(--sans);font-weight:700;letter-spacing:.02em;color:#0e9c8c;font-size:15px}
-.d-title{font-family:var(--sans);font-weight:800;letter-spacing:-.025em;color:#0e2236;font-size:50px;line-height:1.04;margin:0}
-.d-title.sm{font-size:42px} .d-title.lg{font-size:58px}
+.d-title{font-family:var(--sans);font-weight:800;letter-spacing:-.025em;color:#0e2236;font-size:46px;line-height:1.03;margin:0}
+.d-title.sm{font-size:38px} .d-title.lg{font-size:54px}
 .d-title .hl{color:var(--accent)}
-.d-sub{font-family:var(--serif-b);color:#5a6675;font-size:21px;line-height:1.4;margin:10px 0 0}
+.d-sub{font-family:var(--serif-b);color:#5a6675;font-size:19px;line-height:1.38;margin:9px 0 0}
 .d-body{flex:1;display:flex;flex-direction:column;min-height:0}
 .dc{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 30px rgba(16,39,63,.06);padding:22px 24px}
 .dc.soft{box-shadow:0 6px 20px rgba(16,39,63,.05)}
@@ -2395,8 +2395,8 @@ const NAV = [
   {route:'#/pitchdeck', label:'Pitch deck', icon:'play', tag:'16:9'}
 ];
 
-function markSvg(){
-  return '<span class="mark" aria-hidden="true"><i></i></span>';
+function markSvg(cls){
+  return '<svg class="brand-h '+(cls||'')+'" viewBox="0 0 1254 1254" fill="currentColor" aria-hidden="true">'+hLogoPath()+'</svg>';
 }
 function initials(name){ return (name||'?').split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase(); }
 function avatarSpan(name,cls){ return '<span class="avatar '+(cls||'')+'">'+esc(initials(name))+'</span>'; }
@@ -2593,7 +2593,7 @@ function loginHtml(){
   const s=Store.get();
   return '<div class="login-stage">'+
     '<div class="login-card fade-in">'+
-      '<div class="login-brand">'+markSvg().replace('width:26px;height:26px','width:40px;height:40px')+'<span class="wordmark" style="font-size:18px">HORALIX</span></div>'+
+      '<div class="login-brand">'+markSvg('lg')+'<span class="wordmark" style="font-size:18px">HORALIX</span></div>'+
       '<h1 style="font-size:26px;margin-top:18px">'+esc(tr('Inventory Platform'))+'</h1>'+
       '<p class="muted" style="margin:6px 0 22px;font-family:var(--sans);font-size:13.5px">Sign in to <b>'+esc(s.tenant.name)+'</b> · annual asset &amp; liability inventory '+s.fiscalYear+'</p>'+
       '<div class="login-users">'+
@@ -4434,7 +4434,7 @@ function mLogin(){
   const u=Sel.currentUser();
   return mStatusBar()+
     '<div class="m-login">'+
-      '<div style="align-self:center;margin-bottom:8px">'+markSvg().replace('width:26px;height:26px','width:48px;height:48px')+'</div>'+
+      '<div style="align-self:center;margin-bottom:8px">'+markSvg('xl')+'</div>'+
       '<h2 style="text-align:center;font-size:24px">Horalix Field</h2>'+
       '<p class="muted ui" style="text-align:center;font-size:12.5px;margin:2px 0 20px">Inventory capture · '+esc(Sel.activeCommission()?.name||'')+'</p>'+
       '<div class="m-card"><div class="ui" style="font-size:12px;color:var(--faint)">Signed in as</div>'+
@@ -4995,22 +4995,19 @@ const Tour=(function(){
 /* ===========================================================================
    MODULE: pitch deck — full-screen 16:9 animated presentation (#/pitchdeck)
    =========================================================================== */
-/* the real Horalix mark — interlocking "H" gem (single even-odd path) */
+/* the real Horalix mark — exact vector from the brand SVG (viewBox 0 0 1254 1254) */
 function hLogoPath(){
-  return '<path fill-rule="evenodd" d="'+
-    'M25 11 L50 29 L75 11 C84 14 89 20 89 32 L89 68 C89 80 84 86 75 89 L50 71 L25 89 C16 86 11 80 11 68 L11 32 C11 20 16 14 25 11 Z'+
-    ' M34 29 L66 29 L66 46 C58 46 54 40 50 40 C46 40 42 46 34 46 Z'+
-    ' M66 71 L34 71 L34 54 C42 54 46 60 50 60 C54 60 58 54 66 54 Z"/>';
+  return '<path fill-rule="nonzero" d="M760.971985,1044.995239 C760.893860,1043.925049 760.815735,1042.854858 761.158447,1041.107178 C761.718811,1039.120605 761.979797,1037.811401 761.980164,1036.502319 C762.000854,963.552551 762.006165,890.602783 761.957581,817.653015 C761.956543,816.099243 761.310242,814.545898 760.964966,812.992310 C760.889465,809.295654 760.813965,805.599060 761.157898,801.166260 C761.453979,794.967346 761.330566,789.504517 761.207153,784.041626 C777.845886,770.763733 794.460083,757.454895 811.133728,744.221008 C819.616211,737.488342 828.200317,730.883484 836.753418,724.240051 C837.881714,723.363647 839.098145,722.600708 840.831299,721.398376 C840.831299,813.137329 840.831299,904.193420 840.831299,996.350403 C847.333557,990.882568 853.104370,986.052551 858.850525,981.193420 C874.496582,967.962830 890.886902,955.502625 905.606384,941.310181 C931.806641,916.048035 948.261475,885.314392 953.271240,848.268188 C954.210144,845.793579 954.941772,843.785339 954.942627,841.776917 C954.998901,707.804382 954.996582,573.831787 954.998535,439.859222 C954.998840,418.530273 955.127319,397.199677 954.866394,375.873901 C954.821960,372.243835 953.101257,368.634247 952.155029,365.015198 C947.623169,339.999939 938.258911,316.945892 921.963440,297.388489 C913.082581,286.729889 902.789856,277.111420 892.339172,267.928223 C875.850159,253.438934 858.692139,239.710861 841.100647,225.063904 C841.100647,240.788559 841.100647,255.941498 840.731812,271.861389 C840.243286,273.942749 840.019043,275.257141 840.018860,276.571564 C840.004333,372.149536 840.002930,467.727509 840.050049,563.305481 C840.050842,564.869324 840.659912,566.432983 840.985107,567.996704 C841.062134,569.721191 841.139221,571.445618 840.935303,573.672363 C840.584229,574.273254 840.433777,574.426575 840.457458,574.461304 C840.587524,574.652405 840.760315,574.814392 840.918396,574.986389 C840.386902,598.724182 833.203186,620.410706 819.843384,639.872803 C796.665283,673.637512 764.946533,693.700562 723.155945,697.813965 C721.793457,697.290466 721.151001,697.033997 720.508484,697.033813 C663.913208,697.016541 607.317932,697.008972 550.722778,697.087036 C549.490601,697.088745 548.259888,698.087219 547.028503,698.620728 C535.090393,700.151917 524.114685,703.916748 514.833801,711.956665 C503.724396,721.580688 497.402771,733.590637 495.607056,748.746216 C494.717224,751.272217 494.056366,753.299744 494.055542,755.327515 C494.002777,886.300964 494.008667,1017.274475 493.957062,1148.247925 C493.956177,1150.516357 493.318634,1152.784424 492.978149,1155.052734 C482.959747,1147.085205 472.880585,1139.192627 462.933105,1131.137573 C409.863220,1088.163818 356.403748,1045.657349 303.911530,1001.988525 C261.857025,967.003052 235.869736,921.951843 226.351456,867.855164 C224.830429,859.210388 224.214157,850.299622 224.206802,841.511047 C224.078094,687.873718 224.220352,534.236206 224.034943,380.598999 C223.983215,337.752472 236.676178,299.099701 260.251984,263.721649 C274.987854,241.608902 293.479797,223.144501 314.358582,206.725693 C369.091217,163.684631 423.485016,120.212807 478.023071,76.924202 C482.719025,73.196877 487.482758,69.554977 492.586670,66.244797 C493.302155,77.392410 493.909729,88.168442 493.916595,98.944862 C493.923615,109.964745 493.083527,120.985168 493.089996,132.005066 C493.096436,143.026321 493.829071,154.045197 493.990875,165.068817 C494.160553,176.630722 494.163208,188.199005 493.992706,199.760849 C493.829712,210.814590 493.038818,221.864899 493.081635,232.914551 C493.148254,250.096115 493.800842,267.274780 493.963989,284.456940 C494.020447,290.402008 493.037231,296.356812 493.091644,302.302032 C493.204681,314.656860 493.948608,327.008179 493.954437,339.361145 C493.959930,350.970886 493.269806,362.579346 493.038116,374.191406 C492.887146,381.757477 492.859955,389.332947 493.059235,396.896790 C493.196136,402.092712 493.816986,407.275879 494.221497,412.464722 C468.139435,432.862366 442.057404,453.259979 415.243683,474.229797 C415.243683,391.503357 415.243683,309.468597 415.243683,226.173615 C406.501495,233.393402 398.695831,239.734421 391.006195,246.213165 C376.877747,258.116760 362.165558,269.422638 348.866974,282.196075 C322.487396,307.533936 307.067200,338.662598 302.661377,375.748230 C301.740204,378.258850 301.060516,380.280792 301.058838,382.303223 C301.002930,450.466644 301.011566,518.630127 301.010712,586.793579 C301.009674,669.623047 300.997681,752.452515 301.074951,835.281921 C301.076721,837.178955 302.086639,839.075134 302.626312,840.971680 C304.719391,861.911804 310.211578,881.840088 320.264923,900.421936 C329.408417,917.321960 341.383850,931.911621 355.970306,944.389709 C374.073303,959.876099 392.162994,975.378052 410.266235,990.864136 C411.515381,991.932678 412.829041,992.925842 414.992279,994.658630 C414.992279,992.170532 414.992340,990.466858 414.992279,988.763245 C414.989197,862.447327 414.938690,736.131470 415.009888,609.815552 C415.033478,567.944214 433.108521,534.793762 465.240601,508.951904 C491.591156,487.759766 522.242371,478.521576 555.764221,478.414124 C601.590759,478.267242 647.418091,478.390137 693.245056,478.344238 C727.319519,478.310120 754.056763,456.378265 759.328308,424.120636 C759.834290,421.024384 759.798767,417.818695 759.799500,414.663788 C759.825684,298.846527 759.826538,183.029266 759.830750,67.211998 C759.830811,65.629944 759.830811,64.047890 759.830811,61.486385 C771.723938,70.844139 782.795776,79.556931 793.868896,88.268097 C843.230530,127.100533 892.455078,166.108841 941.997070,204.709747 C982.811951,236.510925 1011.407532,276.476196 1025.307251,326.547058 C1029.690552,342.336914 1031.897827,358.486511 1031.900024,374.888611 C1031.921143,531.867065 1032.049561,688.845825 1031.801636,845.823853 C1031.750977,877.888306 1022.274475,907.770203 1007.247620,935.942627 C994.586731,959.679321 978.705627,981.123474 958.366516,998.668213 C930.389832,1022.800964 901.714478,1046.135254 873.041870,1069.446777 C836.091064,1099.488770 798.846802,1129.169922 760.754700,1159.789551 C760.754700,1133.245361 760.754700,1107.580933 761.170898,1081.169922 C761.724731,1072.657715 761.939392,1064.892334 761.947937,1057.126709 C761.950195,1055.082886 761.315247,1053.038452 760.972839,1050.994263 C760.894043,1049.601196 760.815247,1048.208008 761.021729,1046.316895 C761.195374,1045.544189 761.083679,1045.269775 760.971985,1044.995239 Z"/>';
 }
 function deckMark(){
-  return '<svg class="d-mark" viewBox="0 0 100 100" fill="currentColor">'+hLogoPath()+'</svg>';
+  return '<svg class="d-mark" viewBox="0 0 1254 1254" fill="currentColor">'+hLogoPath()+'</svg>';
 }
 function dHeader(kick, title, sub, cls){
-  return '<div class="anim"><div class="d-logo">'+deckMark()+'<span class="d-word">HORALIX</span></div></div>'+
+  return '<div class="anim" data-flip="logo"><div class="d-logo">'+deckMark()+'<span class="d-word">HORALIX</span></div></div>'+
     (kick?'<div class="d-kick anim" style="margin-top:15px">'+esc(kick)+'</div>':'')+
-    '<h1 class="d-title '+(cls||'')+' anim" style="margin-top:'+(kick?'5px':'14px')+'">'+title+'</h1>'+
+    '<h1 class="d-title '+(cls||'')+' anim" style="margin-top:'+(kick?'4px':'10px')+'">'+title+'</h1>'+
     (sub?'<p class="d-sub anim">'+sub+'</p>':'')+
-    '<div style="height:18px"></div>';
+    '<div style="height:12px"></div>';
 }
 function dCard(ic,tone,h,p,extra,delay){
   return '<div class="dc anim" style="'+(delay||'')+'">'+
@@ -5020,6 +5017,37 @@ function dCard(ic,tone,h,p,extra,delay){
 }
 function stg(i){ return 'animation-delay:'+(0.05+0.06*i).toFixed(2)+'s'; }
 
+/* ---- interactive demo on slide 6 ---- */
+const deckDemo={ scanned:63, remaining:187, conflicts:2, pending:12, c3:41, qi:0, busy:false, rows:[],
+  queue:[['INV-004912 · Laptop','found'],['INV-004873 · Switch','damaged'],['INV-005002 · Router','missing'],
+         ['INV-004990 · Server','found'],['INV-004955 · UPS','found'],['INV-005010 · Monitor','found'],
+         ['INV-004931 · Stolica','found'],['INV-004999 · Kabel','damaged'],['INV-005021 · BTS modul','found']] };
+const DD_STATUS={found:['Zatečeno','green'],damaged:['Oštećeno','amber'],missing:['Manjak','red']};
+function deckDemoInit(){ Object.assign(deckDemo,{scanned:63,remaining:187,conflicts:2,pending:12,c3:41,qi:0,busy:false,
+  rows:[['INV-004821 · Laptop','found'],['INV-004907 · Switch','damaged'],['INV-004862 · Router','missing']]}); renderDeckDemo(); }
+function renderDeckDemo(){
+  const list=$('#dd-list'); if(list) list.innerHTML=deckDemo.rows.map(r=>{const s=DD_STATUS[r[1]];
+    return '<div class="dd-row" style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border:1px solid var(--line);border-radius:9px;margin-bottom:6px;background:#fff"><span style="font-family:var(--sans);font-size:10px;font-weight:600;color:#1d2c3c">'+esc(r[0])+'</span><span class="chip '+s[1]+'" style="font-size:8px;padding:2px 7px">'+s[0]+'</span></div>';}).join('');
+  const set=(id,v)=>{const e=$('#'+id); if(e)e.textContent=v;};
+  set('dd-scanned',deckDemo.scanned); set('dd-remaining',deckDemo.remaining); set('dd-conflicts',deckDemo.conflicts);
+  const sub=$('#dd-sub'); if(sub) sub.textContent='Komisija 3 · '+deckDemo.pending+' događaja čeka sync';
+  const c3=$('#dd-c3'); if(c3) c3.style.width=deckDemo.c3+'%'; const c3l=$('#dd-c3-l'); if(c3l) c3l.textContent=deckDemo.c3+'%';
+}
+function deckScan(){
+  const btn=$('#dd-scan'); if(!btn||deckDemo.busy)return; deckDemo.busy=true;
+  const orig=btn.innerHTML; btn.innerHTML='<span class="spinner"></span>Skeniram…'; btn.style.opacity='.9';
+  setTimeout(()=>{
+    const item=deckDemo.queue[deckDemo.qi % deckDemo.queue.length]; deckDemo.qi++;
+    deckDemo.scanned++; deckDemo.remaining=Math.max(0,deckDemo.remaining-1); deckDemo.pending++;
+    deckDemo.c3=Math.min(100, deckDemo.c3 + 2);
+    if(item[1]==='missing') deckDemo.conflicts++;
+    deckDemo.rows.unshift(item.slice()); if(deckDemo.rows.length>5) deckDemo.rows.pop();
+    renderDeckDemo();
+    const first=$('#dd-list > .dd-row'); if(first){ first.style.animation='dRise .42s cubic-bezier(.2,.85,.25,1)'; }
+    btn.innerHTML=orig; btn.style.opacity='1'; deckDemo.busy=false;
+  }, 400);
+}
+
 /* ---- the 16 slides ---- */
 const DECK_SLIDES = [
 // 1 — HERO
@@ -5028,7 +5056,7 @@ const DECK_SLIDES = [
   const member=(n,r)=>'<div style="display:flex;align-items:center;gap:9px"><span class="avatar sm" style="background:#11233a">'+esc(initials(n))+'</span><div><div style="font-family:var(--sans);font-weight:700;font-size:12.5px;color:#11233a">'+esc(n)+'</div><div style="font-family:var(--sans);font-size:10.5px;color:#8a94a2">'+r+'</div></div></div>';
   return '<div style="display:grid;grid-template-columns:1.02fr .98fr;gap:34px;flex:1;align-items:center;min-height:0">'+
     '<div>'+
-      '<div class="d-logo anim">'+deckMark()+'<span class="d-word">HORALIX</span></div>'+
+      '<div class="d-logo anim" data-flip="logo">'+deckMark()+'<span class="d-word">HORALIX</span></div>'+
       '<div class="d-kick anim" style="margin-top:24px">BH TechLab / BH Telecom Pitch</div>'+
       '<h1 class="d-title lg anim" style="margin-top:8px">Platforma za<br>popis imovine<br>i obaveza</h1>'+
       '<p class="d-sub anim" style="max-width:430px">Offline-first operativni sloj za zakonski proces popisa</p>'+
@@ -5077,18 +5105,18 @@ const DECK_SLIDES = [
 {title:'Problem je proces', build(){
   const pains=[['users','Komisije u kratkom roku'],['mapPin','Više lokacija'],['fileText','ERP/Excel ≠ teren'],['hash','Oštećeni kodovi'],['wifiOff','Rad bez mreže'],['clock','Usaglašavanje u roku']];
   return dHeader('','Problem nije registar — <span class="hl">problem je proces popisa</span>','','sm')+
-    '<div class="d-body"><div style="display:grid;grid-template-columns:1fr 1.05fr;gap:28px;flex:1">'+
-      '<div class="dc anim" style="display:flex;flex-direction:column;background:linear-gradient(160deg,#fff,#f4f8f6)">'+
-        '<div class="d-icobox" style="width:60px;height:60px">'+icon('fileText')+'</div>'+
-        '<div class="d-h" style="margin-top:16px;font-size:24px">Zakonski proces</div>'+
-        '<div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">'+
-          [['clock','Godišnji popis'],['clock','Rokovi'],['barChart','Izvještaji']].map(r=>'<div class="d-chip" style="font-size:14px;padding:11px 14px">'+icon(r[0])+r[1]+'</div>').join('')+
+    '<div class="d-body"><div style="display:grid;grid-template-columns:1fr 1.05fr;gap:22px;flex:1;min-height:0">'+
+      '<div class="dc anim" style="display:flex;flex-direction:column;background:linear-gradient(160deg,#fff,#f4f8f6);padding:18px 22px">'+
+        '<div class="d-icobox" style="width:52px;height:52px">'+icon('fileText')+'</div>'+
+        '<div class="d-h" style="margin-top:13px;font-size:22px">Zakonski proces</div>'+
+        '<div style="margin-top:13px;display:flex;flex-direction:column;gap:9px">'+
+          [['clock','Godišnji popis'],['clock','Rokovi'],['barChart','Izvještaji']].map(r=>'<div class="d-chip" style="font-size:13.5px;padding:9px 13px">'+icon(r[0])+r[1]+'</div>').join('')+
         '</div></div>'+
-      '<div class="anim" style="display:flex;flex-direction:column;gap:11px;'+stg(1)+'">'+
-        pains.map(p=>'<div class="dc" style="display:flex;align-items:center;gap:13px;padding:14px 18px"><div class="d-icobox sm" style="background:var(--warnSoft);color:var(--warn)">'+icon(p[0])+'</div><div class="d-h" style="font-size:17px">'+p[1]+'</div></div>').join('')+
+      '<div class="anim" style="display:flex;flex-direction:column;gap:9px;'+stg(1)+'">'+
+        pains.map(p=>'<div class="dc" style="display:flex;align-items:center;gap:13px;padding:11px 16px"><div class="d-icobox sm" style="width:38px;height:38px;background:var(--warnSoft);color:var(--warn)">'+icon(p[0])+'</div><div class="d-h" style="font-size:16px">'+p[1]+'</div></div>').join('')+
       '</div>'+
     '</div>'+
-    '<div class="d-band anim" style="margin-top:20px;'+stg(2)+'"><span class="bq">“</span><div style="font-size:19px;line-height:1.4"><b>Registar pamti šta biste <span class="ht">trebali imati</span>.</b><br>Mi vodimo proces kojim se dokazuje šta <span class="ht">stvarno postoji</span>.</div></div>'+
+    '<div class="d-band anim" style="margin-top:16px;padding:16px 26px;'+stg(2)+'"><span class="bq">“</span><div style="font-size:18px;line-height:1.35"><b>Registar pamti šta biste <span class="ht">trebali imati</span>.</b><br>Mi vodimo proces kojim se dokazuje šta <span class="ht">stvarno postoji</span>.</div></div>'+
     '</div>';
 }},
 // 4 — WHY NOW
@@ -5127,31 +5155,31 @@ const DECK_SLIDES = [
 }},
 // 6 — PRODUCT / DEMO
 {title:'Kako izgleda', build(){
-  const arow=(t,chip,cc)=>'<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border:1px solid var(--line);border-radius:9px;margin-bottom:6px;background:#fff"><span style="font-family:var(--sans);font-size:10.5px;font-weight:600;color:#1d2c3c">'+t+'</span><span class="chip '+cc+'" style="font-size:8.5px;padding:2px 7px">'+chip+'</span></div>';
-  const kpi=(l,v,c,dc)=>'<div style="background:var(--paper2);border:1px solid var(--line);border-radius:9px;padding:8px 9px"><div style="font-family:var(--sans);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#8a94a2">'+l+'</div><div style="font-family:var(--sans);font-weight:800;font-size:18px;color:'+c+'" '+(dc||'')+'>'+v+'</div></div>';
-  return dHeader('','Kako to izgleda u praksi')+
-    '<div class="d-body"><div style="display:grid;grid-template-columns:250px 1fr;gap:30px;flex:1;align-items:center">'+
+  const kpi=(l,v,c,id)=>'<div style="background:var(--paper2);border:1px solid var(--line);border-radius:9px;padding:8px 9px"><div style="font-family:var(--sans);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#8a94a2">'+l+'</div><div id="'+id+'" style="font-family:var(--sans);font-weight:800;font-size:18px;color:'+c+'">'+v+'</div></div>';
+  const com=(name,pct,colv,id)=>'<div style="padding:8px 14px;border-bottom:1px solid var(--line)"><div style="display:flex;justify-content:space-between;font-family:var(--sans);font-size:12px;margin-bottom:5px"><span style="font-weight:600;color:#1d2c3c">'+name+'</span><span id="'+id+'-l" style="font-weight:700;color:'+colv+'">'+pct+'%</span></div><div style="height:5px;background:var(--paper2);border-radius:4px;overflow:hidden"><i id="'+id+'" style="display:block;height:100%;width:'+pct+'%;background:'+colv+';transition:width .5s cubic-bezier(.2,.8,.2,1)"></i></div></div>';
+  return dHeader('','Kako to izgleda u praksi','<span style="color:var(--accent);font-weight:700">Probajte uživo</span> — kliknite “Skeniraj kod”. Telefon i radni sto se ažuriraju u realnom vremenu.')+
+    '<div class="d-body"><div style="display:grid;grid-template-columns:246px 1fr;gap:30px;flex:1;align-items:center">'+
       '<div class="d-phone anim az"><div class="ps">'+
-        '<div style="padding:10px 14px;border-bottom:1px solid var(--line)"><div style="font-family:var(--sans);font-weight:800;font-size:13px;color:#11233a">Spremno za offline rad</div><div style="font-family:var(--sans);font-size:10px;color:#8a94a2">Komisija 3 · 12 događaja čeka sync</div></div>'+
-        '<div style="padding:11px 13px;flex:1;overflow:hidden">'+
-          '<button style="width:100%;background:var(--accent);color:#fff;border:0;border-radius:11px;padding:11px;font-family:var(--sans);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:11px">'+icon('camera')+'Skeniraj kod</button>'+
-          arow('INV-004821 · Laptop','Zatečeno','green')+arow('INV-004907 · Switch','Oštećeno','amber')+arow('INV-004862 · Router','Manjak','red')+arow('INV-004933 · Stolica','Zatečeno','green')+
+        '<div style="padding:10px 14px;border-bottom:1px solid var(--line)"><div style="font-family:var(--sans);font-weight:800;font-size:13px;color:#11233a">Spremno za offline rad</div><div id="dd-sub" style="font-family:var(--sans);font-size:10px;color:#8a94a2">Komisija 3 · 12 događaja čeka sync</div></div>'+
+        '<div style="padding:11px 13px;flex:1;overflow:hidden;display:flex;flex-direction:column">'+
+          '<button id="dd-scan" style="width:100%;background:var(--accent);color:#fff;border:0;border-radius:11px;padding:11px;font-family:var(--sans);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:11px;cursor:pointer">'+icon('camera')+'Skeniraj kod</button>'+
+          '<div id="dd-list" style="flex:1;overflow:hidden"></div>'+
         '</div>'+
         '<div style="padding:8px;border-top:1px solid var(--line);display:flex;justify-content:space-around;color:#8a94a2">'+icon('list')+icon('camera')+icon('sync')+'</div>'+
       '</div></div>'+
       '<div class="d-web anim" style="'+stg(1)+'">'+
         '<div style="padding:13px 18px;border-bottom:1px solid var(--line);background:rgba(252,251,248,.7)"><div style="font-family:var(--sans);font-weight:800;font-size:16px;color:#11233a">Radni sto predsjednika popisa</div></div>'+
         '<div style="padding:16px 18px;flex:1">'+
-          '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">'+kpi('Dodijeljeno','250','#11233a','data-count="250"')+kpi('Skenirano','63','var(--accent)','data-count="63"')+kpi('Preostalo','187','var(--navy)','data-count="187"')+kpi('Konflikti','2','var(--gold)','data-count="2"')+'</div>'+
+          '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">'+kpi('Dodijeljeno','250','#11233a','dd-assigned')+kpi('Skenirano','63','var(--accent)','dd-scanned')+kpi('Preostalo','187','var(--navy)','dd-remaining')+kpi('Konflikti','2','var(--gold)','dd-conflicts')+'</div>'+
           '<div style="border:1px solid var(--line);border-radius:10px;overflow:hidden">'+
-            [['Komisija 1','88%','green'],['Komisija 2','64%','amber'],['Komisija 3','41%','navy']].map(r=>'<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line);font-family:var(--sans);font-size:13px"><span style="font-weight:600;color:#1d2c3c">'+r[0]+'</span><span class="chip '+r[2]+'" style="font-size:10px">'+r[1]+'</span></div>').join('')+
+            com('Komisija 1','88','var(--accent)','dd-c1')+com('Komisija 2','64','var(--gold)','dd-c2')+com('Komisija 3','41','var(--navy)','dd-c3')+
           '</div>'+
           '<div style="display:flex;gap:8px;margin-top:14px">'+['Conflict Inbox','Excel / PDF','Audit trail'].map(c=>'<span class="d-chip" style="font-size:11.5px">'+c+'</span>').join('')+'</div>'+
         '</div>'+
       '</div>'+
     '</div>'+
     '<div class="anim" style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;'+stg(2)+'"><div style="font-family:var(--sans);font-size:12.5px;color:#8a94a2">Demonstracioni prototip — produkcijski sistem kroz fazni plan isporuke</div>'+
-      '<button id="deck-livedemo" style="background:#11233a;color:#fff;border:0;border-radius:10px;padding:11px 18px;font-family:var(--sans);font-weight:700;font-size:13px;display:inline-flex;align-items:center;gap:8px;cursor:pointer">'+icon('play')+'Otvori živi demo</button></div>'+
+      '<button id="deck-livedemo" style="background:#fff;color:#11233a;border:1px solid var(--line);border-radius:10px;padding:10px 16px;font-family:var(--sans);font-weight:700;font-size:13px;display:inline-flex;align-items:center;gap:8px;cursor:pointer">'+icon('arrowRight')+'Otvori punu aplikaciju</button></div>'+
     '</div>';
 }},
 // 7 — TEAM
@@ -5185,8 +5213,8 @@ const DECK_SLIDES = [
 }},
 // 9 — OFFLINE SYNC
 {title:'Offline sync', build(){
-  const node=(ic,t,hot)=>'<div style="flex:1;text-align:center"><div style="height:96px;border-radius:14px;border:1px solid '+(hot?'var(--accentLine)':'var(--line)')+';background:'+(hot?'var(--accentSoft)':'#fff')+';box-shadow:0 8px 22px rgba(16,39,63,.06);display:grid;place-items:center;color:'+(hot?'var(--accent)':'#11233a')+'">'+icon(ic).replace('class="ic"','class="ic" style="width:34px;height:34px"')+'</div><div style="font-family:var(--sans);font-weight:700;font-size:13px;color:#1d2c3c;margin-top:9px">'+t+'</div></div>';
-  const ar='<div style="display:flex;align-items:center;color:#11233a;padding-bottom:24px">'+icon('arrowRight')+'</div>';
+  const node=(ic,t,hot)=>'<div style="flex:1;text-align:center"><div style="height:88px;border-radius:14px;border:1px solid '+(hot?'var(--accentLine)':'var(--line)')+';background:'+(hot?'var(--accentSoft)':'#fff')+';box-shadow:0 8px 22px rgba(16,39,63,.06);display:grid;place-items:center;color:'+(hot?'var(--accent)':'#11233a')+'">'+icon(ic).replace('class="ic"','class="ic" style="width:32px;height:32px"')+'</div><div style="font-family:var(--sans);font-weight:700;font-size:13px;color:#1d2c3c;margin-top:8px">'+t+'</div></div>';
+  const ar='<div style="display:flex;align-items:center;color:#11233a;padding-bottom:22px">'+icon('arrowRight')+'</div>';
   const call=(ic,t,tone)=>'<div style="display:inline-flex;align-items:center;gap:7px;border:1px solid '+(tone==='warn'?'#e7d9a8':'var(--accentLine)')+';background:'+(tone==='warn'?'var(--warnSoft)':'var(--accentSoft)')+';border-radius:9px;padding:6px 11px;font-family:var(--sans);font-size:11.5px;font-weight:600;color:'+(tone==='warn'?'var(--warn)':'#0a5e4c')+'">'+icon(ic,'ic-sm')+t+'</div>';
   return dHeader('','Offline sinhronizacija bez gubitka unosa')+
     '<div class="d-body">'+
@@ -5226,11 +5254,11 @@ const DECK_SLIDES = [
 {title:'Plan isporuke', build(){
   const ph=[['target?','Sedmica 1','Discovery & scope lock','search'],['','Sedmice 2–3','Architecture & core','package'],['','Sedmice 4–5','Web portal','home'],['','Sedmice 6–7','Mobile offline + sync','smartphone'],['','Sedmice 8–9','ERP/Excel + reports','barChart'],['','Sedmice 10–12','UAT, pilot & handover','shield']];
   return dHeader('','Plan isporuke — 12 sedmica do kontrolisanog pilot-popisa','','sm')+
-    '<div class="d-body">'+
-      '<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:13px">'+ph.map((p,i)=>'<div class="dc anim" style="text-align:center;padding:16px 12px;border-top:3px solid var(--accent);'+stg(i)+'"><div class="d-icobox" style="margin:0 auto;width:46px;height:46px">'+icon(p[3])+'</div><div style="font-family:var(--sans);font-weight:700;font-size:11.5px;color:var(--accent);margin-top:11px">'+p[1]+'</div><div style="font-family:var(--sans);font-weight:800;font-size:14px;color:#11233a;margin-top:3px;line-height:1.2">'+p[2]+'</div></div>').join('')+'</div>'+
-      '<div class="anim" style="position:relative;height:30px;margin:14px 6px 0;'+stg(2)+'"><div style="position:absolute;left:0;right:0;top:14px;height:2px;background:var(--line)"></div>'+[0,1,2,3,4,5,6,7,8,9,10,11].map((n,i)=>'<div style="position:absolute;top:8px;left:'+(i/11*100)+'%;transform:translateX(-50%);width:13px;height:13px;border-radius:50%;background:'+([0,2,4,6,8,11].indexOf(i)>=0?'var(--accent)':'#fff')+';border:2px solid '+([0,2,4,6,8,11].indexOf(i)>=0?'var(--accent)':'#c9d2da')+'"></div>').join('')+'</div>'+
-      '<div class="anim" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:auto;padding-top:18px;'+stg(3)+'">'+
-        [['refresh','Demo svake 2 sedmice'],['shield','Staging/UAT prije produkcije'],['filter','Must-have se štiti, opcionalno pada prvo']].map(c=>'<div class="dc" style="display:flex;align-items:center;gap:13px"><div class="d-icobox sm">'+icon(c[0]==='filter'?'filter':c[0])+'</div><div class="d-h" style="font-size:16px">'+c[1]+'</div></div>').join('')+
+    '<div class="d-body" style="justify-content:center;gap:6px">'+
+      '<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px">'+ph.map((p,i)=>'<div class="dc anim" style="text-align:center;padding:14px 10px;border-top:3px solid var(--accent);'+stg(i)+'"><div class="d-icobox" style="margin:0 auto;width:42px;height:42px">'+icon(p[3])+'</div><div style="font-family:var(--sans);font-weight:700;font-size:11px;color:var(--accent);margin-top:9px">'+p[1]+'</div><div style="font-family:var(--sans);font-weight:800;font-size:13.5px;color:#11233a;margin-top:3px;line-height:1.18">'+p[2]+'</div></div>').join('')+'</div>'+
+      '<div class="anim" style="position:relative;height:26px;margin:14px 6px 4px;'+stg(2)+'"><div style="position:absolute;left:0;right:0;top:12px;height:2px;background:var(--line)"></div>'+[0,1,2,3,4,5,6,7,8,9,10,11].map((n,i)=>'<div style="position:absolute;top:6px;left:'+(i/11*100)+'%;transform:translateX(-50%);width:12px;height:12px;border-radius:50%;background:'+([0,2,4,6,8,11].indexOf(i)>=0?'var(--accent)':'#fff')+';border:2px solid '+([0,2,4,6,8,11].indexOf(i)>=0?'var(--accent)':'#c9d2da')+'"></div>').join('')+'</div>'+
+      '<div class="anim" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding-top:8px;'+stg(3)+'">'+
+        [['refresh','Demo svake 2 sedmice'],['shield','Staging/UAT prije produkcije'],['filter','Must-have se štiti, opcionalno pada prvo']].map(c=>'<div class="dc" style="display:flex;align-items:center;gap:12px;padding:14px 16px"><div class="d-icobox sm">'+icon(c[0])+'</div><div class="d-h" style="font-size:15px">'+c[1]+'</div></div>').join('')+
       '</div>'+
     '</div>';
 }},
@@ -5316,13 +5344,27 @@ const Deck = (function(){
     $('#deck-grid-btn').addEventListener('click',toggleGrid);
     $('#deck-prev').querySelector('svg').style.transform='rotate(180deg)';
   }
-  let busy=false, tT=null;
+  let busy=false, tT=null, flipRects={};
+  function captureFlip(){ flipRects={}; const host=$('#dslide'); if(!host)return; $$('[data-flip]',host).forEach(el=>{ flipRects[el.getAttribute('data-flip')]=el.getBoundingClientRect(); }); }
+  function playFlip(host){
+    if(!Object.keys(flipRects).length)return;
+    const c=$('#deck-canvas'); const mm=c&&c.style.transform&&c.style.transform.match(/scale\(([\d.]+)\)/); const sc=mm?parseFloat(mm[1]):1;
+    $$('[data-flip]',host).forEach(el=>{ const prev=flipRects[el.getAttribute('data-flip')]; if(!prev)return;
+      const now=el.getBoundingClientRect(); const dx=(prev.left-now.left)/sc, dy=(prev.top-now.top)/sc;
+      el.style.animation='none'; el.style.opacity='1';
+      if(Math.abs(dx)<1 && Math.abs(dy)<1) return;       /* same spot → just persist (no re-fade) */
+      el.style.transition='none'; el.style.transform='translate('+dx+'px,'+dy+'px)';
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{ el.style.transition='transform .58s cubic-bezier(.2,.85,.25,1)'; el.style.transform=''; }));
+    });
+    flipRects={};
+  }
   function render(dir){
     const sl=DECK_SLIDES[i]; const host=$('#dslide'); if(!host)return;
     host.className='dslide';
     host.innerHTML=sl.build();   /* fresh .anim elements auto-play their CSS keyframes */
     void host.offsetWidth;       /* reflow so the entrance animation restarts */
     host.classList.add(dir<0?'tr-prev':'tr-next');
+    playFlip(host);
     countUpAll(host);
     // dots
     const dots=$('#deck-dots'); if(dots) dots.innerHTML=DECK_SLIDES.map((s,n)=>'<button class="deck-dot'+(s.apx?' apx':'')+(n===i?' on':'')+'" data-d="'+n+'" title="'+esc(s.title)+'"></button>').join('');
@@ -5331,6 +5373,7 @@ const Deck = (function(){
     const pr=$('#deck-progress'); if(pr) pr.style.width=((i+1)/DECK_SLIDES.length*100)+'%';
     $('#deck-prev').disabled=(i===0); $('#deck-next').disabled=(i===DECK_SLIDES.length-1);
     const ld=$('#deck-livedemo'); if(ld) ld.addEventListener('click',()=>{ exit(); setTimeout(()=>{ navigate('#/dashboard'); toast({type:'info',title:'Živi demo',msg:'Ovo je stvarna aplikacija — probajte “Guided demo”.'}); },80); });
+    const sc=$('#dd-scan'); if(sc){ deckDemoInit(); sc.addEventListener('click',deckScan); }
     fit();
   }
   function countUpAll(root){
@@ -5344,6 +5387,7 @@ const Deck = (function(){
     });
   }
   function go(n){ n=clamp(n,0,DECK_SLIDES.length-1); if(n===i||busy)return; const dir=n>i?1:-1;
+    captureFlip();
     const host=$('#dslide'); if(host){ host.className='dslide '+(dir>0?'tr-out-next':'tr-out-prev'); }
     busy=true; clearTimeout(tT); tT=setTimeout(()=>{ i=n; render(dir); busy=false; },180);
   }
