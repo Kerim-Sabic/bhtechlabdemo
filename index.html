@@ -642,14 +642,16 @@ table.tbl tbody tr.click:hover{background:var(--paper2)}
 @keyframes dRight{from{opacity:0;transform:translateX(34px)}to{opacity:1;transform:none}}
 @keyframes dBlur{from{opacity:0;filter:blur(8px);transform:scale(1.02)}to{opacity:1;filter:blur(0);transform:none}}
 /* slide-to-slide transitions */
-.dslide.tr-next{animation:slIn .5s cubic-bezier(.16,.84,.3,1)}
-.dslide.tr-prev{animation:slInL .5s cubic-bezier(.16,.84,.3,1)}
-.dslide.tr-out-next{animation:slOut .19s cubic-bezier(.4,0,1,1) both}
-.dslide.tr-out-prev{animation:slOutR .19s cubic-bezier(.4,0,1,1) both}
-@keyframes slIn{from{opacity:0;transform:translateX(64px) scale(.99)}to{opacity:1;transform:none}}
-@keyframes slInL{from{opacity:0;transform:translateX(-64px) scale(.99)}to{opacity:1;transform:none}}
-@keyframes slOut{to{opacity:0;transform:translateX(-46px) scale(.985)}}
-@keyframes slOutR{to{opacity:0;transform:translateX(46px) scale(.985)}}
+.dslide.tr-next{animation:slIn .58s cubic-bezier(.16,.84,.3,1)}
+.dslide.tr-prev{animation:slInL .58s cubic-bezier(.16,.84,.3,1)}
+@keyframes slIn{from{opacity:0;transform:translateX(58px) scale(.984);filter:blur(7px)}58%{filter:blur(0)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes slInL{from{opacity:0;transform:translateX(-58px) scale(.984);filter:blur(7px)}58%{filter:blur(0)}to{opacity:1;transform:none;filter:blur(0)}}
+/* outgoing slide = cloned ghost layered above, cross-dissolving with depth */
+.deck-ghost{z-index:4;pointer-events:none}
+.deck-ghost.gh-next{animation:ghOutL .46s cubic-bezier(.4,0,1,1) forwards}
+.deck-ghost.gh-prev{animation:ghOutR .46s cubic-bezier(.4,0,1,1) forwards}
+@keyframes ghOutL{to{opacity:0;transform:translateX(-46px) scale(.965);filter:blur(6px)}}
+@keyframes ghOutR{to{opacity:0;transform:translateX(46px) scale(.965);filter:blur(6px)}}
 /* connector draw-on */
 .dconn.draw{stroke-dasharray:1;stroke-dashoffset:1;animation:drawline 1.05s .28s cubic-bezier(.3,.7,.25,1) both}
 @keyframes drawline{to{stroke-dashoffset:0}}
@@ -674,7 +676,31 @@ table.tbl tbody tr.click:hover{background:var(--paper2)}
 @keyframes ddPulse{0%{transform:scale(1)}38%{transform:scale(1.16)}100%{transform:scale(1)}}
 .dd-kpi{background:var(--paper2);border:1px solid var(--line);border-radius:9px;padding:8px 9px}
 .dd-kpi .kv{font-family:var(--sans);font-weight:800;font-size:18px}
-.dd-chip-live{display:inline-flex;align-items:center;gap:6px;font-family:var(--sans);font-weight:700;font-size:11px;border-radius:8px;padding:5px 10px;border:1px solid var(--line)}
+.dd-chip-live{display:inline-flex;align-items:center;gap:6px;font-family:var(--sans);font-weight:700;font-size:11px;border-radius:8px;padding:5px 10px;border:1px solid var(--line);transition:transform .2s}
+/* live reconciliation feed on the desktop */
+.dd-feed{display:flex;flex-direction:column;gap:5px;overflow:hidden}
+.dd-feed-row{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:8px;border:1px solid var(--line);background:#fff;animation:ddFeed .42s cubic-bezier(.2,.85,.25,1)}
+@keyframes ddFeed{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.dd-fr-ic{width:17px;height:17px;border-radius:50%;display:grid;place-items:center;flex:0 0 auto}
+.dd-fr-ic svg{width:10px;height:10px}
+.dd-empty{font-family:var(--sans);font-size:10px;color:#aab2bd;text-align:center;padding:16px 6px}
+.dd-desk-glow{animation:ddGlow .85s ease}
+@keyframes ddGlow{0%{box-shadow:0 18px 50px rgba(16,39,63,.1)}45%{box-shadow:0 0 0 3px rgba(12,122,99,.22),0 18px 50px rgba(12,122,99,.22)}100%{box-shadow:0 18px 50px rgba(16,39,63,.1)}}
+.dd-live{width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;flex:0 0 auto;animation:ddLive 1.8s ease-out infinite}
+@keyframes ddLive{0%{box-shadow:0 0 0 0 rgba(12,122,99,.5)}70%{box-shadow:0 0 0 7px rgba(12,122,99,0)}100%{box-shadow:0 0 0 0 rgba(12,122,99,0)}}
+/* conflict-resolution overlay (web workflow) */
+.dd-resolve{position:absolute;inset:0;z-index:5;background:rgba(252,251,248,.9);display:flex;flex-direction:column;justify-content:center;padding:14px 16px;opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .42s cubic-bezier(.2,.8,.2,1),transform .42s cubic-bezier(.2,.8,.2,1)}
+.dd-resolve.show{opacity:1;transform:none;pointer-events:auto}
+.dd-rv-card{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 24px 60px rgba(16,39,63,.2);padding:15px 16px;max-width:344px;width:100%;margin:0 auto}
+.dd-opt{display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:10px;padding:8px 11px;margin-top:8px;cursor:pointer;transition:border-color .25s,background .25s,box-shadow .25s}
+.dd-opt .rdo{width:15px;height:15px;border-radius:50%;border:2px solid #c2cbd4;flex:0 0 auto;position:relative;transition:border-color .25s}
+.dd-opt.sel{border-color:var(--accent);background:var(--accentSoft);box-shadow:0 0 0 3px rgba(12,122,99,.12)}
+.dd-opt.sel .rdo{border-color:var(--accent)}
+.dd-opt.sel .rdo::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--accent)}
+.dd-opt .optt{font-family:var(--sans);font-weight:700;font-size:11px;color:#11233a}
+.dd-opt .opts{font-family:var(--sans);font-size:9px;color:#8a94a2;margin-top:1px}
+.dd-btn.press{animation:ddPress .32s ease}
+@keyframes ddPress{40%{transform:scale(.955)}100%{transform:scale(1)}}
 /* architecture flow connectors */
 .flowv{position:relative;height:26px;width:2px;margin:2px auto;background:var(--accentLine);border-radius:2px}
 .flowv .fl-dot{position:absolute;left:-3px;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 9px rgba(12,122,99,.55);animation:flDown 1.5s linear infinite}
@@ -5041,7 +5067,23 @@ function flowH(){ return '<div class="anim" style="display:flex;align-items:cent
 /* ---- interactive demo on slide 6 ---- */
 const DD_ST={found:['Zatečeno','green'],damaged:['Oštećeno','amber'],missing:['Manjak','red'],surplus:['Višak','gold'],duplicate:['Duplikat','amber']};
 const deckDemo={};
-function deckDemoInit(){ Object.assign(deckDemo,{ outbox:[], scanned:63, remaining:187, conflicts:2, reviews:1, c3:41, qi:0, busy:false,
+const DD_FR={ found:['usklađeno','var(--accent)','var(--accentSoft)','checkCircle'],
+  damaged:['u pregledu','var(--gold)','var(--goldSoft)','scale'],
+  missing:['u pregledu','var(--danger)','var(--dangerSoft)','scale'],
+  surplus:['u pregledu','var(--gold)','var(--goldSoft)','scale'],
+  duplicate:['Conflict Inbox','var(--danger)','var(--dangerSoft)','inbox'] };
+function ddFeedRow(it){ const f=DD_FR[it[1]]||DD_FR.found; const code=(''+it[0]).split(' · ')[0];
+  return '<div class="dd-feed-row"><span class="dd-fr-ic" style="background:'+f[2]+';color:'+f[1]+'">'+icon(f[3],'ic-sm')+'</span>'+
+    '<span style="font-family:var(--sans);font-weight:700;font-size:9.5px;color:#1d2c3c;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(code)+'</span>'+
+    '<span style="font-family:var(--sans);font-weight:800;font-size:8.5px;color:'+f[1]+'">'+f[0]+'</span></div>';
+}
+function ddCountTo(id,to,dur){ const e=$('#'+id); if(!e)return; const from=parseInt((''+e.textContent).replace(/[^\d-]/g,''),10);
+  if(isNaN(from)||from===to){ e.textContent=to; return; }
+  const t0=(typeof performance!=='undefined'?performance.now():Date.now());
+  (function st(){ const now=(typeof performance!=='undefined'?performance.now():Date.now()); const p=Math.min(1,(now-t0)/(dur||450)); const v=Math.round(from+(to-from)*(1-Math.pow(1-p,3))); e.textContent=v; if(p<1) requestAnimationFrame(st); })();
+}
+function ddNow(){ const d=new Date(); const p=x=>(x<10?'0':'')+x; return p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds()); }
+function deckDemoInit(){ Object.assign(deckDemo,{ outbox:[], scanned:63, remaining:187, conflicts:2, reviews:1, c3:41, qi:0, busy:false, autorun:false, resolving:false,
   queue:[['INV-004912 · Laptop','found'],['INV-004873 · Switch','damaged'],['INV-005002 · Router','missing'],
          ['INV-004990 · Server','found'],['INV-004955 · UPS','found'],['INV-005010 · Monitor','surplus'],
          ['INV-004931 · Stolica','found'],['INV-004862 · Router','duplicate'],['INV-004999 · Kabel','found'],['INV-005021 · BTS modul','found']] });
@@ -5076,31 +5118,62 @@ function deckFly(n){
 function deckPulse(sel){ const e=$(sel); if(e){ e.classList.remove('dd-pulse'); void e.offsetWidth; e.classList.add('dd-pulse'); } }
 function deckSync(){
   if(deckDemo.busy || !deckDemo.outbox.length)return; deckDemo.busy=true;
-  const n=deckDemo.outbox.length;
+  const items=deckDemo.outbox.slice(); const n=items.length;
   const sb=$('#dd-sync'); if(sb) sb.innerHTML='<span class="spinner"></span>Sinhronizacija…';
   const net=$('#dd-net'); if(net){ net.innerHTML='● Sinhronizacija…'; net.style.color='var(--navy)'; }
   deckFly(n);
-  setTimeout(()=>{
-    const inc={scanned:0,remaining:0,conflicts:0,reviews:0};
-    deckDemo.outbox.forEach(it=>{ const st=it[1];
-      if(st==='duplicate'){ inc.conflicts++; }
-      else { inc.scanned++; deckDemo.c3=Math.min(100,deckDemo.c3+2);
-        if(st==='missing'||st==='damaged'){ inc.remaining++; inc.reviews++; }
-        else if(st==='surplus'){ inc.reviews++; }
-        else { inc.remaining++; } }
-    });
-    deckDemo.scanned+=inc.scanned; deckDemo.remaining=Math.max(0,deckDemo.remaining-inc.remaining);
-    deckDemo.conflicts+=inc.conflicts; deckDemo.reviews+=inc.reviews; deckDemo.outbox=[];
-    renderDeckOutbox(); renderDeckDesk();
-    deckPulse('#dd-scanned'); deckPulse('#dd-c3-l');
-    if(inc.conflicts) deckPulse('#dd-ci-wrap'); if(inc.reviews) deckPulse('#dd-rv-wrap');
-    deckDemo.busy=false;
-  }, 980);
+  const feed=$('#dd-feed'); if(feed){ const emp=feed.querySelector('.dd-empty'); if(emp&&emp.remove) emp.remove(); }
+  let done=0;
+  items.forEach((it,k)=>{ setTimeout(()=>{
+    const desk=$('#dd-desk'); if(desk){ desk.classList.remove('dd-desk-glow'); void desk.offsetWidth; desk.classList.add('dd-desk-glow'); }
+    if(feed){ feed.insertAdjacentHTML('afterbegin', ddFeedRow(it)); while(feed.children.length>6) feed.removeChild(feed.lastChild); }
+    const st=it[1];
+    if(st==='duplicate'){ deckDemo.conflicts++; ddCountTo('dd-conflicts',deckDemo.conflicts,420); ddCountTo('dd-ci',deckDemo.conflicts,420); deckPulse('#dd-conflicts'); deckPulse('#dd-ci-wrap'); }
+    else { deckDemo.scanned++; ddCountTo('dd-scanned',deckDemo.scanned,420); deckPulse('#dd-scanned');
+      deckDemo.c3=Math.min(100,deckDemo.c3+2); const c3=$('#dd-c3'); if(c3) c3.style.width=deckDemo.c3+'%'; const c3l=$('#dd-c3-l'); if(c3l) c3l.textContent=deckDemo.c3+'%';
+      if(st==='missing'||st==='damaged'){ deckDemo.reviews++; deckDemo.remaining=Math.max(0,deckDemo.remaining-1); ddCountTo('dd-reviews',deckDemo.reviews,420); ddCountTo('dd-rv',deckDemo.reviews,420); ddCountTo('dd-remaining',deckDemo.remaining,420); deckPulse('#dd-rv-wrap'); }
+      else if(st==='surplus'){ deckDemo.reviews++; ddCountTo('dd-reviews',deckDemo.reviews,420); ddCountTo('dd-rv',deckDemo.reviews,420); deckPulse('#dd-rv-wrap'); }
+      else { deckDemo.remaining=Math.max(0,deckDemo.remaining-1); ddCountTo('dd-remaining',deckDemo.remaining,420); }
+    }
+    const fn=$('#dd-feed-n'); if(fn) fn.textContent=(++done);
+    const ts=$('#dd-ts'); if(ts) ts.textContent=ddNow();
+  }, 720+k*170); });
+  setTimeout(()=>{ deckDemo.outbox=[]; renderDeckOutbox(); deckDemo.busy=false;
+    if(!deckDemo.autorun && deckDemo.conflicts>0) setTimeout(deckResolveFlow,520);
+  }, 720+n*170+360);
 }
 function deckAuto(){
-  if(deckDemo.busy)return;
-  const seq=[[deckScan,620],[deckScan,620],[deckScan,980],[deckSync,1700],[deckScan,620],[deckScan,980],[deckSync,1500]];
-  let k=0; (function run(){ if(k>=seq.length)return; const s=seq[k++]; s[0](); setTimeout(run,s[1]); })();
+  if(deckDemo.busy || deckDemo.autorun)return; deckDemo.autorun=true;
+  const ab=$('#dd-auto'); if(ab){ ab.disabled=true; ab.style.opacity='.55'; }
+  const seq=[[deckScan,560],[deckScan,560],[deckScan,840],[deckSync,2300],[deckScan,560],[deckScan,840],[deckSync,2050],[deckScan,560],[deckScan,560],[deckScan,840],[deckSync,2600],[deckResolveFlow,3900]];
+  let k=0; (function run(){ if(k>=seq.length){ deckDemo.autorun=false; const a=$('#dd-auto'); if(a){ a.disabled=false; a.style.opacity=''; } return; } const s=seq[k++]; s[0](); setTimeout(run,s[1]); })();
+}
+/* ---- web-side conflict resolution workflow ---- */
+function ddAuditRow(code,label){ return '<div class="dd-feed-row" style="border-color:var(--accentLine);background:var(--accentSoft)"><span class="dd-fr-ic" style="background:#fff;color:var(--accent)">'+icon('shield','ic-sm')+'</span><span style="font-family:var(--sans);font-weight:700;font-size:9.5px;color:#0a5e4c;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(code)+'</span><span style="font-family:var(--sans);font-weight:800;font-size:8.5px;color:var(--accent)">'+label+'</span></div>'; }
+function deckOpenResolve(){ const p=$('#dd-resolve'); if(!p)return; const a=$('#dd-opt-a'),b=$('#dd-opt-b'),btn=$('#dd-rv-btn');
+  if(a)a.classList.remove('sel'); if(b)b.classList.remove('sel');
+  if(btn){ btn.classList.remove('press'); btn.disabled=false; btn.style.background=''; btn.innerHTML=icon('checkCircle')+'Riješi i zapiši u audit'; }
+  p.classList.add('show'); }
+function deckCloseResolve(){ const p=$('#dd-resolve'); if(p) p.classList.remove('show'); }
+function deckPickOpt(w){ const a=$('#dd-opt-a'),b=$('#dd-opt-b'); if(a)a.classList.toggle('sel',w==='a'); if(b)b.classList.toggle('sel',w==='b'); }
+function deckResolveCommit(){
+  if(!($('#dd-opt-a.sel')||$('#dd-opt-b.sel'))) deckPickOpt('a');
+  if(deckDemo.conflicts>0){ deckDemo.conflicts--; ddCountTo('dd-conflicts',deckDemo.conflicts,420); ddCountTo('dd-ci',deckDemo.conflicts,420); }
+  deckPulse('#dd-conflicts'); deckPulse('#dd-ci-wrap');
+  const feed=$('#dd-feed'); if(feed){ const emp=feed.querySelector('.dd-empty'); if(emp&&emp.remove) emp.remove(); feed.insertAdjacentHTML('afterbegin', ddAuditRow('INV-004862 · Router','riješeno → audit')); while(feed.children.length>6) feed.removeChild(feed.lastChild); const fn=$('#dd-feed-n'); if(fn) fn.textContent=(parseInt(fn.textContent||'0',10)+1); }
+  const ts=$('#dd-ts'); if(ts) ts.textContent=ddNow();
+  const btn=$('#dd-rv-btn'); if(btn){ btn.classList.remove('press'); btn.disabled=true; btn.style.background='var(--accent)'; btn.innerHTML=icon('checkCircle')+'Riješeno · upisano u audit'; }
+}
+function deckResolveManual(){ if(!($('#dd-opt-a.sel')||$('#dd-opt-b.sel'))) deckPickOpt('a');
+  const b=$('#dd-rv-btn'); if(b) b.classList.add('press'); setTimeout(deckResolveCommit,260); setTimeout(deckCloseResolve,1300); }
+function deckResolveFlow(){
+  if(deckDemo.resolving || !$('#dd-resolve')) return; deckDemo.resolving=true;
+  deckPulse('#dd-ci-wrap');
+  setTimeout(()=>deckOpenResolve(),200);
+  setTimeout(()=>deckPickOpt('a'),1050);
+  setTimeout(()=>{ const b=$('#dd-rv-btn'); if(b){ b.classList.add('press'); b.innerHTML='<span class="spinner"></span>Rješavanje…'; } },1750);
+  setTimeout(()=>deckResolveCommit(),2350);
+  setTimeout(()=>{ deckCloseResolve(); deckDemo.resolving=false; },3450);
 }
 
 /* ---- the 16 slides ---- */
@@ -5226,7 +5299,7 @@ const DECK_SLIDES = [
 // 6 — PRODUCT / DEMO
 {title:'Kako izgleda', build(){
   const kpi=(l,v,c,id)=>'<div class="dd-kpi"><div style="font-family:var(--sans);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#8a94a2">'+l+'</div><div id="'+id+'" class="kv" style="color:'+c+'">'+v+'</div></div>';
-  const com=(name,pct,colv,id)=>'<div style="padding:8px 14px;border-bottom:1px solid var(--line)"><div style="display:flex;justify-content:space-between;font-family:var(--sans);font-size:12px;margin-bottom:5px"><span style="font-weight:600;color:#1d2c3c">'+name+'</span><span id="'+id+'-l" style="font-weight:700;color:'+colv+'">'+pct+'%</span></div><div style="height:5px;background:var(--paper2);border-radius:4px;overflow:hidden"><i id="'+id+'" style="display:block;height:100%;width:'+pct+'%;background:'+colv+';transition:width .55s cubic-bezier(.2,.8,.2,1)"></i></div></div>';
+  const com=(name,pct,colv,id)=>'<div style="padding:8px 13px"><div style="display:flex;justify-content:space-between;font-family:var(--sans);font-size:11.5px;margin-bottom:5px"><span style="font-weight:600;color:#1d2c3c">'+name+'</span><span id="'+id+'-l" style="font-weight:800;color:'+colv+'">'+pct+'%</span></div><div style="height:5px;background:var(--paper2);border-radius:4px;overflow:hidden"><i id="'+id+'" style="display:block;height:100%;width:'+pct+'%;background:'+colv+';transition:width .75s cubic-bezier(.2,.8,.2,1)"></i></div></div>';
   return dHeader('','Kako to izgleda u praksi','<span style="color:var(--accent);font-weight:700">Interaktivni demo</span> — skenirajte offline, pa sinhronizujte. Radni sto predsjednika se ažurira uživo.')+
     '<div class="d-body"><div style="display:grid;grid-template-columns:226px 60px 1fr;flex:1;align-items:center">'+
       // PHONE — field app
@@ -5241,20 +5314,37 @@ const DECK_SLIDES = [
       '</div></div>'+
       // SYNC LANE
       '<div style="position:relative;height:100%;display:flex;align-items:center;padding:0 8px"><div id="dd-lane" style="position:relative;width:100%;height:3px;border-radius:3px;opacity:.5;background:repeating-linear-gradient(90deg,var(--accent) 0 6px,transparent 6px 12px)"></div></div>'+
-      // DESKTOP — president desk
-      '<div class="d-web anim" data-flip="demoDesk" style="'+stg(1)+'">'+
-        '<div style="padding:12px 18px;border-bottom:1px solid var(--line);background:rgba(252,251,248,.7);display:flex;justify-content:space-between;align-items:center"><div style="font-family:var(--sans);font-weight:800;font-size:15px;color:#11233a">Radni sto predsjednika popisa</div><span class="d-chip" style="font-size:10px;padding:5px 10px">'+icon('barChart')+'uživo</span></div>'+
-        '<div style="padding:14px 16px;flex:1">'+
-          '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:13px">'+kpi('Skenirano','63','var(--accent)','dd-scanned')+kpi('Preostalo','187','var(--navy)','dd-remaining')+kpi('Konflikti','2','var(--gold)','dd-conflicts')+kpi('Na pregledu','1','var(--danger)','dd-reviews')+'</div>'+
-          '<div style="border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:12px">'+
-            com('Komisija 1','88','var(--accent)','dd-c1')+com('Komisija 2','64','var(--gold)','dd-c2')+com('Komisija 3','41','var(--navy)','dd-c3')+
+      // DESKTOP — president desk (runs live)
+      '<div class="d-web anim" id="dd-desk" data-flip="demoDesk" style="position:relative;'+stg(1)+'">'+
+        '<div style="padding:11px 16px;border-bottom:1px solid var(--line);background:rgba(252,251,248,.7);display:flex;justify-content:space-between;align-items:center">'+
+          '<div style="font-family:var(--sans);font-weight:800;font-size:14.5px;color:#11233a">Radni sto predsjednika popisa</div>'+
+          '<span style="display:inline-flex;align-items:center;gap:7px;font-family:var(--sans);font-weight:700;font-size:10px;color:var(--accent)"><span class="dd-live"></span>uživo · <span id="dd-ts" style="color:#8a94a2">—</span></span>'+
+        '</div>'+
+        '<div style="padding:12px 15px;flex:1;display:flex;flex-direction:column;gap:11px">'+
+          '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:9px">'+kpi('Skenirano','63','var(--accent)','dd-scanned')+kpi('Preostalo','187','var(--navy)','dd-remaining')+kpi('Konflikti','2','var(--gold)','dd-conflicts')+kpi('Na pregledu','1','var(--danger)','dd-reviews')+'</div>'+
+          '<div style="display:grid;grid-template-columns:1.04fr 1fr;gap:11px;flex:1;min-height:122px">'+
+            '<div style="border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;justify-content:center">'+
+              com('Komisija 1','88','var(--accent)','dd-c1')+com('Komisija 2','64','var(--gold)','dd-c2')+com('Komisija 3','41','var(--navy)','dd-c3')+
+            '</div>'+
+            '<div style="border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;overflow:hidden">'+
+              '<div style="padding:7px 11px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-family:var(--sans);font-weight:800;font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;color:#8a94a2">Rekonsilijacija uživo<span style="display:inline-flex;align-items:center;gap:5px;color:var(--accent)"><span class="dd-live"></span><span id="dd-feed-n">0</span></span></div>'+
+              '<div id="dd-feed" class="dd-feed" style="padding:8px;flex:1"><div class="dd-empty">Čeka sinhronizaciju s terena…</div></div>'+
+            '</div>'+
           '</div>'+
           '<div style="display:flex;gap:8px">'+
-            '<span id="dd-ci-wrap" class="dd-chip-live" style="background:var(--goldSoft);border-color:#e7d4ab;color:var(--gold)">'+icon('inbox','ic-sm')+'Conflict Inbox · <b id="dd-ci">2</b></span>'+
+            '<span id="dd-ci-wrap" class="dd-chip-live" title="Otvori i riješi" style="background:var(--goldSoft);border-color:#e7d4ab;color:var(--gold);cursor:pointer">'+icon('inbox','ic-sm')+'Conflict Inbox · <b id="dd-ci">2</b>'+icon('arrowRight','ic-sm')+'</span>'+
             '<span id="dd-rv-wrap" class="dd-chip-live" style="background:var(--dangerSoft);border-color:#e9c6bd;color:var(--danger)">'+icon('scale','ic-sm')+'Review · <b id="dd-rv">1</b></span>'+
             '<span class="dd-chip-live" style="background:#fff;color:var(--soft)">'+icon('shield','ic-sm')+'Audit trail</span>'+
           '</div>'+
         '</div>'+
+        // CONFLICT RESOLUTION overlay — the web-side workflow
+        '<div id="dd-resolve" class="dd-resolve"><div class="dd-rv-card">'+
+          '<div style="display:flex;align-items:center;gap:9px;margin-bottom:9px"><span class="dd-fr-ic" style="width:24px;height:24px;background:var(--goldSoft);color:var(--gold)">'+icon('inbox','ic-sm')+'</span><div><div style="font-family:var(--sans);font-weight:800;font-size:12.5px;color:#11233a">Conflict Inbox — rješavanje</div><div style="font-family:var(--sans);font-size:9.5px;color:#8a94a2">INV-004862 · Router — neslaganje statusa</div></div></div>'+
+          '<div style="font-family:var(--sans);font-size:10px;color:#62707f;margin-bottom:6px">Dvije komisije prijavile različit status. Odaberite ispravan zapis:</div>'+
+          '<div id="dd-opt-a" class="dd-opt"><span class="rdo"></span><div><div class="optt">Teren · Komisija 3</div><div class="opts">Status: Oštećeno · 01.06. 11:32 · + foto</div></div></div>'+
+          '<div id="dd-opt-b" class="dd-opt"><span class="rdo"></span><div><div class="optt">SAP zapis</div><div class="opts">Status: Zatečeno · zadnji godišnji popis</div></div></div>'+
+          '<button id="dd-rv-btn" class="dd-btn nav" style="margin-top:11px">'+icon('checkCircle')+'Riješi i zapiši u audit</button>'+
+        '</div></div>'+
       '</div>'+
     '</div>'+
     '<div class="anim" style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;'+stg(2)+'"><div style="font-family:var(--sans);font-size:12px;color:#8a94a2">Offline-first: unosi žive lokalno dok sync ne potvrdi server — bez gubitka, bez duplikata.</div>'+
@@ -5479,7 +5569,11 @@ const Deck = (function(){
     const ld=$('#deck-livedemo'); if(ld) ld.addEventListener('click',()=>{ exit(); setTimeout(()=>{ navigate('#/dashboard'); toast({type:'info',title:'Živi demo',msg:'Ovo je stvarna aplikacija — probajte “Guided demo”.'}); },80); });
     const sc=$('#dd-scan'); if(sc){ deckDemoInit(); sc.addEventListener('click',deckScan);
       const sy=$('#dd-sync'); if(sy) sy.addEventListener('click',deckSync);
-      const au=$('#dd-auto'); if(au) au.addEventListener('click',deckAuto); }
+      const au=$('#dd-auto'); if(au) au.addEventListener('click',deckAuto);
+      const ci=$('#dd-ci-wrap'); if(ci) ci.addEventListener('click',deckOpenResolve);
+      const oa=$('#dd-opt-a'); if(oa) oa.addEventListener('click',function(){ deckPickOpt('a'); });
+      const ob=$('#dd-opt-b'); if(ob) ob.addEventListener('click',function(){ deckPickOpt('b'); });
+      const rb=$('#dd-rv-btn'); if(rb) rb.addEventListener('click',deckResolveManual); }
     fit();
   }
   function countUpAll(root){
@@ -5494,8 +5588,13 @@ const Deck = (function(){
   }
   function go(n){ n=clamp(n,0,DECK_SLIDES.length-1); if(n===i||busy)return; const dir=n>i?1:-1;
     captureFlip();
-    const host=$('#dslide'); if(host){ host.className='dslide '+(dir>0?'tr-out-next':'tr-out-prev'); }
-    busy=true; clearTimeout(tT); tT=setTimeout(()=>{ i=n; render(dir); busy=false; },180);
+    const host=$('#dslide'), canvas=$('#deck-canvas');
+    if(host&&canvas){ const old=$('#dslide-ghost'); if(old&&old.parentNode) old.parentNode.removeChild(old);
+      const g=host.cloneNode(true); g.className='dslide deck-ghost '+(dir>0?'gh-next':'gh-prev');
+      try{ g.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id')); }catch(_){ } g.id='dslide-ghost'; canvas.appendChild(g);
+      setTimeout(()=>{ if(g&&g.parentNode) g.parentNode.removeChild(g); }, 480); }
+    busy=true; i=n; render(dir);
+    clearTimeout(tT); tT=setTimeout(()=>{ busy=false; }, 320);
   }
   function jump(n){ i=clamp(n,0,DECK_SLIDES.length-1); render(1); }
   function next(){ if(i<DECK_SLIDES.length-1) go(i+1); }
